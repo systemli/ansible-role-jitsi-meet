@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  become: True
+  pre_tasks:
+    - name: Install required packages
+      apt:
+        pkg:
+          - gpg
+  roles:
+    - role: ansible-role-jitsi-meet

@@ -1,0 +1,5 @@
+---
+
+- include: prosody.yml
+- include: jitsi-meet.yml
+- include: nginx.yml

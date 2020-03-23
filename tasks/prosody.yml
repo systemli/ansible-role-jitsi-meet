@@ -1,0 +1,63 @@
+---
+
+- name: Install prosody
+  apt:
+    pkg: prosody
+    state: present
+
+- name: Copy additional prosody config
+  template:
+    src: prosody.cfg.j2
+    dest: "/etc/prosody/prosody.cfg.lua"
+    mode: 0644
+    owner: root
+    group: root
+    validate: "luac -p %s"
+  notify: restart prosody
+
+- meta: flush_handlers
+
+- name: Generate SSL keypair for Prosody service.
+  shell: |
+    set -o pipefail
+    yes '' | prosodyctl cert generate {{ item }}
+  args:
+    creates: /var/lib/prosody/{{ item }}.crt
+    executable: /bin/bash
+  register: prosody_cert_gen
+  changed_when: prosody_cert_gen.rc and prosody_cert_gen.rc == 141
+  failed_when: prosody_cert_gen.rc != 141 and prosody_cert_gen.rc != 0
+  loop:
+    - "{{ jitsi_meet_server_name }}"
+    - "auth.{{ jitsi_meet_server_name }}"
+  notify:
+    - restart jicofo
+    - restart prosody
+
+- name: Register jicofo agent with Prosody service.
+  command: >
+    prosodyctl register focus auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_jicofo_password }}
+  args:
+    # Yes, prosody actually URL-escapes the directory name for some reason.
+    # Must hardcode the escaping in the prefix, since the replace filter only
+    # applies to the server name var, not the concatenated string.
+    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') }}/accounts/focus.dat
+  notify:
+    - restart jicofo
+    - restart prosody
+
+- name: Link auth certificate to trusted store
+  file:
+    src: "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.crt"
+    dest: "/usr/local/share/ca-certificates/{{ jitsi_meet_server_name }}.crt"
+    state: link
+  register: cert_link
+
+- name: Update ca-certificates
+  command: update-ca-certificates -f
+  when: cert_link is changed
+
+- name: Enable prosody
+  service:
+    name: prosody
+    enabled: yes

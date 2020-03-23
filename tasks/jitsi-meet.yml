@@ -1,0 +1,82 @@
+---
+
+- name: Fetch signing key for Jitsi repository
+  apt_key:
+    id: "66A9CD0595D6AFA247290D3BEF8B479E2DC1389C"
+    url: "https://download.jitsi.org/jitsi-key.gpg.key"
+    state: present
+
+- name: Add Jitsi repository
+  apt_repository:
+    repo: "deb https://download.jitsi.org/ stable/"
+    state: present
+
+- name: Set debconf options for jitsi-meet
+  debconf:
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  with_items: "{{ jitsi_meet_debconf_settings }}"
+
+- name: Install jitsi-meet
+  apt:
+    pkg: jitsi-meet
+    state: present
+
+- name: Copy sip-communicator.properties
+  template:
+    src: sip-communicator.properties.j2
+    dest: /etc/jitsi/videobridge/sip-communicator.properties
+    owner: jvb
+    group: jitsi
+
+- name: Copy jicofo config
+  template:
+    src: jicofo.j2
+    dest: /etc/jitsi/jicofo/config
+    owner: jicofo
+    group: jitsi
+  notify: restart jicofo
+
+- name: Copy Jicofo log.properties
+  template:
+    src: jicofo_logging.properties.j2
+    dest: /etc/jitsi/jicofo/logging.properties
+    owner: jicofo
+    group: jitsi
+  notify: restart jicofo
+
+- name: Copy jitsi-videobridge config
+  template:
+    src: jvb.j2
+    dest: /etc/jitsi/videobridge/config
+    owner: jvb
+    group: jitsi
+  notify: restart jitsi-videobridge
+
+- name: Copy jitsi-videobridge log.properties
+  template:
+    src: jvb_logging.properties.j2
+    dest: /etc/jitsi/videobridge/logging.properties
+    owner: jvb
+    group: jitsi
+  notify: restart jitsi-videobridge
+
+- name: Copy jitsi meet config
+  template:
+    src: meet-config.js.j2
+    dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
+
+- name: Enable jitsi-videobridge
+  service:
+    name: jitsi-videobridge
+    enabled: yes
+
+- name: Enable jicofo
+  service:
+    name: jicofo
+    enabled: yes
+
+- name: Force all notified handlers
+  meta: flush_handlers

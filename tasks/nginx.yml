@@ -1,0 +1,28 @@
+---
+
+- name: Copy Nginx config for Jitsi Meet domain.
+  template:
+    dest: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
+    src: nginx.conf.j2
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart nginx
+
+- name: Deactivate default Nginx site.
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: restart nginx
+
+- name: Activate custom Jitsi Meet Nginx site.
+  file:
+    path: "/etc/nginx/sites-enabled/{{ jitsi_meet_server_name }}.conf"
+    src: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
+    state: link
+  notify: restart nginx
+
+- name: Enable nginx
+  service:
+    name: nginx
+    enabled: yes
