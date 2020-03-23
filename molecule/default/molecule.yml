@@ -1,0 +1,15 @@
+---
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+platforms:
+  - name: buster64-jitsi-meet
+    box: debian/buster64
+provisioner:
+  name: ansible
+  become: True
+lint: |
+  set -e
+  yamllint .
+  ansible-lint

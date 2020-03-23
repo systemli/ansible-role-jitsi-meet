@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: jitsi-meet
+  role_name: jitsi_meet
   author: systemli
   description: Install and maintain jitsi-meet. Contains tests for Molecule.
   company: systemli.org
@@ -9,7 +9,7 @@ galaxy_info:
   galaxy_tags:
     - networking
     - jitsi
-    - jitsi-meet
+    - jitsimeet
   platforms:
     - name: Debian
       versions:

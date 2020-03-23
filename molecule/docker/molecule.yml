@@ -1,8 +1,4 @@
 ---
-scenario:
-  name: docker
-dependency:
-  name: galaxy
 driver:
   name: docker
 platforms:
@@ -17,7 +13,7 @@ provisioner:
   name: ansible
   playbooks:
     converge: ../default/converge.yml
-verifier:
-  name: testinfra
-  lint:
-    name: flake8
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
