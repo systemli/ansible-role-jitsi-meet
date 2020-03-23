@@ -79,13 +79,12 @@ Tests
 
 For developing and testing the role we use Travis CI, Molecule and Vagrant. On the local environment you can easily test the role with
 
-Run local tests with: 
-
 ```
-molecule test 
+pip install molecule-vagrant ansible-lint yamllint
+molecule test
 ```
 
-This requires Molecule, Vagrant and `python-vagrant` to be installed.
+This requires [Vagrant](https://www.vagrantup.com/downloads.html) to be installed.
 
 License
 -------
