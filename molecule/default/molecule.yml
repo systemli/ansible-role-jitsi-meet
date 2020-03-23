@@ -11,7 +11,5 @@ platforms:
 provisioner:
   name: ansible
   become: True
-destroy:
-  enabled: False
 lint: |
   yamllint .

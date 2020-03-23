@@ -1,6 +1,6 @@
 # Ansible role to install and configure Jitsi Meet
 
-[![Build Status](https://travis-ci.org/systemli/ansible-role-jitsi-meet.svg?branch=master)](https://travis-ci.org/systemli/ansible-role-jitsi-meet) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-jitsi-meet-blue.svg)](https://galaxy.ansible.com/systemli/jitsi-meet/)
+[![Build Status](https://travis-ci.com/systemli/ansible-role-jitsi-meet.svg?branch=master)](https://travis-ci.com/systemli/ansible-role-jitsi-meet) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-jitsi-meet-blue.svg)](https://galaxy.ansible.com/systemli/jitsi-meet/)
 
 This role installs and configure [Jitsi Meet](https://jitsi.org/jitsi-meet/) with nginx Webserver and prosody as XMPP Server.
 
@@ -55,7 +55,7 @@ Download
 
 Download latest release with `ansible-galaxy`
 
-	ansible-galaxy install systemli.jitsi-meet
+	ansible-galaxy install systemli.jitsi_meet
 
 Example Playbook
 ----------------
@@ -64,7 +64,7 @@ Example Playbook
 - hosts: jitsimeetservers
   roles:
      - { role: systemli.letsencrypt }
-     - { role: systemli.jitsi-meet }
+     - { role: systemli.jitsi_meet }
   vars:
     jitsi_meet_server_name: "meet.example.com"
     letsencrypt_cert:
