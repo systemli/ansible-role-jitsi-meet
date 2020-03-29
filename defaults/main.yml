@@ -2,6 +2,7 @@
 jitsi_meet_server_name: "meet.example.com"
 jitsi_meet_videobridge_loglevel: "ERROR"
 jitsi_meet_videobridge_secret: "CHANGEME"
+jitsi_meet_videobridge_service: "jitsi-videobridge2"
 jitsi_meet_videobridge_port: 5347
 jitsi_meet_jicofo_loglevel: "ERROR"
 jitsi_meet_jicofo_user: focus

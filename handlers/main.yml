@@ -12,15 +12,10 @@
 
 - name: restart jitsi-videobridge
   service:
-    name: jitsi-videobridge
+    name: "{{ jitsi_meet_videobridge_service }}"
     state: restarted
 
 - name: restart jicofo
   service:
     name: jicofo
-    state: restarted
-
-- name: restart jitsi-videobridge
-  service:
-    name: jitsi-videobridge
     state: restarted
