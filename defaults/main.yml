@@ -20,7 +20,7 @@ jitsi_meet_debconf_settings:
     vtype: string
   - name: jitsi-meet
     question: jitsi-meet/jvb-serve
-    value: "true"
+    value: true|bool
     vtype: boolean
   - name: jitsi-meet-prosody
     question: jitsi-meet-prosody/jvb-hostname

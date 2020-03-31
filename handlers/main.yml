@@ -10,17 +10,12 @@
     name: nginx
     state: restarted
 
-- name: restart jitsi-videobridge
+- name: restart jitsi-videobridge2
   service:
-    name: jitsi-videobridge
+    name: jitsi-videobridge2
     state: restarted
 
 - name: restart jicofo
   service:
     name: jicofo
-    state: restarted
-
-- name: restart jitsi-videobridge
-  service:
-    name: jitsi-videobridge
     state: restarted
