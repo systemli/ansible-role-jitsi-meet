@@ -72,22 +72,24 @@
 
 - name: Check if jitsi meet override CSS file exists
   stat:
-    path: "files/jitsi-meet-override.css"
+    path: "{{ item }}"
+  delegate_to: 127.0.0.1
+  loop: "{{ q('first_found', { 'files': 'jitsi-meet-override.css', 'paths': [playbook_dir + '/files/']}) }}"
   register: jitsi_meet_override_css_file
 
 - name: Inject jitsi meet override CSS
-  when: jitsi_meet_override_css_file.stat.exists
+  when: jitsi_meet_override_css_file.results[0].stat.exists
   block:
     - name: Copy jitsi meet override CSS file
       copy:
-        src: "files/jitsi-meet-override.css"
+        src: "{{ jitsi_meet_override_css_file.results[0].item }}"
         dest: "/usr/share/jitsi-meet/css/override.css"
         mode: "0644"
     - name: Inject jitsi meet override CSS import statement into HTML file
       replace:
         path: /usr/share/jitsi-meet/index.html
         regexp: '^(\s+)?(\<\/head\>$)'
-        replace: '\1<link rel="stylesheet" href="css/override.css">\2'
+        replace: '\1  <link rel="stylesheet" href="css/override.css">\n  \2'
 
 - name: Enable jitsi-videobridge2
   service:
