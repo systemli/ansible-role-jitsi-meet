@@ -82,6 +82,25 @@
     dest: "/usr/share/jitsi-meet/css/override.css"
     mode: "0644"
 
+- name: Check if jitsi meet index.html patch file exists
+  stat:
+    path: "files/jitsi-meet-index.patch"
+  register: jitsi_meet_index_patch_file
+
+- name: Patch jitsi-meet index.html
+  when: jitsi_meet_index_patch_file.stat.exists
+  block:
+    - name: Install patch
+      apt:
+        pkg: patch
+        install_recommends: no
+        state: present
+    - name: Apply jitsi meet index.html patch
+      patch:
+        src: "files/jitsi-meet-index.patch"
+        dest: "/usr/share/jitsi-meet/index.html"
+        basedir: "/usr/share/jitsi-meet"
+
 - name: Enable jitsi-videobridge2
   service:
     name: jitsi-videobridge2
