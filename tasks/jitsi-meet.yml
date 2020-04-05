@@ -70,6 +70,18 @@
     src: meet-config.js.j2
     dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
 
+- name: Check if jitsi meet override CSS file exists
+  stat:
+    path: "files/jitsi-meet-override.css"
+  register: jitsi_meet_override_css_file
+
+- name: Copy jitsi meet override CSS file
+  when: jitsi_meet_override_css_file.stat.exists
+  copy:
+    src: "files/jitsi-meet-override.css"
+    dest: "/usr/share/jitsi-meet/css/override.css"
+    mode: "0644"
+
 - name: Enable jitsi-videobridge2
   service:
     name: jitsi-videobridge2
