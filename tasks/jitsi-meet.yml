@@ -75,31 +75,19 @@
     path: "files/jitsi-meet-override.css"
   register: jitsi_meet_override_css_file
 
-- name: Copy jitsi meet override CSS file
+- name: Inject jitsi meet override CSS
   when: jitsi_meet_override_css_file.stat.exists
-  copy:
-    src: "files/jitsi-meet-override.css"
-    dest: "/usr/share/jitsi-meet/css/override.css"
-    mode: "0644"
-
-- name: Check if jitsi meet index.html patch file exists
-  stat:
-    path: "files/jitsi-meet-index.patch"
-  register: jitsi_meet_index_patch_file
-
-- name: Patch jitsi-meet index.html
-  when: jitsi_meet_index_patch_file.stat.exists
   block:
-    - name: Install patch
-      apt:
-        pkg: patch
-        install_recommends: no
-        state: present
-    - name: Apply jitsi meet index.html patch
-      patch:
-        src: "files/jitsi-meet-index.patch"
-        dest: "/usr/share/jitsi-meet/index.html"
-        basedir: "/usr/share/jitsi-meet"
+    - name: Copy jitsi meet override CSS file
+      copy:
+        src: "files/jitsi-meet-override.css"
+        dest: "/usr/share/jitsi-meet/css/override.css"
+        mode: "0644"
+    - name: Inject jitsi meet override CSS import statement into HTML file
+      replace:
+        path: /usr/share/jitsi-meet/index.html
+        regexp: '^(\s+)?(\<\/head\>$)'
+        replace: '\1<link rel="stylesheet" href="css/override.css">\2'
 
 - name: Enable jitsi-videobridge2
   service:
