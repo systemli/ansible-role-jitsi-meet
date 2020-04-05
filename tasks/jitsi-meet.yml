@@ -74,11 +74,13 @@
   stat:
     path: "{{ item }}"
   delegate_to: 127.0.0.1
-  loop: "{{ q('first_found', { 'files': 'jitsi-meet-override.css', 'paths': [playbook_dir + '/files/']}) }}"
+  loop: "{{ q('first_found', { 'files': 'jitsi-meet-override.css', 'paths': [playbook_dir + '/files/'], 'skip': 'yes' }) }}"
   register: jitsi_meet_override_css_file
 
 - name: Inject jitsi meet override CSS
-  when: jitsi_meet_override_css_file.results[0].stat.exists
+  when:
+    - jitsi_meet_override_css_file.results|length > 0
+    - jitsi_meet_override_css_file.results[0].stat.exists
   block:
     - name: Copy jitsi meet override CSS file
       copy:
