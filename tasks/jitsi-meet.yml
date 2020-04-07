@@ -88,10 +88,11 @@
         dest: "/usr/share/jitsi-meet/css/override.css"
         mode: "0644"
     - name: Inject jitsi meet override CSS import statement into HTML file
-      replace:
+      lineinfile:
         path: /usr/share/jitsi-meet/index.html
-        regexp: '^(\s+)?(\<\/head\>$)'
-        replace: '\1  <link rel="stylesheet" href="css/override.css">\n  \2'
+        regexp: 'override.css'
+        line: '    <link rel="stylesheet" href="css/override.css">'
+        insertbefore: '</head>'
 
 - name: Enable jitsi-videobridge2
   service:
