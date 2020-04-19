@@ -47,6 +47,7 @@ jitsi_meet_config_stun_servers:
   - stun.l.google.com:19302
   - stun1.l.google.com:19302
   - stun2.l.google.com:19302
+jitsi_meet_config_default_language: en
 
 ```
 
