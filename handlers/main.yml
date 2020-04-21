@@ -19,3 +19,6 @@
   service:
     name: jicofo
     state: restarted
+
+- name: update ca-certificates
+  command: update-ca-certificates -f

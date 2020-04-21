@@ -1,0 +1,89 @@
+{% set jitsi_meet_stun_server_host = jitsi_meet_config_stun_servers[0].split(':')[0] %}
+{% set jitsi_meet_stun_server_port = jitsi_meet_config_stun_servers[0].split(':')[1] %}
+plugin_paths = { "/usr/share/jitsi-meet/prosody-plugins/" }
+
+-- domain mapper options, must at least have domain base set to use the mapper
+muc_mapper_domain_base = "{{ jitsi_meet_server_name }}";
+
+turncredentials_secret = "{{ jitsi_meet_turn_secret }}";
+
+turncredentials = {
+  { type = "stun", host = "{{ jitsi_meet_stun_server_host }}", port = "{{ jitsi_meet_stun_server_port }}" },
+  { type = "turn", host = "{{ jitsi_meet_stun_server_host }}", port = "{{ jitsi_meet_stun_server_port }}", transport = "udp" },
+{% if jitsi_meet_nginx_multiplexer %}
+  { type = "turns", host = "{{ jitsi_meet_stun_server_host }}", port = "443", transport = "tcp" }
+{% else %}
+  { type = "turns", host = "{{ jitsi_meet_stun_server_host }}", port = "4445", transport = "tcp" }
+{% endif %}
+};
+
+cross_domain_bosh = false;
+consider_bosh_secure = true;
+
+VirtualHost "{{ jitsi_meet_server_name }}"
+        -- enabled = false -- Remove this line to enable this host
+        authentication = "anonymous"
+        -- Properties below are modified by jitsi-meet-tokens package config
+        -- and authentication above is switched to "token"
+        --app_id="example_app_id"
+        --app_secret="example_app_secret"
+        -- Assign this host a certificate for TLS, otherwise it would use the one
+        -- set in the global section (if any).
+        -- Note that old-style SSL on port 5223 only supports one certificate, and will always
+        -- use the global one.
+        ssl = {
+                key = "/etc/prosody/certs/{{ jitsi_meet_server_name }}.key";
+                certificate = "/etc/prosody/certs/{{ jitsi_meet_server_name }}.crt";
+        }
+        speakerstats_component = "speakerstats.{{ jitsi_meet_server_name }}"
+        conference_duration_component = "conferenceduration.{{ jitsi_meet_server_name }}"
+        -- we need bosh
+        modules_enabled = {
+            "bosh";
+            "pubsub";
+            "ping"; -- Enable mod_ping
+            "speakerstats";
+            "turncredentials";
+            "conference_duration";
+        }
+        c2s_require_encryption = false
+
+Component "conference.{{ jitsi_meet_server_name }}" "muc"
+    storage = "memory"
+    modules_enabled = {
+        "muc_meeting_id";
+        "muc_domain_mapper";
+        -- "token_verification";
+    }
+    admins = { "focus@auth.{{ jitsi_meet_server_name }}" }
+    muc_room_locking = false
+    muc_room_default_public_jids = true
+
+-- internal muc component
+Component "internal.auth.{{ jitsi_meet_server_name }}" "muc"
+    storage = "memory"
+    modules_enabled = {
+      "ping";
+    }
+    admins = { "focus@auth.{{ jitsi_meet_server_name }}", "jvb@auth.{{ jitsi_meet_server_name }}" }
+    muc_room_locking = false
+    muc_room_default_public_jids = true
+
+VirtualHost "auth.{{ jitsi_meet_server_name }}"
+    ssl = {
+        key = "/etc/prosody/certs/auth.{{ jitsi_meet_server_name }}.key";
+        certificate = "/etc/prosody/certs/auth.{{ jitsi_meet_server_name }}.crt";
+    }
+    authentication = "internal_plain"
+
+Component "focus.{{ jitsi_meet_server_name }}"
+    component_secret = "{{ jitsi_meet_jicofo_secret }}"
+
+Component "speakerstats.{{ jitsi_meet_server_name }}" "speakerstats_component"
+    muc_component = "conference.{{ jitsi_meet_server_name }}"
+
+Component "conferenceduration.{{ jitsi_meet_server_name }}" "conference_duration_component"
+    muc_component = "conference.{{ jitsi_meet_server_name }}"
+
+Component "jitsi-videobridge.{{ jitsi_meet_server_name }}"
+    component_secret = "{{ jitsi_meet_videobridge_secret }}"
