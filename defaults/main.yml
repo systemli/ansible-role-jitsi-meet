@@ -2,12 +2,15 @@
 jitsi_meet_server_name: "meet.example.com"
 jitsi_meet_videobridge_loglevel: "ERROR"
 jitsi_meet_videobridge_secret: "CHANGEME"
+jitsi_meet_videobridge_password: "CHANGEME2"
 jitsi_meet_videobridge_port: 5347
 jitsi_meet_jicofo_loglevel: "ERROR"
 jitsi_meet_jicofo_user: focus
-jitsi_meet_jicofo_secret: "CHANGEME2"
+jitsi_meet_jicofo_secret: "CHANGEME3"
 jitsi_meet_jicofo_port: 5347
-jitsi_meet_jicofo_password: "CHANGEME3"
+jitsi_meet_jicofo_password: "CHANGEME4"
+jitsi_meet_turn_secret: "CHANGEME5"
+
 
 # Set to yes if local turnserver runs on 4445/4446 to configure nginx multiplexer
 jitsi_meet_nginx_multiplexer: False
@@ -15,23 +18,28 @@ jitsi_meet_nginx_multiplexer: False
 jitsi_meet_ssl_cert_path: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 jitsi_meet_ssl_key_path: "/etc/ssl/private/ssl-cert-snakeoil.key"
 
+#jitsi_meet_cert_choice: "I want to use my own certificate"
 jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
 jitsi_meet_debconf_settings:
-  - name: jitsi-meet
+  - name: jitsi-videobridge2
+    question: jitsi-videobridge/jvb-hostname
+    value: "{{ jitsi_meet_server_name }}"
+    vtype: string
+  - name: jitsi-meet-web-config
     question: jitsi-meet/cert-choice
     value: "{{ jitsi_meet_cert_choice }}"
     vtype: string
-  - name: jitsi-meet
-    question: jitsi-meet/jvb-serve
-    value: true|bool
-    vtype: boolean
-  - name: jitsi-meet-prosody
-    question: jitsi-meet-prosody/jvb-hostname
-    value: "{{ jitsi_meet_server_name }}"
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-path-crt
+    value: "{{ jitsi_meet_ssl_cert_path }}"
     vtype: string
-  - name: jitsi-videobridge
-    question: jitsi-videobridge/jvb-hostname
-    value: "{{ jitsi_meet_server_name }}"
+  - name: jitsi-meet-web-config
+    question: jitsi-meet/cert-path-key
+    value: "{{ jitsi_meet_ssl_key_path }}"
+    vtype: string
+  - name: jitsi-meet-prosody
+    question: jitsi-meet-prosody/turn-secret
+    value: "{{ jitsi_meet_turn_secret }}"
     vtype: string
 jitsi_meet_config_resolution: 720
 jitsi_meet_config_disable_third_party_requests: "true"
