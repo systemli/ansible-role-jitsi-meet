@@ -42,12 +42,14 @@ jitsi_meet_debconf_settings:
     vtype: string
 jitsi_meet_config_resolution: 720
 jitsi_meet_config_disable_third_party_requests: "true"
+jitsi_meet_config_p2p_enabled: "true"
 # For privacy reasons we recommend to use your own STUN servers 
 jitsi_meet_config_stun_servers:
   - stun.l.google.com:19302
   - stun1.l.google.com:19302
   - stun2.l.google.com:19302
 jitsi_meet_config_default_language: en
+jitsi_meet_config_last_n: "-1"
 
 ```
 
