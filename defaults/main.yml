@@ -1,13 +1,13 @@
 ---
 jitsi_meet_server_name: "meet.example.com"
 jitsi_meet_videobridge_loglevel: "ERROR"
-jitsi_meet_videobridge_secret: "{{ lookup('password', 'credentials/' + ansible_hostname + '/jitsi_meet_videobridge_secret length=16') }}"
+jitsi_meet_videobridge_secret: "{{ lookup('password', 'credentials/' + ansible_hostname + '/jitsi_meet_videobridge_secret chars=hexdigits length=30') }}"
 jitsi_meet_videobridge_port: 5347
 jitsi_meet_jicofo_loglevel: "ERROR"
 jitsi_meet_jicofo_user: focus
-jitsi_meet_jicofo_secret: "{{ lookup('password', 'credentials/' + ansible_hostname + '/jitsi_meet_jicofo_secret length=16') }}"
+jitsi_meet_jicofo_secret: "{{ lookup('password', 'credentials/' + ansible_hostname + '/jitsi_meet_jicofo_secret chars=hexdigits length=30') }}"
 jitsi_meet_jicofo_port: 5347
-jitsi_meet_jicofo_password: "{{ lookup('password', 'credentials/' + ansible_hostname + '/jitsi_meet_jicofo_password length=16') }}"
+jitsi_meet_jicofo_password: "{{ lookup('password', 'credentials/' + ansible_hostname + '/jitsi_meet_jicofo_password chars=hexdigits length=30') }}"
 
 jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
 jitsi_meet_ssl_cert_path: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
