@@ -3,10 +3,20 @@
 - name: Copy Nginx config for Jitsi Meet domain.
   template:
     dest: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
-    src: nginx.conf.j2
+    src: nginx/sites-available/vhost.conf.j2
     owner: root
     group: root
     mode: "0644"
+  notify: restart nginx
+
+- name: Copy Nginx multiplexer config if local turnserver is used.
+  template:
+    dest: "/etc/nginx/modules-enabled/60-jitsi-meet.conf"
+    src: nginx/modules-enabled/60-jitsi-meet.conf.j2
+    owner: root
+    group: root
+    mode: 0644
+  when: jitsi_meet_nginx_multiplexer
   notify: restart nginx
 
 - name: Deactivate default Nginx site.

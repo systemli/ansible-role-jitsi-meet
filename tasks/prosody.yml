@@ -5,19 +5,36 @@
     pkg: prosody
     state: present
 
+- name: Copy prosody config
+  template:
+    src: prosody/prosody.cfg.lua.j2
+    dest: "/etc/prosody/prosody.cfg.lua"
+    mode: 0640
+    owner: root
+    group: prosody
+    validate: "luac -p %s"
+  notify: restart prosody
+
 - name: Copy additional prosody config
   template:
-    src: prosody.cfg.j2
-    dest: "/etc/prosody/prosody.cfg.lua"
+    src: prosody/conf.avail/virtualhost.cfg.lua.j2
+    dest: "/etc/prosody/conf.avail/{{ jitsi_meet_server_name }}.cfg.lua"
     mode: 0644
     owner: root
     group: root
     validate: "luac -p %s"
   notify: restart prosody
 
-- meta: flush_handlers
+- name: Link additional prosody config
+  file:
+    src: "/etc/prosody/conf.avail/{{ jitsi_meet_server_name }}.cfg.lua"
+    dest: "/etc/prosody/conf.d/{{ jitsi_meet_server_name }}.cfg.lua"
+    owner: root
+    group: root
+    state: link
+  notify: restart prosody
 
-- name: Generate SSL keypair for Prosody service.
+- name: Generate SSL keypair for Prosody service
   shell: |
     set -o pipefail
     yes '' | prosodyctl cert generate {{ item }}
@@ -31,8 +48,40 @@
     - "{{ jitsi_meet_server_name }}"
     - "auth.{{ jitsi_meet_server_name }}"
   notify:
-    - restart jicofo
     - restart prosody
+    - update ca-certificates
+
+- name: Link main SSL certificate to /etc/prosody/certs/
+  file:
+    src: "/var/lib/prosody/{{ jitsi_meet_server_name }}.{{ item }}"
+    dest: "/etc/prosody/certs/{{ jitsi_meet_server_name }}.{{ item }}"
+    state: link
+  loop:
+    - crt
+    - key
+  notify:
+    - restart prosody
+
+- name: Link auth SSL certificate to /etc/prosody/certs/
+  file:
+    src: "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.{{ item }}"
+    dest: "/etc/prosody/certs/auth.{{ jitsi_meet_server_name }}.{{ item }}"
+    state: link
+  loop:
+    - crt
+    - key
+  notify:
+    - restart prosody
+
+- name: Link auth certificate to trusted store
+  file:
+    src: "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.crt"
+    dest: "/usr/local/share/ca-certificates/auth.{{ jitsi_meet_server_name }}.crt"
+    state: link
+  notify:
+    - update ca-certificates
+
+- meta: flush_handlers
 
 - name: Register jicofo agent with Prosody service.
   command: >
@@ -42,20 +91,15 @@
     # Must hardcode the escaping in the prefix, since the replace filter only
     # applies to the server name var, not the concatenated string.
     creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') }}/accounts/focus.dat
-  notify:
-    - restart jicofo
-    - restart prosody
 
-- name: Link auth certificate to trusted store
-  file:
-    src: "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.crt"
-    dest: "/usr/local/share/ca-certificates/{{ jitsi_meet_server_name }}.crt"
-    state: link
-  register: cert_link
-
-- name: Update ca-certificates
-  command: update-ca-certificates -f
-  when: cert_link is changed
+- name: Register jvb agent with Prosody service.
+  command: >
+    prosodyctl register jvb auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_videobridge_password }}
+  args:
+    # Yes, prosody actually URL-escapes the directory name for some reason.
+    # Must hardcode the escaping in the prefix, since the replace filter only
+    # applies to the server name var, not the concatenated string.
+    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') }}/accounts/jvb.dat
 
 - name: Enable prosody
   service:

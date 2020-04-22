@@ -1,4 +1,4 @@
--- Prosody XMPP Server Configuration
+-- Prosody Example Configuration File
 --
 -- Information on configuring Prosody can be found on our
 -- website at https://prosody.im/doc/configure
@@ -9,7 +9,8 @@
 -- If there are any errors, it will let you know what and where
 -- they are, otherwise it will keep quiet.
 --
--- Good luck, and happy Jabbering!
+-- The only thing left to do is rename this file to remove the .dist ending, and fill in the
+-- blanks. Good luck, and happy Jabbering!
 
 
 ---------- Server-wide settings ----------
@@ -29,7 +30,9 @@ admins = { }
 -- Prosody will always look in its source directory for modules, but
 -- this option allows you to specify additional locations where Prosody
 -- will look for modules first. For community modules, see https://modules.prosody.im/
---plugin_paths = {}
+-- For a local administrator it's common to place local modifications
+-- under /usr/local/ hierarchy:
+plugin_paths = { "/usr/local/lib/prosody/modules" }
 
 -- This is the list of modules Prosody will load on startup.
 -- It looks for mod_modulename.lua in the plugins folder, so make sure that exists too.
@@ -70,6 +73,7 @@ modules_enabled = {
 		--"http_files"; -- Serve static files from a directory over HTTP
 
 	-- Other specific functionality
+		"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 		--"limits"; -- Enable bandwidth limiting for XMPP connections
 		--"groups"; -- Shared roster support
 		--"server_contact_info"; -- Publish contact information for this service
@@ -87,12 +91,22 @@ modules_disabled = {
 	-- "offline"; -- Store offline messages
 	-- "c2s"; -- Handle client connections
 	-- "s2s"; -- Handle server-to-server connections
-	-- "posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 }
 
 -- Disable account creation by default, for security
 -- For more information see https://prosody.im/doc/creating_accounts
 allow_registration = false
+
+-- Debian:
+--   Do not send the server to background, either systemd or start-stop-daemon take care of that.
+--
+daemonize = false;
+
+-- Debian:
+--   Please, don't change this option since /run/prosody/
+--   is one of the few directories Prosody is allowed to write to
+--
+pidfile = "/run/prosody/prosody.pid";
 
 -- Force clients to use encrypted connections? This option will
 -- prevent clients from authenticating unless they are using encryption.
@@ -120,12 +134,6 @@ s2s_secure_auth = false
 
 --s2s_secure_domains = { "jabber.org" }
 
--- Required for init scripts and prosodyctl
-pidfile = "/var/run/prosody/prosody.pid"
-
--- Daemonization is taken care of by the init system now
-daemonize = false
-
 -- Select the authentication backend to use. The 'internal' providers
 -- use Prosody's configured data storage to store the authentication data.
 
@@ -136,7 +144,8 @@ authentication = "internal_hashed"
 -- through modules. An "sql" backend is included by default, but requires
 -- additional dependencies. See https://prosody.im/doc/storage for more info.
 
---storage = "sql" -- Default is "internal"
+--storage = "sql" -- Default is "internal" (Debian: "sql" requires one of the
+-- lua-dbi-sqlite3, lua-dbi-mysql or lua-dbi-postgresql packages to work)
 
 -- For the "sql" backend, you can uncomment *one* of the below to configure:
 --sql = { driver = "SQLite3", database = "prosody.sqlite" } -- Default. 'database' is the filename.
@@ -157,11 +166,16 @@ archive_expires_after = "1w" -- Remove archived messages after 1 week
 
 -- Logging configuration
 -- For advanced logging see https://prosody.im/doc/logging
+--
+-- Debian:
+--  Logs info and higher to /var/log
+--  Logs errors to syslog also
 log = {
-	info = "/var/log/prosody/prosody.log"; -- Change 'info' to 'debug' for verbose logging
+	-- Log files (change 'info' to 'debug' for debug logs):
+	info = "/var/log/prosody/prosody.log";
 	error = "/var/log/prosody/prosody.err";
-	-- "*syslog"; -- Uncomment this for logging to syslog
-	-- "*console"; -- Log to the console, useful for debugging with daemonize=false
+	-- Syslog:
+	{ levels = { "error" }; to = "syslog";  };
 }
 
 -- Uncomment to enable statistics
@@ -184,8 +198,16 @@ certificates = "certs"
 ----------- Virtual hosts -----------
 -- You need to add a VirtualHost entry for each domain you wish Prosody to serve.
 -- Settings under each VirtualHost entry apply *only* to that host.
+-- It's customary to maintain VirtualHost entries in separate config files
+-- under /etc/prosody/conf.d/ directory. Examples of such config files can
+-- be found in /etc/prosody/conf.avail/ directory.
 
---VirtualHost "localhost"
+------ Additional config files ------
+-- For organizational purposes you may prefer to add VirtualHost and
+-- Component definitions in their own config files. This line includes
+-- all config files in /etc/prosody/conf.d/
+
+VirtualHost "localhost"
 
 --VirtualHost "example.com"
 --	certificate = "/path/to/example.crt"
@@ -208,30 +230,4 @@ certificates = "certs"
 --
 --Component "gateway.example.com"
 --	component_secret = "password"
-
-VirtualHost "{{ jitsi_meet_server_name }}"
-	authentication = "anonymous"
-	ssl = {
-		key = "/var/lib/prosody/{{ jitsi_meet_server_name }}.key";
-		certificate = "/var/lib/prosody/{{ jitsi_meet_server_name }}.crt";
-	}
-	modules_enabled = {
-		"bosh";
-		"pubsub";
-	}
-	c2s_require_encryption = false
-
-VirtualHost "auth.{{ jitsi_meet_server_name }}"
-	ssl = {
-		key = "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.key";
-		certificate = "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.crt";
-	}
-	authentication = "internal_plain"
-
-admins = { "focus@auth.{{ jitsi_meet_server_name }}" }
-
-Component "conference.{{ jitsi_meet_server_name }}" "muc"
-Component "jitsi-videobridge.{{ jitsi_meet_server_name }}"
-	component_secret = "{{ jitsi_meet_videobridge_secret }}"
-Component "focus.{{ jitsi_meet_server_name }}"
-	component_secret = "{{ jitsi_meet_jicofo_secret }}"
+Include "conf.d/*.cfg.lua"
