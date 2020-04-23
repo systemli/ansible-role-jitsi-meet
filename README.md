@@ -7,7 +7,9 @@ This role installs and configure [Jitsi Meet](https://jitsi.org/jitsi-meet/) wit
 Role Variables
 --------------
 
-See `defaults/main.yml`.
+See [`defaults/main.yml`](defaults/main.yml).
+
+**Important: Please change the defaults secrets to secure your installation!**
 
 Download
 --------
