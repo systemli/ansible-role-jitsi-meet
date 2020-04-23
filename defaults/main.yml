@@ -10,7 +10,9 @@ jitsi_meet_jicofo_user: focus
 jitsi_meet_jicofo_secret: "CHANGEME3"
 jitsi_meet_jicofo_port: 5347
 jitsi_meet_jicofo_password: "CHANGEME4"
+
 jitsi_meet_turn_secret: "CHANGEME5"
+jitsi_meet_turn_tls_listening_port: "5349"
 
 # Set to yes if local turnserver runs on 4445/4446 to configure nginx multiplexer
 jitsi_meet_nginx_multiplexer: False
