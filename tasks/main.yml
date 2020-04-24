@@ -2,4 +2,5 @@
 
 - include: prosody.yml
 - include: jitsi-meet.yml
+- include: ui_customization.yml
 - include: nginx.yml
