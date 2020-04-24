@@ -94,6 +94,16 @@
         line: '    <link rel="stylesheet" href="css/override.css">'
         insertbefore: '</head>'
 
+- name: Replace favicon for a customized one
+  copy:
+    src: "{{ jitsi_meet_favicon_file }}"
+    dest: /usr/share/jitsi-meet/images/favicon.ico
+    owner: root
+    group: root
+    mode: "0644"
+  when: jitsi_meet_favicon_file is defined
+        and jitsi_meet_favicon_file
+
 - name: Enable jitsi-videobridge2
   service:
     name: jitsi-videobridge2
