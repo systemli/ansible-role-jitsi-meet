@@ -54,3 +54,8 @@ jitsi_meet_config_stun_servers:
   - stun:meet-jit-si-turnrelay.jitsi.net:443
 jitsi_meet_config_default_language: en
 jitsi_meet_config_last_n: "-1"
+
+jitsi_meet_title: Jitsi Meet
+jitsi_meet_description: Join a WebRTC video conference powered by the Jitsi Videobridge
+jitsi_meet_provider_name: Jitsi
+jitsi_meet_provider_link: https://jitsi.org
