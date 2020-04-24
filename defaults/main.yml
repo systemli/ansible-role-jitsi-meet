@@ -17,10 +17,14 @@ jitsi_meet_turn_tls_listening_port: 4446
 # Set to yes if local turnserver runs on 4445/4446 to configure nginx multiplexer
 jitsi_meet_nginx_multiplexer: False
 
+# Disable nginx access log per default
+jitsi_meet_nginx_access_log: "off"
+jitsi_meet_nginx_error_log: /var/log/nginx/error.log
+
 jitsi_meet_ssl_cert_path: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 jitsi_meet_ssl_key_path: "/etc/ssl/private/ssl-cert-snakeoil.key"
 
-#jitsi_meet_cert_choice: "I want to use my own certificate"
+# jitsi_meet_cert_choice: "I want to use my own certificate"
 jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
 jitsi_meet_debconf_settings:
   - name: jitsi-videobridge2
