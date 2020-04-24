@@ -1,5 +1,14 @@
 ---
 
+- name: Adjust global nginx config
+  template:
+    src: nginx/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart nginx
+
 - name: Copy Nginx config for Jitsi Meet domain.
   template:
     dest: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
