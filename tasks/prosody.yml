@@ -90,7 +90,7 @@
     # Yes, prosody actually URL-escapes the directory name for some reason.
     # Must hardcode the escaping in the prefix, since the replace filter only
     # applies to the server name var, not the concatenated string.
-    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') }}/accounts/focus.dat
+    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') | replace('-', '%2d') }}/accounts/focus.dat
 
 - name: Register jvb agent with Prosody service.
   command: >
@@ -99,7 +99,7 @@
     # Yes, prosody actually URL-escapes the directory name for some reason.
     # Must hardcode the escaping in the prefix, since the replace filter only
     # applies to the server name var, not the concatenated string.
-    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') }}/accounts/jvb.dat
+    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') | replace('-', '%2d') }}/accounts/jvb.dat
 
 - name: Enable prosody
   service:
