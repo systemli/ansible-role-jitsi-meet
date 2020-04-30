@@ -4,6 +4,10 @@
 
 This role installs and configure [Jitsi Meet](https://jitsi.org/jitsi-meet/) with nginx Webserver and prosody as XMPP Server.
 
+It is maintained with Debian Buster in mind, but should also work with its
+derivatives like Ubuntu 20.04.
+
+
 Role Variables
 --------------
 
