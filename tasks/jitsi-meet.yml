@@ -68,7 +68,7 @@
 - name: Copy jitsi meet config
   template:
     src: meet-config.js.j2
-    dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
+    dest: "/etc/jitsi/meet/config.js"
 
 - name: Enable jitsi-videobridge2
   service:
