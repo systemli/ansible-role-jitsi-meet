@@ -1,0 +1,16 @@
+/var/log/nginx/*.log {
+	daily
+	missingok
+	rotate {{ jitsi_meet_nginx_logrotate_duration }}
+	compress
+	delaycompress
+	notifempty
+	copytruncate
+	create 0640 www-data adm
+	sharedscripts
+	prerotate
+		if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+			run-parts /etc/logrotate.d/httpd-prerotate; \
+		fi \
+	endscript
+}

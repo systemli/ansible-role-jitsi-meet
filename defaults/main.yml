@@ -62,3 +62,5 @@ jitsi_meet_provider_link: https://jitsi.org
 
 jitsi_meet_mobile_download_link_android: https://play.google.com/store/apps/details?id=org.jitsi.meet
 jitsi_meet_mobile_download_link_ios: https://itunes.apple.com/us/app/jitsi-meet/id1165103905
+
+jitsi_meet_nginx_logrotate_duration: 7
