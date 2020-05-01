@@ -84,22 +84,10 @@
 - meta: flush_handlers
 
 - name: Register jicofo agent with Prosody service.
-  command: >
-    prosodyctl register focus auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_jicofo_password }}
-  args:
-    # Yes, prosody actually URL-escapes the directory name for some reason.
-    # Must hardcode the escaping in the prefix, since the replace filter only
-    # applies to the server name var, not the concatenated string.
-    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') | replace('-', '%2d') }}/accounts/focus.dat
+  command: prosodyctl register focus auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_jicofo_password }}  # noqa: 301
 
 - name: Register jvb agent with Prosody service.
-  command: >
-    prosodyctl register jvb auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_videobridge_password }}
-  args:
-    # Yes, prosody actually URL-escapes the directory name for some reason.
-    # Must hardcode the escaping in the prefix, since the replace filter only
-    # applies to the server name var, not the concatenated string.
-    creates: /var/lib/prosody/{{ 'auth%2e'+jitsi_meet_server_name | replace('.', '%2e') | replace('-', '%2d') }}/accounts/jvb.dat
+  command: prosodyctl register jvb auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_videobridge_password }}  # noqa: 301
 
 - name: Enable prosody
   service:
