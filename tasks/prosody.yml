@@ -2,7 +2,7 @@
 
 - name: Install prosody
   apt:
-    pkg: prosody
+    name: jitsi-meet-prosody
     state: present
 
 - name: Copy prosody config

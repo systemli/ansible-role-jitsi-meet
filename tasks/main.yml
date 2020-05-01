@@ -1,5 +1,24 @@
 ---
 
+- name: Fetch signing key for Jitsi repository
+  apt_key:
+    id: "66A9CD0595D6AFA247290D3BEF8B479E2DC1389C"
+    url: "https://download.jitsi.org/jitsi-key.gpg.key"
+    state: present
+
+- name: Add Jitsi repository
+  apt_repository:
+    repo: "deb https://download.jitsi.org/ stable/"
+    state: present
+
+- name: Set debconf options for jitsi-meet
+  debconf:
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  loop: "{{ jitsi_meet_debconf_settings }}"
+
 - include: prosody.yml
 - include: jitsi-meet.yml
 - include: ui_customization.yml
