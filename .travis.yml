@@ -6,12 +6,27 @@ env:
   matrix:
     - MOLECULE_DISTRO: debian10
 
+# Install python-pip
+addons:
+  apt:
+    packages:
+      - python-pip
+
 install:
+  # Install ansible
+  - pip install ansible
+
   # Install test dependencies.
   - pip install molecule docker ansible-lint yamllint
+
+  # Check ansible version
+  - ansible --version
+
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
   - molecule test -s docker
 
 notifications:
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/?branch=master
