@@ -39,6 +39,12 @@ Example Playbook
       challenge: dns
 ```
 
+Caveats
+-------
+
+A change of the `jitsi_meet_server_name` variable applied on an already
+deployed instance is going to break the configuration.
+
 Tests
 -----
 
