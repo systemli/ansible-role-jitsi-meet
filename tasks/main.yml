@@ -31,7 +31,27 @@
     question: "{{ item.question }}"
     value: "{{ item.value }}"
     vtype: "{{ item.vtype }}"
-  loop: "{{ jitsi_meet_debconf_settings }}"
+  loop:
+    - name: jitsi-videobridge2
+      question: jitsi-videobridge/jvb-hostname
+      value: "{{ jitsi_meet_server_name }}"
+      vtype: string
+    - name: jitsi-meet-web-config
+      question: jitsi-meet/cert-choice
+      value: "{{ jitsi_meet_cert_choice }}"
+      vtype: string
+    - name: jitsi-meet-web-config
+      question: jitsi-meet/cert-path-crt
+      value: "{{ jitsi_meet_ssl_cert_path }}"
+      vtype: string
+    - name: jitsi-meet-web-config
+      question: jitsi-meet/cert-path-key
+      value: "{{ jitsi_meet_ssl_key_path }}"
+      vtype: string
+    - name: jitsi-meet-prosody
+      question: jitsi-meet-prosody/turn-secret
+      value: "{{ jitsi_meet_turn_secret }}"
+      vtype: string
 
 - include: prosody.yml
 - include: jitsi-meet.yml
