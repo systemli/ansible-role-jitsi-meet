@@ -46,14 +46,6 @@
     state: link
   notify: restart nginx
 
-- name: ensure logrotate config is latest
-  template:
-    src: logrotate.d/nginx.j2
-    dest: /etc/logrotate.d/nginx
-    owner: root
-    group: root
-    mode: 0644
-
 - name: Enable nginx
   service:
     name: nginx

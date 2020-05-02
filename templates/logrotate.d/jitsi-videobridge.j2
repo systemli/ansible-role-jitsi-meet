@@ -1,0 +1,10 @@
+/var/log/jitsi/jvb.log {
+  daily
+  missingok
+  rotate {{ jitsi_meet_logrotate_retained_days }}
+  compress
+  delaycompress
+  notifempty
+  copytruncate
+  su jvb jitsi
+}

@@ -1,0 +1,12 @@
+/var/log/prosody/prosody.log /var/log/prosody/prosody.err {
+    daily
+    rotate {{ jitsi_meet_logrotate_retained_days }}
+    compress
+    delaycompress
+    create 640 prosody adm
+    postrotate
+            [ ! -e /run/prosody/prosody.pid ] || /usr/bin/prosodyctl reload > /dev/null
+    endscript
+    sharedscripts
+    missingok
+}

@@ -57,3 +57,16 @@
 - include: jitsi-meet.yml
 - include: ui_customization.yml
 - include: nginx.yml
+
+- name: Generate logrotate configs
+  template:
+    src: logrotate.d/{{ item }}.j2
+    dest: /etc/logrotate.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - jicofo
+    - jitsi-videobridge
+    - nginx
+    - prosody
