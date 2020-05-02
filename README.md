@@ -11,7 +11,10 @@ derivatives like Ubuntu 20.04.
 Role Variables
 --------------
 
-You need to set the `jitsi_meet_base_secret` variable from which passwords for
+The `jitsi_meet_server_name` needs to be set with the designated web domain that
+the service will be reachable.
+
+You also need to set the `jitsi_meet_base_secret` variable from which passwords
 the various internally used accounts are created.
 
 See [`defaults/main.yml`](defaults/main.yml) for further available variables.

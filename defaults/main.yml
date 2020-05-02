@@ -1,5 +1,4 @@
 ---
-jitsi_meet_server_name: "meet.example.com"
 jitsi_meet_videobridge_loglevel: "ERROR"
 jitsi_meet_videobridge_muc_nickname: "CHANGEME-UUID"
 jitsi_meet_videobridge_port: 5347
