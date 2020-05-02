@@ -87,7 +87,7 @@ var config = {
 
     // Start the conference in audio only mode (no video is being received nor
     // sent).
-    // startAudioOnly: false,
+    startAudioOnly: {{ jitsi_meet_config_start_audio_only }},
 
     // Every participant after the Nth will start audio muted.
     // startAudioMuted: 10,
@@ -110,15 +110,7 @@ var config = {
     // util#browser#usesNewGumFlow. The constraints are independent from
     // this config's resolution value. Defaults to requesting an ideal
     // resolution of 720p.
-    constraints: {
-        video: {
-            height: {
-                ideal: {{ jitsi_meet_config_resolution }},
-                max: 720,
-                min: 240
-            }
-        }
-    },
+    constraints: {{ jitsi_meet_config_constraints | to_nice_json }},
 
     // Enable / disable simulcast support.
     // disableSimulcast: false,
@@ -250,7 +242,7 @@ var config = {
     // useNicks: false,
 
     // Require users to always specify a display name.
-    // requireDisplayName: true,
+    requireDisplayName: {{ jitsi_meet_config_require_display_name }},
 
     // Whether to use a welcome page or not. In case it's false a random room
     // will be joined when no room is specified.
@@ -468,6 +460,9 @@ var config = {
     //    // to the specified URL for an app download page.
     //    downloadAppsUrl: 'https://docs.example.com/our-apps.html'
     // },
+    {% if jitsi_meet_config_deployment_urls %}
+    deploymentUrls: {{ jitsi_meet_config_deployment_urls | to_nice_json }}
+    {% endif %}
 
     // Options related to the remote participant menu.
     // remoteVideoMenu: {
