@@ -1,0 +1,10 @@
+/var/log/jitsi/jicofo.log {
+  daily
+  missingok
+  rotate {{ jitsi_meet_logrotate_retained_days }}
+  compress
+  delaycompress
+  notifempty
+  copytruncate
+  su jicofo jitsi
+}

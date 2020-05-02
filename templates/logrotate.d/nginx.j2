@@ -1,7 +1,7 @@
 /var/log/nginx/*.log {
 	daily
 	missingok
-	rotate {{ jitsi_meet_nginx_logrotate_duration }}
+	rotate {{ jitsi_meet_logrotate_retained_days }}
 	compress
 	delaycompress
 	notifempty
