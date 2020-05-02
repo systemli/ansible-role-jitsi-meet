@@ -1,17 +1,12 @@
 ---
 jitsi_meet_server_name: "meet.example.com"
 jitsi_meet_videobridge_loglevel: "ERROR"
-jitsi_meet_videobridge_secret: "CHANGEME"
-jitsi_meet_videobridge_password: "CHANGEME2"
 jitsi_meet_videobridge_muc_nickname: "CHANGEME-UUID"
 jitsi_meet_videobridge_port: 5347
 jitsi_meet_jicofo_loglevel: "ERROR"
 jitsi_meet_jicofo_user: focus
-jitsi_meet_jicofo_secret: "CHANGEME3"
 jitsi_meet_jicofo_port: 5347
-jitsi_meet_jicofo_password: "CHANGEME4"
 
-jitsi_meet_turn_secret: "CHANGEME5"
 jitsi_meet_turn_tls_listening_port: 4446
 
 # Set to yes if local turnserver runs on 4445/4446 to configure nginx multiplexer
