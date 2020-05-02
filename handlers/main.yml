@@ -1,14 +1,12 @@
 ---
 
-- name: restart prosody
-  service:
-    name: prosody
-    state: restarted
+- name: reload prosody
+  command: /usr/bin/prosodyctl reload
 
-- name: restart nginx
+- name: reload nginx
   service:
     name: nginx
-    state: restarted
+    state: reloaded
 
 - name: restart jitsi-videobridge2
   service:

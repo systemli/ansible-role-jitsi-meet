@@ -7,11 +7,6 @@
     owner: root
     group: root
     mode: "0644"
-  notify:
-    - restart jitsi-videobridge2
-    - restart jicofo
-    - restart prosody
-    - restart nginx
 
 - name: Title configuration file
   template:
