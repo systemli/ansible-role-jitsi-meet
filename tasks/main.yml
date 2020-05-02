@@ -1,5 +1,19 @@
 ---
 
+- name: Derive individual secrets from base secret
+  set_fact:
+    "{{ item }}": "{{ item | password_hash('sha512', jitsi_meet_base_secret )| replace('/', '') | reverse | truncate(32, end='') }}"
+  loop:
+    - jitsi_meet_videobridge_secret
+    - jitsi_meet_videobridge_password
+    - jitsi_meet_jicofo_secret
+    - jitsi_meet_jicofo_password
+    - jitsi_meet_turn_secret
+
+- name: Derive videobridge nickname
+  set_fact:
+    jitsi_meet_videobridge_muc_nickname: "{{ (jitsi_meet_base_secret | string + 'jvb_muc_nick') | to_uuid }}"
+
 - import_tasks: jitsi-meet.yml
 - import_tasks: prosody.yml
 - import_tasks: ui_customization.yml

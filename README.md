@@ -11,9 +11,11 @@ derivatives like Ubuntu 20.04.
 Role Variables
 --------------
 
-See [`defaults/main.yml`](defaults/main.yml).
+You need to set the `jitsi_meet_base_secret` variable from which passwords for
+the various internally used accounts are created.
 
-**Important: Please change the defaults secrets to secure your installation!**
+See [`defaults/main.yml`](defaults/main.yml) for further available variables.
+
 
 Download
 --------

@@ -7,5 +7,8 @@
       apt:
         pkg:
           - gpg
+  vars:
+    jitsi_meet_base_secret: my_very_own_secret
+    jitsi_meet_server_name: jisti-meet.example.org
   roles:
     - role: ansible-role-jitsi-meet
