@@ -26,28 +26,6 @@ jitsi_meet_ssl_key_path: "/etc/ssl/private/ssl-cert-snakeoil.key"
 
 # jitsi_meet_cert_choice: "I want to use my own certificate"
 jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
-jitsi_meet_debconf_settings:
-  - name: jitsi-videobridge2
-    question: jitsi-videobridge/jvb-hostname
-    value: "{{ jitsi_meet_server_name }}"
-    vtype: string
-  - name: jitsi-meet-web-config
-    question: jitsi-meet/cert-choice
-    value: "{{ jitsi_meet_cert_choice }}"
-    vtype: string
-  - name: jitsi-meet-web-config
-    question: jitsi-meet/cert-path-crt
-    value: "{{ jitsi_meet_ssl_cert_path }}"
-    vtype: string
-  - name: jitsi-meet-web-config
-    question: jitsi-meet/cert-path-key
-    value: "{{ jitsi_meet_ssl_key_path }}"
-    vtype: string
-  - name: jitsi-meet-prosody
-    question: jitsi-meet-prosody/turn-secret
-    value: "{{ jitsi_meet_turn_secret }}"
-    vtype: string
-
 jitsi_meet_config_default_language: en
 jitsi_meet_config_deployment_urls:  # see templates/meet-confg.js.j2#deploymentUrls
 jitsi_meet_config_disable_third_party_requests: "true"
