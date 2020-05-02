@@ -14,6 +14,13 @@
     mode: "0644"
   notify: reload nginx
 
+- name: Add mimetype for wasm files.
+  lineinfile:
+    path: /etc/nginx/mime.types
+    line: "    application/wasm                      wasm;"
+    insertbefore: '^\}$'
+  notify: reload nginx
+
 - name: Copy Nginx config for Jitsi Meet domain.
   template:
     dest: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
