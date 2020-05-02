@@ -7,7 +7,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify: restart nginx
+  notify: reload nginx
 
 - name: Copy Nginx config for Jitsi Meet domain.
   template:
@@ -16,7 +16,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify: restart nginx
+  notify: reload nginx
 
 - name: Copy Nginx multiplexer config if local turnserver is used.
   template:
@@ -26,20 +26,20 @@
     group: root
     mode: 0644
   when: jitsi_meet_nginx_multiplexer
-  notify: restart nginx
+  notify: reload nginx
 
 - name: Deactivate default Nginx site.
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-  notify: restart nginx
+  notify: reload nginx
 
 - name: Activate custom Jitsi Meet Nginx site.
   file:
     path: "/etc/nginx/sites-enabled/{{ jitsi_meet_server_name }}.conf"
     src: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
     state: link
-  notify: restart nginx
+  notify: reload nginx
 
 - name: ensure logrotate config is latest
   template:

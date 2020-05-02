@@ -8,7 +8,7 @@
     owner: root
     group: prosody
     validate: "luac -p %s"
-  notify: restart prosody
+  notify: reload prosody
 
 - name: Copy additional prosody config
   template:
@@ -18,7 +18,7 @@
     owner: root
     group: root
     validate: "luac -p %s"
-  notify: restart prosody
+  notify: reload prosody
 
 - name: Link additional prosody config
   file:
@@ -27,7 +27,7 @@
     owner: root
     group: root
     state: link
-  notify: restart prosody
+  notify: reload prosody
 
 - name: Generate SSL keypair for Prosody service
   shell: |
@@ -43,7 +43,7 @@
     - "{{ jitsi_meet_server_name }}"
     - "auth.{{ jitsi_meet_server_name }}"
   notify:
-    - restart prosody
+    - reload prosody
     - update ca-certificates
 
 - name: Link main SSL certificate to /etc/prosody/certs/
@@ -55,7 +55,7 @@
     - crt
     - key
   notify:
-    - restart prosody
+    - reload prosody
 
 - name: Link auth SSL certificate to /etc/prosody/certs/
   file:
@@ -66,7 +66,7 @@
     - crt
     - key
   notify:
-    - restart prosody
+    - reload prosody
 
 - name: Link auth certificate to trusted store
   file:
