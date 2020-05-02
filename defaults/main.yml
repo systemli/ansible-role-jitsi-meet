@@ -47,14 +47,24 @@ jitsi_meet_debconf_settings:
     question: jitsi-meet-prosody/turn-secret
     value: "{{ jitsi_meet_turn_secret }}"
     vtype: string
-jitsi_meet_config_resolution: 720
+
+jitsi_meet_config_default_language: en
+jitsi_meet_config_deployment_urls:  # see templates/meet-confg.js.j2#deploymentUrls
 jitsi_meet_config_disable_third_party_requests: "true"
+jitsi_meet_config_last_n: "-1"
 jitsi_meet_config_p2p_enabled: "true"
 jitsi_meet_config_layer_suspension: "true"
+jitsi_meet_config_require_display_name: "false"
+jitsi_meet_config_resolution: 720
+jitsi_meet_config_constraints:
+  video:
+    height:
+      ideal: "{{ jitsi_meet_config_resolution }}"
+      max: 720
+      min: 240
+jitsi_meet_config_start_audio_only: "false"
 jitsi_meet_config_stun_servers:
   - stun:meet-jit-si-turnrelay.jitsi.net:443
-jitsi_meet_config_default_language: en
-jitsi_meet_config_last_n: "-1"
 
 jitsi_meet_title: Jitsi Meet
 jitsi_meet_description: Join a WebRTC video conference powered by the Jitsi Videobridge
