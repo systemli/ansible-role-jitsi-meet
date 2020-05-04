@@ -69,3 +69,17 @@
         regexp: 'override.css'
         line: '    <link rel="stylesheet" href="css/override.css">'
         insertbefore: '</head>'
+
+- name: Configure debsums to ignore customized assets
+  when: jitsi_meet_debsums_ignore_custom_assets
+  lineinfile:
+    path: /etc/debsums-ignore
+    create: yes
+    line: /usr/share/jitsi-meet/{{ item }}
+    owner: root
+    group: root
+    mode: ug=r,o=
+  loop:
+    - images/watermark.png
+    - interface_config.js
+    - title.html
