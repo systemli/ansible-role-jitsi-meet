@@ -50,6 +50,7 @@ jitsi_meet_debconf_settings:
 jitsi_meet_config_resolution: 720
 jitsi_meet_config_disable_third_party_requests: "true"
 jitsi_meet_config_p2p_enabled: "true"
+jitsi_meet_config_layer_suspension: "true"
 jitsi_meet_config_stun_servers:
   - stun:meet-jit-si-turnrelay.jitsi.net:443
 jitsi_meet_config_default_language: en
