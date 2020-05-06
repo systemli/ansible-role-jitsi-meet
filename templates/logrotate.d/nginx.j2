@@ -13,4 +13,7 @@
 			run-parts /etc/logrotate.d/httpd-prerotate; \
 		fi \
 	endscript
+	postrotate
+		invoke-rc.d nginx rotate >/dev/null 2>&1
+	endscript
 }
