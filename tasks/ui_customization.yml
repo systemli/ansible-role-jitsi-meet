@@ -81,5 +81,4 @@
     mode: ug=r,o=
   loop:
     - images/watermark.png
-    - interface_config.js
     - title.html
