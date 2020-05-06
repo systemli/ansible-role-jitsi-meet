@@ -62,8 +62,8 @@
   notify: restart jicofo
 
 - name: Copy Jicofo log.properties
-  template:
-    src: jicofo/logging.properties.j2
+  copy:
+    content: "{{ jitsi_meet_jicofo_logging_properties }}"
     dest: /etc/jitsi/jicofo/logging.properties
     owner: jicofo
     group: jitsi
