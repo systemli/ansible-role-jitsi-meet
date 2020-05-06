@@ -1,6 +1,6 @@
 ---
 
-- include: prosody.yml
-- include: jitsi-meet.yml
-- include: ui_customization.yml
-- include: nginx.yml
+- import_tasks: jitsi-meet.yml
+- import_tasks: prosody.yml
+- import_tasks: ui_customization.yml
+- import_tasks: nginx.yml

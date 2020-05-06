@@ -1,10 +1,5 @@
 ---
 
-- name: Install prosody
-  apt:
-    pkg: prosody
-    state: present
-
 - name: Copy prosody config
   template:
     src: prosody/prosody.cfg.lua.j2
