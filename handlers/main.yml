@@ -1,7 +1,9 @@
 ---
 
-- name: reload prosody
-  command: /usr/bin/prosodyctl reload
+- name: restart prosody
+  service:
+    name: prosody
+    state: restarted
 
 - name: reload nginx
   service:
