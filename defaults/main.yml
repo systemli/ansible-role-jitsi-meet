@@ -50,9 +50,9 @@ jitsi_meet_mobile_download_link_ios: https://itunes.apple.com/us/app/jitsi-meet/
 
 ## Logging
 jitsi_meet_logrotate_retained_days: 7
-jitsi_meet_videobridge_loglevel: "ERROR"
-
-jitsi_meet_jicofo_loglevel: "ERROR"
+jitsi_meet_loglevel: "WARNING"
+jitsi_meet_videobridge_loglevel: "{{ jitsi_meet_loglevel }}"
+jitsi_meet_jicofo_loglevel: "{{ jitsi_meet_loglevel }}"
 jitsi_meet_jicofo_logging_properties: |
   handlers= java.util.logging.ConsoleHandler
   #handlers= java.util.logging.ConsoleHandler, com.agafua.syslog.SyslogHandler
