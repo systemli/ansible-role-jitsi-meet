@@ -14,6 +14,6 @@
     mode: 0644
   loop:
     - jicofo
-    - jitsi-videobridge
+    # - jitsi-videobridge https://github.com/systemli/ansible-role-jitsi-meet/issues/33
     - nginx
     - prosody
