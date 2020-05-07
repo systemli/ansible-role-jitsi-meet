@@ -460,9 +460,11 @@ var config = {
     //    // to the specified URL for an app download page.
     //    downloadAppsUrl: 'https://docs.example.com/our-apps.html'
     // },
-    {% if jitsi_meet_config_deployment_urls %}
-    deploymentUrls: {{ jitsi_meet_config_deployment_urls | to_nice_json }}
-    {% endif %}
+{% if jitsi_meet_config_deployment_urls %}
+    deploymentUrls: {
+        {{ jitsi_meet_config_deployment_urls | to_nice_json }}
+    },
+{% endif %}
 
     // Options related to the remote participant menu.
     // remoteVideoMenu: {
@@ -522,6 +524,11 @@ var config = {
      nick
      startBitrate
      */
+
+
+    // Allow all above example options to include a trailing comma and
+    // prevent fear when commenting out the last value.
+    makeJsonParserHappy: 'even if last key had a trailing comma'
 
     // no configuration value should follow this line.
 };
