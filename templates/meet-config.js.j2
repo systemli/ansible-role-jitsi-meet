@@ -461,9 +461,8 @@ var config = {
     //    downloadAppsUrl: 'https://docs.example.com/our-apps.html'
     // },
 {% if jitsi_meet_config_deployment_urls %}
-    deploymentUrls: {
-        {{ jitsi_meet_config_deployment_urls | to_nice_json }}
-    },
+    deploymentUrls:
+        {{ jitsi_meet_config_deployment_urls | to_nice_json }},
 {% endif %}
 
     // Options related to the remote participant menu.
