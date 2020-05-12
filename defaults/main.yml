@@ -21,7 +21,6 @@ jitsi_meet_ssl_key_path: "/etc/ssl/private/ssl-cert-snakeoil.key"
 # jitsi_meet_cert_choice: "I want to use my own certificate"
 jitsi_meet_cert_choice: "Generate a new self-signed certificate (You will later get a chance to obtain a Let's encrypt certificate)"
 jitsi_meet_config_default_language: en
-jitsi_meet_config_deployment_urls:  # see templates/meet-confg.js.j2#deploymentUrls
 jitsi_meet_config_disable_third_party_requests: "true"
 jitsi_meet_config_last_n: "-1"
 jitsi_meet_config_p2p_enabled: "true"
