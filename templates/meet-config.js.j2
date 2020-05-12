@@ -460,10 +460,9 @@ var config = {
     //    // to the specified URL for an app download page.
     //    downloadAppsUrl: 'https://docs.example.com/our-apps.html'
     // },
-{% if jitsi_meet_config_deployment_urls %}
-    deploymentUrls: {
-        {{ jitsi_meet_config_deployment_urls | to_nice_json }}
-    },
+{% if jitsi_meet_config_deployment_urls is defined %}
+    deploymentUrls:
+        {{ jitsi_meet_config_deployment_urls | to_nice_json }},
 {% endif %}
 
     // Options related to the remote participant menu.
