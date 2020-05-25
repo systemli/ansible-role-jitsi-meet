@@ -1,4 +1,12 @@
 ---
+
+jitsi_meet_packages:
+  - jitsi-meet
+  - jitsi-meet-prosody
+  - jitsi-meet-web
+  - jitsi-meet-web-config
+  - jitsi-videobridge2
+
 jitsi_meet_server_name: "meet.example.com"
 jitsi_meet_videobridge_secret: "CHANGEME"
 jitsi_meet_videobridge_password: "CHANGEME2"
