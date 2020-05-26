@@ -13,14 +13,11 @@ addons:
       - python-pip
 
 install:
-  # Install ansible
-  - pip install ansible
+  # Install test dependencies
+  - pip install molecule[docker,lint]
 
-  # Install test dependencies.
-  - pip install molecule docker ansible-lint yamllint
-
-  # Check ansible version
-  - ansible --version
+  # Print versions
+  - molecule --version
 
 script:
   - molecule test -s docker
