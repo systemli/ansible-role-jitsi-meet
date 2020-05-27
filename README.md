@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.com/systemli/ansible-role-jitsi-meet.svg?branch=master)](https://travis-ci.com/systemli/ansible-role-jitsi-meet) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-jitsi_meet-blue.svg)](https://galaxy.ansible.com/systemli/jitsi_meet/)
 
-This role installs and configure [Jitsi Meet](https://jitsi.org/jitsi-meet/) with nginx Webserver and prosody as XMPP Server.
+This role installs and configure [Jitsi Meet](https://jitsi.org/jitsi-meet/)
+with nginx webserver and prosody as XMPP server.
 
 It is maintained with Debian Buster in mind, but should also work with its
 derivatives like Ubuntu 20.04.
-
 
 Role Variables
 --------------
@@ -14,6 +14,21 @@ Role Variables
 See [`defaults/main.yml`](defaults/main.yml).
 
 **Important: Please change the defaults secrets to secure your installation!**
+
+Customization of the web application
+------------------------------------
+
+You can add additional and overriding asset files like CSS, images or included
+HTML files by defining the variable `jitsi_meet_custom_assets_folder` that
+would usually be located in a `files` folder that is a sibling to your playbook.
+
+Have a look at the contents in `/usr/share/jitsi-meet/` of a deployed instance
+for possible overridees. Some are meant to be included in the web application
+like `static/welcomePageAdditionalContent.html`. A `title.html`, however,
+would be overridden by this role.
+
+CSS files from a `css` folder are automatically referenced in the application's
+html.
 
 Download
 --------

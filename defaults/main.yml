@@ -42,8 +42,6 @@ jitsi_meet_description: Join a WebRTC video conference powered by the Jitsi Vide
 jitsi_meet_provider_name: Jitsi
 jitsi_meet_provider_link: https://jitsi.org
 
-jitsi_meet_debsums_ignore_custom_assets: false
-
 jitsi_meet_mobile_download_link_android: https://play.google.com/store/apps/details?id=org.jitsi.meet
 jitsi_meet_mobile_download_link_ios: https://itunes.apple.com/us/app/jitsi-meet/id1165103905
 
