@@ -2,7 +2,7 @@
 
 - name: Derive individual secrets from base secret
   set_fact:
-    "{{ item }}": "{{ item | password_hash('sha512', jitsi_meet_base_secret )| replace('/', '') | reverse | truncate(32, end='') }}"
+    "{{ item }}": "{{ (item + jitsi_meet_base_secret | string) | hash('sha1') }}"
   loop:
     - jitsi_meet_videobridge_secret
     - jitsi_meet_videobridge_password
