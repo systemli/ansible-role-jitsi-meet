@@ -21,9 +21,5 @@ dependencies:
   - role: systemli.apt_repositories
     vars:
       apt_repositories:
-       - name: download.jitsi.org
-         url: https://download.jitsi.org/
-         key_path: jitsi-archive-keyring.gpg
-         suites: stable/
-         components: ''
-         packages: "{{ jitsi_meet_packages }}"
+        - preset: jitsi
+          packages: "{{ jitsi_meet_packages }}"
