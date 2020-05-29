@@ -4,6 +4,7 @@
   apt:
     name: nginx
     state: present
+  when: jitsi_meet_nginx_base_config
 
 - name: Adjust global nginx config.
   template:
@@ -13,6 +14,7 @@
     group: root
     mode: "0644"
   notify: reload nginx
+  when: jitsi_meet_nginx_base_config
 
 - name: Add mimetype for wasm files.
   lineinfile:
@@ -45,6 +47,7 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
   notify: reload nginx
+  when: jitsi_meet_nginx_base_config
 
 - name: Activate custom Jitsi Meet Nginx site.
   file:
