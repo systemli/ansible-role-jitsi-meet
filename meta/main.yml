@@ -22,4 +22,5 @@ dependencies:
     vars:
       apt_repositories:
         - preset: jitsi
+          name: download_jitsi_org
           packages: "{{ jitsi_meet_packages }}"
