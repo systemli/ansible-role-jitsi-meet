@@ -16,13 +16,13 @@ server {
 }
 server {
 
-    {%- set listening_port = "4444" if jitsi_meet_nginx_multiplexer else "443" %}
+    {% set listening_port = "4444" if jitsi_meet_nginx_multiplexer else "443" %}
     listen {{ listening_port }} ssl http2;
     listen [::]:{{ listening_port }} ssl http2;
 
     server_name {{ jitsi_meet_server_name }};
 
-    {% if (jitsi_meet_ssl_cert_path == '' and jitsi_meet_ssl_key_path == '') %}#{% endif %}add_header Strict-Transport-Security "max-age=31536000";
+    add_header Strict-Transport-Security "max-age=31536000";
 
     ssl_certificate {{ jitsi_meet_ssl_cert_path }};
     ssl_certificate_key {{ jitsi_meet_ssl_key_path }};
