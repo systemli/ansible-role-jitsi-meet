@@ -89,10 +89,15 @@ server {
         tcp_nodelay on;
     }
 
-    # rewrite room names to serve index.html
+    # serve index.html for requested room names
+    #
+    # this is a best effort to match letters and digits from all scripts.
+    # it relies on testing Unicode properties, but it isn't reliable, e.g.
+    # спаси́бо doesn't match, but спасибо does.
 
-    location ~ ^/[a-zA-Z0-9]+$ {
-        rewrite ^.*$ / break;
+    location ~ "(*UTF8)^/[\p{L}\p{N}]+$" {
+        alias /usr/share/jitsi-meet/index.html;
+        default_type text/html;
     }
 
     location ~ ^/([^/?&:'"]+)/config.js$
