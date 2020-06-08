@@ -95,7 +95,7 @@ server {
     # it relies on testing Unicode properties, but it isn't reliable, e.g.
     # спаси́бо doesn't match, but спасибо does.
 
-    location ~ "(*UTF8)^/[\p{L}\p{N}]+$" {
+    location ~ "(*UTF8)^/[\p{L}\p{N}\p{Zs}]+$" {
         alias /usr/share/jitsi-meet/index.html;
         default_type text/html;
     }
