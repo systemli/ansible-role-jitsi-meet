@@ -2,7 +2,9 @@
 
 - name: Ensure that nginx is installed.
   apt:
-    name: nginx
+    name:
+      - nginx
+      - python3-certbot-nginx
     state: present
 
 - name: Adjust global nginx config.
