@@ -6,24 +6,9 @@ env:
   matrix:
     - MOLECULE_DISTRO: debian10
 
-# Install python-pip
-addons:
-  apt:
-    packages:
-      - python-pip
-
 install:
-  # Install ansible
-  - pip install ansible
-
   # Install test dependencies.
-  - pip install molecule docker ansible-lint yamllint
-
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - python3 -m pip install molecule[docker] ansible-lint yamllint
 
 script:
   - molecule test -s docker
