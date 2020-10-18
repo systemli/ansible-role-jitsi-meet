@@ -40,6 +40,7 @@
     dest: /etc/jitsi/videobridge/sip-communicator.properties
     owner: jvb
     group: jitsi
+    mode: 0640
   notify: restart jitsi-videobridge2
 
 - name: Copy jicofo config
@@ -48,6 +49,7 @@
     dest: /etc/jitsi/jicofo/config
     owner: jicofo
     group: jitsi
+    mode: 0640
   notify: restart jicofo
 
 - name: Copy Jicofo log.properties
@@ -56,6 +58,7 @@
     dest: /etc/jitsi/jicofo/logging.properties
     owner: jicofo
     group: jitsi
+    mode: 0640
   notify: restart jicofo
 
 - name: Copy jitsi-videobridge2 config
@@ -64,6 +67,7 @@
     dest: /etc/jitsi/videobridge/config
     owner: jvb
     group: jitsi
+    mode: 0640
   notify: restart jitsi-videobridge2
 
 - name: Copy jitsi-videobridge2 log.properties
@@ -72,10 +76,12 @@
     dest: /etc/jitsi/videobridge/logging.properties
     owner: jvb
     group: jitsi
+    mode: 0640
   notify: restart jitsi-videobridge2
 
 - name: Copy jitsi meet config
   template:
+    mode: 0640
     src: meet-config.js.j2
     dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
 
