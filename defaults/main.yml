@@ -14,6 +14,7 @@ jitsi_meet_jicofo_port: 5347
 
 jitsi_meet_turn_tls_listening_port: 4446
 
+jitsi_meet_nginx_base_config: true
 # Set to yes if local turnserver runs on 4445/4446 to configure nginx multiplexer
 jitsi_meet_nginx_multiplexer: False
 
