@@ -81,7 +81,7 @@
 
 - name: Copy jitsi meet config
   template:
-    mode: 0640
+    mode: 0644
     src: meet-config.js.j2
     dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
 
