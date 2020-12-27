@@ -33,18 +33,17 @@ server {
     ssl_certificate {{ jitsi_meet_ssl_cert_path }};
     ssl_certificate_key {{ jitsi_meet_ssl_key_path }};
 
-    root /usr/share/jitsi-meet;
-
     # ssi on with javascript for multidomain variables in config.js
     ssi on;
     ssi_types application/x-javascript application/javascript;
 
-    index index.html index.htm;
-    error_page 404 /static/404.html;
+    index index.html;
 
     gzip on;
     gzip_types text/plain text/css application/javascript application/json;
     gzip_vary on;
+
+    # configs are included by ssi directives in the application's files
 
     location = /config.js {
         alias /etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js;
@@ -58,21 +57,27 @@ server {
         alias /usr/share/jitsi-meet/libs/external_api.min.js;
     }
 
-    #ensure all static content can always be found first
-    location ~ ^/(libs|css|static|images|fonts|lang|sounds|connection_optimization|.well-known)/(.*)$
-    {
-        add_header 'Access-Control-Allow-Origin' '*';
-        alias /usr/share/jitsi-meet/$1/$2;
+    # static assets and non-config includes
+
+    location @vendor_assets {
+        root /usr/share/jitsi-meet;
     }
 
-    # BOSH
+    location / {
+        root /usr/local/share/jitsi-meet;
+        try_files $uri @vendor_assets;
+    }
+
+    # XMPP BOSH endpoint
+
     location = /http-bind {
-        proxy_pass      http://localhost:5280/http-bind;
+        proxy_pass http://127.0.0.1:5280/http-bind;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Host $http_host;
     }
 
-    # xmpp websockets
+    # XMPP websockets
+
     location = /xmpp-websocket {
         proxy_pass http://127.0.0.1:5280/xmpp-websocket?prefix=$prefix&$args;
         proxy_http_version 1.1;
@@ -82,12 +87,15 @@ server {
         tcp_nodelay on;
     }
 
-    location ~ ^/([^/?&:'"]+)$ {
-        try_files $uri @root_path;
-    }
+    # serve index.html for requested room names
+    #
+    # this is a best effort to match letters and digits from all scripts.
+    # it relies on testing Unicode properties, but it isn't reliable, e.g.
+    # спаси́бо doesn't match, but спасибо does.
 
-    location @root_path {
-        rewrite ^/(.*)$ / break;
+    location ~ "(*UTF8)^/[\p{L}\p{N}\p{Zs}]+$" {
+        alias /usr/share/jitsi-meet/index.html;
+        default_type text/html;
     }
 
     location ~ ^/([^/?&:'"]+)/config.js$

@@ -1,5 +1,33 @@
 ---
 
+- name: create folder for custom assets
+  file:
+    path: /usr/local/share/jitsi-meet
+    state: directory
+    owner: root
+    group: root
+    mode: a=rx
+
+- name: copy custom assets
+  copy:
+    src: "{{ jitsi_meet_custom_assets_folder }}/"
+    dest: /usr/local/share/jitsi-meet/
+    owner: root
+    group: root
+    mode: a=r
+  when: jitsi_meet_custom_assets_folder is defined
+
+- name: include css files in html head
+  lineinfile:
+    path: /usr/local/share/jitsi-meet/plugin.head.html
+    line: <link rel="stylesheet" href="/css/{{ item | basename }}">
+    create: yes
+    owner: root
+    group: root
+    mode: a=r
+  with_fileglob: "{{ jitsi_meet_custom_assets_folder }}/css/*.css"
+  when: jitsi_meet_custom_assets_folder is defined
+
 - name: Application configuration file
   template:
     dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-interface_config.js"
@@ -11,74 +39,7 @@
 - name: Title configuration file
   template:
     src: title.html.j2
-    dest: "/usr/share/jitsi-meet/title.html"
+    dest: "/usr/local/share/jitsi-meet/title.html"
     owner: root
     group: root
     mode: "0644"
-
-- name: Replace watermark for a customized one
-  copy:
-    src: "{{ jitsi_meet_watermark_file }}"
-    dest: /usr/share/jitsi-meet/images/watermark.png
-    owner: root
-    group: root
-    mode: "0644"
-  when: jitsi_meet_watermark_file is defined
-        and jitsi_meet_watermark_file
-
-- name: Replace logo for a customized one
-  copy:
-    src: "{{ jitsi_meet_logo_file }}"
-    dest: /usr/share/jitsi-meet/images/jitsilogo.png
-    owner: root
-    group: root
-    mode: "0644"
-  when: jitsi_meet_logo_file is defined
-        and jitsi_meet_logo_file
-
-- name: Replace favicon for a customized one
-  copy:
-    src: "{{ jitsi_meet_favicon_file }}"
-    dest: /usr/share/jitsi-meet/images/favicon.ico
-    owner: root
-    group: root
-    mode: "0644"
-  when: jitsi_meet_favicon_file is defined
-        and jitsi_meet_favicon_file
-
-- name: Check if jitsi meet override CSS file exists
-  stat:
-    path: "{{ item }}"
-  delegate_to: 127.0.0.1
-  loop: "{{ q('first_found', { 'files': 'jitsi-meet-override.css', 'paths': [playbook_dir + '/files/'], 'skip': 'yes' }) }}"
-  register: jitsi_meet_override_css_file
-
-- name: Inject jitsi meet override CSS
-  when:
-    - jitsi_meet_override_css_file.results|length > 0
-    - jitsi_meet_override_css_file.results[0].stat.exists
-  block:
-    - name: Copy jitsi meet override CSS file
-      copy:
-        src: "{{ jitsi_meet_override_css_file.results[0].item }}"
-        dest: "/usr/share/jitsi-meet/css/override.css"
-        mode: "0644"
-    - name: Inject jitsi meet override CSS import statement into HTML file
-      lineinfile:
-        path: /usr/share/jitsi-meet/index.html
-        regexp: 'override.css'
-        line: '    <link rel="stylesheet" href="css/override.css">'
-        insertbefore: '</head>'
-
-- name: Configure debsums to ignore customized assets
-  when: jitsi_meet_debsums_ignore_custom_assets
-  lineinfile:
-    path: /etc/debsums-ignore
-    create: yes
-    line: /usr/share/jitsi-meet/{{ item }}
-    owner: root
-    group: root
-    mode: ug=r,o=
-  loop:
-    - images/watermark.png
-    - title.html
