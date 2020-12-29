@@ -1,6 +1,6 @@
 # Ansible role to install and configure Jitsi Meet
 
-[![Build Status](https://github.com/systemli/ansible-role-jitsi-meet/workflows/Molecule/badge.svg?branch=master)](https://github.com/systemli/ansible-role-jitsi-meet/actions?query=workflow%3AIntegration)
+[![Build Status](https://github.com/systemli/ansible-role-jitsi-meet/workflows/Integration/badge.svg?branch=master)](https://github.com/systemli/ansible-role-jitsi-meet/actions?query=workflow%3AIntegration)
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-jitsi_meet-blue.svg)](https://galaxy.ansible.com/systemli/jitsi_meet/)
 
 This role installs and configure [Jitsi Meet](https://jitsi.org/jitsi-meet/) with nginx Webserver and prosody as XMPP Server.
