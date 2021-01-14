@@ -37,6 +37,9 @@ server {
 
     ssl_certificate {{ jitsi_meet_ssl_cert_path }};
     ssl_certificate_key {{ jitsi_meet_ssl_key_path }};
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+    ssl_session_tickets off;
 
     add_header Strict-Transport-Security "max-age=31536000";
 
