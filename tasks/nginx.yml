@@ -59,6 +59,9 @@
   copy:
     src: "dhparam"
     dest: "{{ jitsi_meet_nginx_ssl_dhparam }}"
+    owner: root
+    group: root
+    mode: "0640"
   when: jitsi_meet_nginx_ssl_preset == 'intermediate'
   notify: restart nginx
 
