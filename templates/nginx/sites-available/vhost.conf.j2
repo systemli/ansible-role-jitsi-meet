@@ -16,13 +16,13 @@ server {
     }
 }
 server {
-{% if jitsi_meet_nginx_multiplexer %}
+    {% if jitsi_meet_nginx_multiplexer %}
     listen 4444 ssl http2;
     listen [::]:4444 ssl http2;
-{% else %}
+    {% else %}
     listen 443 ssl;
     listen [::]:443 ssl;
-{% endif %}
+    {% endif %}
     server_name {{ jitsi_meet_server_name }};
 
     ssl_protocols {{ jitsi_meet_nginx_ssl_protocols }};
