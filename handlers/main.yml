@@ -10,6 +10,11 @@
     name: nginx
     state: reloaded
 
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+
 - name: restart jitsi-videobridge2
   service:
     name: jitsi-videobridge2

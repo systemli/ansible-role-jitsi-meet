@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: "True"
 server {
     listen 80;
     listen [::]:80;
@@ -25,10 +26,17 @@ server {
     ssl_ciphers "{{ jitsi_meet_nginx_ssl_ciphers }}";
     {% endif %}
 
-    {% if (jitsi_meet_ssl_cert_path == '' and jitsi_meet_ssl_key_path == '') %}#{% endif %}add_header Strict-Transport-Security "max-age=31536000";
+    {% if not jitsi_meet_nginx_ssl_preset == "modern" %}
+    ssl_dhparam {{ jitsi_meet_nginx_ssl_dhparam }};
+    {% endif %}
 
     ssl_certificate {{ jitsi_meet_ssl_cert_path }};
     ssl_certificate_key {{ jitsi_meet_ssl_key_path }};
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+    ssl_session_tickets off;
+
+    add_header Strict-Transport-Security "max-age=31536000";
 
     root /usr/share/jitsi-meet;
 

@@ -38,6 +38,23 @@
     state: absent
   notify: reload nginx
 
+- name: Generate dhparam
+  shell: "openssl dhparam 1024 > {{ jitsi_meet_nginx_ssl_dhparam }}"
+  args:
+    creates: "{{ jitsi_meet_nginx_ssl_dhparam }}"
+  when: jitsi_meet_nginx_ssl_preset == 'old'
+  notify: restart nginx
+
+- name: Copy dhparam
+  copy:
+    src: "dhparam"
+    dest: "{{ jitsi_meet_nginx_ssl_dhparam }}"
+    owner: root
+    group: root
+    mode: "0640"
+  when: jitsi_meet_nginx_ssl_preset == 'intermediate'
+  notify: restart nginx
+
 - name: Activate custom Jitsi Meet Nginx site.
   file:
     path: "/etc/nginx/sites-enabled/{{ jitsi_meet_server_name }}.conf"
