@@ -36,6 +36,9 @@ server {
     ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
     ssl_session_tickets off;
 
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
     add_header Strict-Transport-Security "max-age=31536000";
 
     root /usr/share/jitsi-meet;
