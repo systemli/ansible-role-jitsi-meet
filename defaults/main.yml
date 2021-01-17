@@ -36,15 +36,36 @@ jitsi_meet_config_start_audio_only: "false"
 jitsi_meet_config_stun_servers:
   - stun:meet-jit-si-turnrelay.jitsi.net:443
 
+# Jitsi Meet global variables
+
 jitsi_meet_title: Jitsi Meet
 jitsi_meet_description: Join a WebRTC video conference powered by the Jitsi Videobridge
-jitsi_meet_provider_name: Jitsi
-jitsi_meet_provider_link: https://jitsi.org
+
+# Jitsi Meet variables for interface_config.js
+
+jitsi_meet_interface_app_name: "{{ jitsi_meet_title }}"
+jitsi_meet_interface_brand_watermark_link: ""
+jitsi_meet_interface_default_background: "#474747"
+jitsi_meet_interface_default_local_display_name: me
+jitsi_meet_interface_default_logo_url: images/watermark.svg
+jitsi_meet_interface_default_remote_display_name: Fellow Jitster
+jitsi_meet_interface_default_welcome_page_logo_url: images/watermark.svg
+jitsi_meet_interface_provider_name: Jitsi
+jitsi_meet_interface_display_welcome_footer: "true"
+jitsi_meet_interface_jitsi_watermark_link: https://jitsi.org
+jitsi_meet_interface_mobile_app_promo: "true"
+jitsi_meet_interface_mobile_download_link_android: https://play.google.com/store/apps/details?id=org.jitsi.meet
+jitsi_meet_interface_mobile_download_link_f_droid: https://f-droid.org/en/packages/org.jitsi.meet/
+jitsi_meet_interface_mobile_download_link_ios: https://itunes.apple.com/us/app/jitsi-meet/id1165103905
+jitsi_meet_interface_native_app_name: Jitsi Meet
+
+# Jitsi Meet variables for title.html
+
+jitsi_meet_title_image: images/jitsilogo.png?v=1
+jitsi_meet_title_favicon: images/favicon.ico?v=1
 
 jitsi_meet_debsums_ignore_custom_assets: false
 
-jitsi_meet_mobile_download_link_android: https://play.google.com/store/apps/details?id=org.jitsi.meet
-jitsi_meet_mobile_download_link_ios: https://itunes.apple.com/us/app/jitsi-meet/id1165103905
 
 ## Logging
 jitsi_meet_logrotate_retained_days: 7
