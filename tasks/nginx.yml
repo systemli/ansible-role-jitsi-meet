@@ -32,6 +32,12 @@
     mode: "0644"
   notify: reload nginx
 
+- name: Ensure Nginx multiplexer config is absent
+  file:
+    path: "/etc/nginx/modules-enabled/60-jitsi-meet.conf"
+    state: absent
+  notify: restart nginx
+
 - name: Deactivate default Nginx site.
   file:
     path: /etc/nginx/sites-enabled/default
