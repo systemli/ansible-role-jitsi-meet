@@ -34,7 +34,7 @@ jitsi_meet_config_constraints:
       min: 240
 jitsi_meet_config_start_audio_only: "false"
 jitsi_meet_config_stun_servers:
-  - stun:meet-jit-si-turnrelay.jitsi.net:443
+  - meet-jit-si-turnrelay.jitsi.net:443
 
 # Jitsi Meet global variables
 
