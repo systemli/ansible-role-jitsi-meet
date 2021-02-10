@@ -1,0 +1,11 @@
+---
+# Global
+jitsi_meet_server_name: "meet.example.com"
+jitsi_meet_config_stun_servers:
+  - meet-jit-si-turnrelay.jitsi.net:443
+
+# Videobridge
+jitsi_meet_videobridge_port: 5347
+
+## Logging
+jitsi_meet_videobridge_loglevel: "{{ jitsi_meet_loglevel }}"

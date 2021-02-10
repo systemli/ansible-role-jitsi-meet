@@ -1,0 +1,69 @@
+---
+- name: Derive individual secrets from base secret
+  set_fact:
+    "{{ item }}": "{{ (item + jitsi_meet_base_secret | string) | hash('sha1') }}"
+  loop:
+    - jitsi_meet_videobridge_secret
+    - jitsi_meet_videobridge_password
+  when: jitsi_meet_base_secret is defined
+
+- name: Derive videobridge nickname
+  set_fact:
+    jitsi_meet_videobridge_muc_nickname: "{{ (jitsi_meet_base_secret | string + 'jvb_muc_nick') | to_uuid }}"
+  when: jitsi_meet_base_secret is defined
+
+- name: Set debconf options for jitsi-videobridge
+  debconf:
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  loop:
+    - name: jitsi-videobridge2
+      question: jitsi-videobridge/jvb-hostname
+      value: "{{ jitsi_meet_server_name }}"
+      vtype: string
+
+- name: Install jitsi-videobridge
+  apt:
+    pkg: jitsi-videobridge2
+    install_recommends: no
+    state: present
+    update_cache: yes
+
+- name: Copy videobridge sip-communicator.properties
+  template:
+    src: videobridge/sip-communicator.properties.j2
+    dest: /etc/jitsi/videobridge/sip-communicator.properties
+    owner: jvb
+    group: jitsi
+    mode: 0640
+  notify: restart jitsi-videobridge2
+
+- name: Copy jitsi-videobridge2 config
+  template:
+    src: videobridge/{{ item }}.j2
+    dest: /etc/jitsi/videobridge/{{ item }}
+    owner: jvb
+    group: jitsi
+    mode: 0640
+  with_items:
+    - config
+    - jvb.conf
+  notify: restart jitsi-videobridge2
+
+- name: Copy jitsi-videobridge2 log.properties
+  template:
+    src: videobridge/logging.properties.j2
+    dest: /etc/jitsi/videobridge/logging.properties
+    owner: jvb
+    group: jitsi
+    mode: 0640
+  notify: restart jitsi-videobridge2
+
+- name: Enable jitsi-videobridge2
+  service:
+    name: jitsi-videobridge2
+    enabled: yes
+
+- meta: flush_handlers

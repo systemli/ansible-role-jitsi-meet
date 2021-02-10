@@ -16,10 +16,3 @@ galaxy_info:
         - buster
   notifications:
     webhooks: https://galaxy.ansible.com/api/v1/notifications/
-dependencies:
-  - role: systemli.apt_repositories
-    vars:
-      apt_repositories:
-        - preset: jitsi
-          name: download_jitsi_org
-          packages: "{{ jitsi_meet_packages }}"

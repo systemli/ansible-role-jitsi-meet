@@ -1,0 +1,13 @@
+videobridge {
+  http-servers {
+    public {
+      port = 9090
+    }
+  }
+  websockets {
+    enabled = true
+    domain = "{{ jitsi_meet_server_name }}:443"
+    tls = true
+    server-id = {{ ansible_hostname }}
+  }
+}

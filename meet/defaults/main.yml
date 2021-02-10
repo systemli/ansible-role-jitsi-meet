@@ -5,10 +5,9 @@ jitsi_meet_packages:
   - jitsi-meet-prosody
   - jitsi-meet-web
   - jitsi-meet-web-config
-  - jitsi-videobridge2
 
 jitsi_meet_server_name: "meet.example.com"
-jitsi_meet_videobridge_port: 5347
+
 jitsi_meet_jicofo_user: focus
 jitsi_meet_jicofo_port: 5347
 
@@ -71,7 +70,6 @@ jitsi_meet_debsums_ignore_custom_assets: false
 ## Logging
 jitsi_meet_logrotate_retained_days: 7
 jitsi_meet_loglevel: "WARNING"
-jitsi_meet_videobridge_loglevel: "{{ jitsi_meet_loglevel }}"
 jitsi_meet_jicofo_loglevel: "{{ jitsi_meet_loglevel }}"
 jitsi_meet_jicofo_logging_properties: |
   handlers= java.util.logging.ConsoleHandler

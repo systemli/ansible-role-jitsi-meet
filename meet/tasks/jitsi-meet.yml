@@ -7,10 +7,6 @@
     value: "{{ item.value }}"
     vtype: "{{ item.vtype }}"
   loop:
-    - name: jitsi-videobridge2
-      question: jitsi-videobridge/jvb-hostname
-      value: "{{ jitsi_meet_server_name }}"
-      vtype: string
     - name: jitsi-meet-web-config
       question: jitsi-meet/cert-choice
       value: "{{ jitsi_meet_cert_choice }}"
@@ -34,15 +30,6 @@
     install_recommends: no
     state: present
 
-- name: Copy sip-communicator.properties
-  template:
-    src: videobridge/sip-communicator.properties.j2
-    dest: /etc/jitsi/videobridge/sip-communicator.properties
-    owner: jvb
-    group: jitsi
-    mode: 0640
-  notify: restart jitsi-videobridge2
-
 - name: Copy jicofo config
   template:
     src: jicofo/config.j2
@@ -61,34 +48,11 @@
     mode: 0640
   notify: restart jicofo
 
-- name: Copy jitsi-videobridge2 config
-  template:
-    src: videobridge/config.j2
-    dest: /etc/jitsi/videobridge/config
-    owner: jvb
-    group: jitsi
-    mode: 0640
-  notify: restart jitsi-videobridge2
-
-- name: Copy jitsi-videobridge2 log.properties
-  template:
-    src: videobridge/logging.properties.j2
-    dest: /etc/jitsi/videobridge/logging.properties
-    owner: jvb
-    group: jitsi
-    mode: 0640
-  notify: restart jitsi-videobridge2
-
 - name: Copy jitsi meet config
   template:
     mode: 0644
     src: meet-config.js.j2
     dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
-
-- name: Enable jitsi-videobridge2
-  service:
-    name: jitsi-videobridge2
-    enabled: yes
 
 - name: Enable jicofo
   service:
