@@ -4,11 +4,13 @@ org.ice4j.ice.harvest.STUN_MAPPING_HARVESTER_ADDRESSES={{ jitsi_meet_config_stun
 org.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS="{{ jitsi_meet_nat_local_ip }}"
 org.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS="{{ jitsi_meet_nat_public_ip }}"
 {% endif %}
+org.jitsi.videobridge.AUTHORIZED_SOURCE_REGEXP=jvbbrewery@internal.auth.{{ jitsi_meet_server_name }}/{{ jitsi_meet_jicofo_user }}.*$
 org.jitsi.videobridge.ENABLE_STATISTICS=true
-org.jitsi.videobridge.STATISTICS_TRANSPORT=muc
-org.jitsi.videobridge.xmpp.user.shard.HOSTNAME=localhost
+org.jitsi.videobridge.STATISTICS_TRANSPORT=muc,colibri
+org.jitsi.videobridge.xmpp.user.shard.HOSTNAME={{ jitsi_meet_videobridge_prosody_server_ip }}
 org.jitsi.videobridge.xmpp.user.shard.DOMAIN=auth.{{ jitsi_meet_server_name }}
 org.jitsi.videobridge.xmpp.user.shard.USERNAME=jvb
 org.jitsi.videobridge.xmpp.user.shard.PASSWORD={{ jitsi_meet_videobridge_password }}
 org.jitsi.videobridge.xmpp.user.shard.MUC_JIDS=JvbBrewery@internal.auth.{{ jitsi_meet_server_name }}
 org.jitsi.videobridge.xmpp.user.shard.MUC_NICKNAME={{ jitsi_meet_videobridge_muc_nickname }}
+org.jitsi.videobridge.xmpp.user.shard.DISABLE_CERTIFICATE_VERIFICATION=true

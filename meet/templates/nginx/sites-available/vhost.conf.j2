@@ -94,9 +94,9 @@ server {
     }
 
     # colibri (JVB) websockets
-{% for videobridge in groups['videobridges'] %}
+{% for videobridge in jitsi_meet_videobridge_instances %}
     location ~ ^/colibri-ws/{{ videobridge }}/(.*) {
-      proxy_pass http://{{ hostvars[videobridge]['ansible_default_ipv4']['address'] }}:9090/colibri-ws/{{ videobridge }}/$1$is_args$args;
+      proxy_pass http://{{ hostvars[videobridge]['private_ipv4'] | default(hostvars[videobridge]['ansible_default_ipv4']['address']) }}:9090/colibri-ws/{{ videobridge }}/$1$is_args$args;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";

@@ -7,11 +7,6 @@
     - jitsi_meet_videobridge_password
   when: jitsi_meet_base_secret is defined
 
-- name: Derive videobridge nickname
-  set_fact:
-    jitsi_meet_videobridge_muc_nickname: "{{ (jitsi_meet_base_secret | string + 'jvb_muc_nick') | to_uuid }}"
-  when: jitsi_meet_base_secret is defined
-
 - name: Set debconf options for jitsi-videobridge
   debconf:
     name: "{{ item.name }}"

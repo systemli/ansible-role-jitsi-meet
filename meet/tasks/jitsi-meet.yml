@@ -23,6 +23,18 @@
       question: jitsi-meet-prosody/turn-secret
       value: "{{ jitsi_meet_turn_secret }}"
       vtype: string
+    - name: jitsi-meet-prosody
+      question: jitsi-videobridge/jvb-hostname
+      value: "{{ jitsi_meet_server_name }}"
+      vtype: string
+    - name: jitsi-videobridge2
+      question: jitsi-videobridge/jvb-hostname
+      value: "{{ jitsi_meet_server_name }}"
+      vtype: string
+    - name: jitsi-meet
+      question: jitsi-meet/jvb-serve
+      value: "false"
+      vtype: boolean
 
 - name: Install jitsi-meet
   apt:
@@ -37,6 +49,14 @@
     owner: jicofo
     group: jitsi
     mode: 0640
+  notify: restart jicofo
+
+- name: Copy jicofo sip-communicator.properties
+  template:
+    src: jicofo/sip-communicator.properties.j2
+    dest: /etc/jitsi/jicofo/sip-communicator.properties
+    owner: jicofo
+    group: jitsi
   notify: restart jicofo
 
 - name: Copy Jicofo log.properties

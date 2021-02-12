@@ -1,12 +1,14 @@
 ---
 
 jitsi_meet_packages:
-  - jitsi-meet
+  - jicofo
   - jitsi-meet-prosody
   - jitsi-meet-web
   - jitsi-meet-web-config
 
 jitsi_meet_server_name: "meet.example.com"
+
+jitsi_meet_videobridge_instances: "{{ groups['videobridges'] }}"
 
 jitsi_meet_jicofo_user: focus
 jitsi_meet_jicofo_port: 5347
