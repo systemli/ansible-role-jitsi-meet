@@ -44,6 +44,11 @@ var config = {
     //
 
     testing: {
+{% if jitsi_meet_octo_enabled -%}
+        octo: {
+            probability: 1
+        },
+{% endif -%}
         // P2P test mode disables automatic switching to P2P when there are 2
         // participants in the conference.
         p2pTestMode: false
@@ -380,8 +385,8 @@ var config = {
     // the user region as seen by the server.
     deploymentInfo: {
         // shard: "shard1",
-        // region: "europe",
-        // userRegion: "asia"
+        region: "{{ jitsi_meet_octo_region }}",
+        userRegion: "{{ jitsi_meet_octo_region }}"
     },
 
     // Decides whether the start/stop recording audio notifications should play on record.

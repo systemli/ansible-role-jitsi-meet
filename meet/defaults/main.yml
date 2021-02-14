@@ -68,6 +68,9 @@ jitsi_meet_title_favicon: images/favicon.ico?v=1
 
 jitsi_meet_debsums_ignore_custom_assets: false
 
+# Octo
+jitsi_meet_octo_enabled: False
+jitsi_meet_octo_selection_strategy: "RegionBasedBridgeSelectionStrategy"
 
 ## Logging
 jitsi_meet_logrotate_retained_days: 7
@@ -77,6 +80,7 @@ jitsi_meet_jicofo_loglevel: "{{ jitsi_meet_loglevel }}"
 # Disable nginx access log per default
 jitsi_meet_nginx_access_log: "off"
 jitsi_meet_nginx_error_log: /var/log/nginx/error.log
+
 jitsi_meet_nginx_ssl_preset: "intermediate"
 jitsi_meet_nginx_ssl_presets:
   modern:

@@ -14,3 +14,13 @@ org.jitsi.videobridge.xmpp.user.shard.PASSWORD={{ jitsi_meet_videobridge_passwor
 org.jitsi.videobridge.xmpp.user.shard.MUC_JIDS=JvbBrewery@internal.auth.{{ jitsi_meet_server_name }}
 org.jitsi.videobridge.xmpp.user.shard.MUC_NICKNAME={{ jitsi_meet_videobridge_muc_nickname }}
 org.jitsi.videobridge.xmpp.user.shard.DISABLE_CERTIFICATE_VERIFICATION=true
+
+{% if jitsi_meet_octo_enabled -%}
+# the address to bind to locally
+org.jitsi.videobridge.octo.BIND_ADDRESS={{ jitsi_meet_octo_private_ip }}
+# the address to advertise (in case BIND_ADDRESS is not accessible)
+org.jitsi.videobridge.octo.PUBLIC_ADDRESS={{ jitsi_meet_octo_public_ip }}
+# the port to bind to
+org.jitsi.videobridge.octo.BIND_PORT=4096
+org.jitsi.videobridge.REGION={{ jitsi_meet_octo_region }}
+{% endif -%}

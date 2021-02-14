@@ -13,5 +13,11 @@ jitsi_meet_single_instance: "{{ inventory_hostname == groups['meet'][0] }}"
 jitsi_meet_videobridge_prosody_server_ip: "{{ jitsi_meet_single_instance | ternary('localhost', (hostvars[groups['meet'][0]]['private_ipv4'] | default(hostvars[groups['meet'][0]]['ansible_default_ipv4']['address']))) }}"
 jitsi_meet_videobridge_muc_nickname: "{{ jitsi_meet_single_instance | ternary('jvb1', ansible_hostname) }}"
 
+# Octo
+jitsi_meet_octo_enabled: False
+jitsi_meet_octo_private_ip: "{{ ansible_default_ipv4.address }}"
+jitsi_meet_octo_public_ip: "{{ ansible_default_ipv4.address }}"
+jitsi_meet_octo_region: region1
+
 ## Logging
 jitsi_meet_videobridge_loglevel: "WARNING"
