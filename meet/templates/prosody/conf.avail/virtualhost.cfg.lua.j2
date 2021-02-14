@@ -15,6 +15,7 @@ turncredentials = {
 
 cross_domain_bosh = false;
 consider_bosh_secure = true;
+https_ports = { }   -- https is proxied through nginx
 
 VirtualHost "{{ jitsi_meet_server_name }}"
         -- enabled = false -- Remove this line to enable this host
