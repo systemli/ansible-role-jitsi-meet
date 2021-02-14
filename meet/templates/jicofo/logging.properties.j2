@@ -1,0 +1,50 @@
+handlers= java.util.logging.ConsoleHandler
+
+# Handlers with XMPP debug enabled:
+#handlers= java.util.logging.ConsoleHandler, org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler
+
+# Handlers with syslog enabled:
+#handlers= java.util.logging.ConsoleHandler, com.agafua.syslog.SyslogHandler
+
+java.util.logging.ConsoleHandler.level = {{ jitsi_meet_jicofo_loglevel }}
+java.util.logging.ConsoleHandler.formatter = org.jitsi.utils.logging2.JitsiLogFormatter
+java.util.logging.ConsoleHandler.filter = org.jitsi.impl.protocol.xmpp.log.ExcludeXmppPackets
+
+net.java.sip.communicator.util.ScLogFormatter.programname=Jicofo
+.level= {{ jitsi_meet_jicofo_loglevel }}
+
+# To enable XMPP packets logging add XmppPacketsFileHandler to the handlers property
+org.jitsi.impl.protocol.xmpp.log.PacketDebugger.level=ALL
+org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler.pattern=/var/log/jitsi/jicofo-xmpp.log
+org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler.append=true
+org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler.limit=200000000
+org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler.count=3
+
+# Syslog (uncomment handler to use)
+com.agafua.syslog.SyslogHandler.transport = udp
+com.agafua.syslog.SyslogHandler.facility = local0
+com.agafua.syslog.SyslogHandler.port = 514
+com.agafua.syslog.SyslogHandler.hostname = localhost
+com.agafua.syslog.SyslogHandler.formatter = org.jitsi.utils.logging2.JitsiLogFormatter
+com.agafua.syslog.SyslogHandler.escapeNewlines = false
+com.agafua.syslog.SyslogHandler.filter = org.jitsi.impl.protocol.xmpp.log.ExcludeXmppPackets
+
+# to disable double timestamps in syslog uncomment next line
+#net.java.sip.communicator.util.ScLogFormatter.disableTimestamp=true
+
+# time series logging
+java.util.logging.SimpleFormatter.format= %5$s%n
+java.util.logging.FileHandler.level = ALL
+java.util.logging.FileHandler.formatter = java.util.logging.SimpleFormatter
+java.util.logging.FileHandler.pattern = /tmp/jvb-series.log
+java.util.logging.FileHandler.limit = 200000000
+java.util.logging.FileHandler.count = 1
+java.util.logging.FileHandler.append = false
+
+timeseries.level=OFF
+timeseries.org.jitsi.videobridge.cc.vp8.level=ALL
+timeseries.useParentHandlers = false
+timeseries.handlers = java.util.logging.FileHandler
+
+# uncomment to see how Jicofo talks to the JVB
+#org.jitsi.impl.protocol.xmpp.colibri.level=ALL
