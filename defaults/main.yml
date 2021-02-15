@@ -24,6 +24,7 @@ jitsi_meet_config_disable_third_party_requests: "true"
 jitsi_meet_config_last_n: "-1"
 jitsi_meet_config_p2p_enabled: "true"
 jitsi_meet_config_layer_suspension: "true"
+jitsi_meet_config_prejoin_page_enabled: "false"
 jitsi_meet_config_require_display_name: "false"
 jitsi_meet_config_resolution: 720
 jitsi_meet_config_constraints:
