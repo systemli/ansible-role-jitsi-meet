@@ -19,5 +19,10 @@ jitsi_meet_octo_private_ip: "{{ ansible_default_ipv4.address }}"
 jitsi_meet_octo_public_ip: "{{ ansible_default_ipv4.address }}"
 jitsi_meet_octo_region: region1
 
+## The packet rate (pps) at which we'll consider the bridge overloaded
+jitsi_meet_videobridge_load_threshold: 50000
+## The packet rate (pps) at which we'll consider the bridge 'underloaded' enough to start recovery
+jitsi_meet_videobridge_recovery_threshold: 40000
+
 ## Logging
 jitsi_meet_videobridge_loglevel: "WARNING"

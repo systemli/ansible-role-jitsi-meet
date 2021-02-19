@@ -10,4 +10,15 @@ videobridge {
     tls = true
     server-id = {{ ansible_hostname }}
   }
+  load-management {
+    load-measurements {
+      packet-rate {
+        # The packet rate at which we'll consider the bridge overloaded
+        load-threshold = {{ jitsi_meet_videobridge_load_threshold }}
+        # The packet rate at which we'll consider the bridge 'underloaded' enough
+        # to start recovery
+        recovery-threshold = {{ jitsi_meet_videobridge_recovery_threshold }}
+      }
+    }
+  }
 }
