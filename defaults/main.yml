@@ -135,3 +135,10 @@ jitsi_meet_nginx_ssl_protocols: "{{ jitsi_meet_nginx_ssl_presets[jitsi_meet_ngin
 jitsi_meet_nginx_ssl_prefer_server_ciphers: "{{ jitsi_meet_nginx_ssl_presets[jitsi_meet_nginx_ssl_preset]['prefer_server_ciphers'] }}"
 jitsi_meet_nginx_ssl_ciphers: "{{ jitsi_meet_nginx_ssl_presets[jitsi_meet_nginx_ssl_preset]['ciphers'] }}"
 jitsi_meet_nginx_ssl_dhparam: "/etc/nginx/dhparam"
+
+# If you are behind a proxy that does SSL termination set this to false
+jitsi_meet_nginx_listen_https_enabled: true
+
+# You need to set both jitsi_meet_nat_local_ip and jitsi_meet_nat_public_ip if you enable NAT
+jitsi_meet_behind_nat_enabled: false
+jitsi_meet_nat_local_ip: "{{ ansible_default_ipv4.address }}"
