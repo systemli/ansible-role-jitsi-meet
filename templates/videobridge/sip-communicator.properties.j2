@@ -1,5 +1,9 @@
 org.ice4j.ice.harvest.DISABLE_AWS_HARVESTER=true
 org.ice4j.ice.harvest.STUN_MAPPING_HARVESTER_ADDRESSES={{ jitsi_meet_config_stun_servers[0] }}
+{% if jitsi_meet_behind_nat_enabled %}
+org.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS="{{ jitsi_meet_nat_local_ip }}"
+org.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS="{{ jitsi_meet_nat_public_ip }}"
+{% endif %}
 org.jitsi.videobridge.ENABLE_STATISTICS=true
 org.jitsi.videobridge.STATISTICS_TRANSPORT=muc
 org.jitsi.videobridge.xmpp.user.shard.HOSTNAME=localhost
