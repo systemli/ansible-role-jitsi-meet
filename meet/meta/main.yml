@@ -1,4 +1,6 @@
 ---
+galaxy_info:
+  role_name: meet
 dependencies:
   - role: systemli.apt_repositories
     vars:

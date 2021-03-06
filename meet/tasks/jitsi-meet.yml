@@ -33,7 +33,7 @@
       vtype: string
     - name: jitsi-meet
       question: jitsi-meet/jvb-serve
-      value: "false"
+      value: "{{ jitsi_meet_single_instance | to_json }}"
       vtype: boolean
 
 - name: Install jitsi-meet

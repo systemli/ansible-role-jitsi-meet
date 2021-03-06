@@ -16,3 +16,6 @@ galaxy_info:
         - buster
   notifications:
     webhooks: https://galaxy.ansible.com/api/v1/notifications/
+dependencies:
+  - role: jitsi_meet/meet
+  - role: jitsi_meet/videobridge

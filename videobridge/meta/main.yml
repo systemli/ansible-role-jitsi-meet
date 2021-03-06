@@ -1,9 +1,10 @@
 ---
+galaxy_info:
+  role_name: videobridge
 dependencies:
   - role: systemli.apt_repositories
     vars:
       apt_repositories:
         - preset: jitsi
           name: download_jitsi_org
-          packages:
-            - jitsi-videobridge2
+          packages: "{{ jitsi_meet_apt_repositories_pin_packages }}"

@@ -9,9 +9,15 @@ jitsi_meet_jicofo_user: focus
 jitsi_meet_videobridge_port: 5347
 
 ## single server vs scalable setup
-jitsi_meet_single_instance: "{{ inventory_hostname == groups['meet'][0] }}"
-jitsi_meet_videobridge_prosody_server_ip: "{{ jitsi_meet_single_instance | ternary('localhost', (hostvars[groups['meet'][0]]['private_ipv4'] | default(hostvars[groups['meet'][0]]['ansible_default_ipv4']['address']))) }}"
+jitsi_meet_single_instance: True
+jitsi_meet_videobridge_prosody_server_ip: "localhost"
 jitsi_meet_videobridge_muc_nickname: "{{ jitsi_meet_single_instance | ternary('jvb1', ansible_hostname) }}"
+_jitsi_meet_apt_repositories_pin_packages:
+  - jicofo
+  - jitsi-meet-prosody
+  - jitsi-meet-web
+  - jitsi-meet-web-config
+jitsi_meet_apt_repositories_pin_packages: "{{ ['jitsi-videobridge2'] + (jitsi_meet_single_instance | ternary(_jitsi_meet_apt_repositories_pin_packages, [])) }}"
 
 # Octo
 jitsi_meet_octo_enabled: False
