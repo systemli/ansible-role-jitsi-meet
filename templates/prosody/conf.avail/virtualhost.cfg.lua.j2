@@ -41,8 +41,12 @@ VirtualHost "{{ jitsi_meet_server_name }}"
             "speakerstats";
             "turncredentials";
             "conference_duration";
+            "muc_lobby_rooms";
         }
         c2s_require_encryption = false
+        lobby_muc = "lobby.{{ jitsi_meet_server_name }}"
+        main_muc = "conference.{{ jitsi_meet_server_name }}"
+        -- muc_lobby_whitelist = { "recorder.{{ jitsi_meet_server_name }}" }
 
 Component "conference.{{ jitsi_meet_server_name }}" "muc"
     storage = "memory"
@@ -83,3 +87,8 @@ Component "conferenceduration.{{ jitsi_meet_server_name }}" "conference_duration
 
 Component "jitsi-videobridge.{{ jitsi_meet_server_name }}"
     component_secret = "{{ jitsi_meet_videobridge_secret }}"
+Component "lobby.{{ jitsi_meet_server_name }}" "muc"
+    storage = "memory"
+    restrict_room_creation = true
+    muc_room_locking = false
+    muc_room_default_public_jids = true
