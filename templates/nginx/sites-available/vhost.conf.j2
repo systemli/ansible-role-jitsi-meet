@@ -39,7 +39,13 @@ server {
     ssl_stapling on;
     ssl_stapling_verify on;
 
+    add_header Expect-CT "enforce, max-age=21600";
+    add_header Content-Security-Policy "img-src 'self' 'unsafe-inline' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';";
+    add_header Referrer-Policy "strict-origin";
     add_header Strict-Transport-Security "max-age=31536000";
+    add_header Permissions-Policy "geolocation=();midi=();notifications=();push=();sync-xhr=();magnetometer=();gyroscope=();speaker=(self);vibrate=();fullscreen=(self);payment=();";
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
 {% endif %}
 
     server_name {{ jitsi_meet_server_name }};
