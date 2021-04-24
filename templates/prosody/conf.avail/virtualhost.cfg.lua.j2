@@ -76,8 +76,8 @@ VirtualHost "auth.{{ jitsi_meet_server_name }}"
     }
     authentication = "internal_plain"
 
-Component "focus.{{ jitsi_meet_server_name }}"
-    component_secret = "{{ jitsi_meet_jicofo_secret }}"
+Component "focus.{{ jitsi_meet_server_name }}" "client_proxy"
+    target_address = "focus@auth.{{ jitsi_meet_server_name }}"
 
 Component "speakerstats.{{ jitsi_meet_server_name }}" "speakerstats_component"
     muc_component = "conference.{{ jitsi_meet_server_name }}"

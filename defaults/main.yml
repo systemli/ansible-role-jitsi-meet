@@ -10,7 +10,6 @@ jitsi_meet_packages:
 jitsi_meet_server_name: "meet.example.com"
 jitsi_meet_videobridge_port: 5347
 jitsi_meet_jicofo_user: focus
-jitsi_meet_jicofo_port: 5347
 
 jitsi_meet_turn_tls_listening_port: 4446
 
