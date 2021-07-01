@@ -33,6 +33,7 @@
     pkg: "{{ jitsi_meet_packages }}"
     install_recommends: no
     state: present
+    cache_valid_time: 3600
 
 - name: Copy sip-communicator.properties
   template:
