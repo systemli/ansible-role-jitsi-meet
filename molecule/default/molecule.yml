@@ -4,7 +4,9 @@ driver:
   provider:
     name: virtualbox
 platforms:
-  - name: buster64-jitsi-meet
+  - name: jitsi-meet-bullseye64
+    box: debian/bullseye64
+  - name: jitsi-meet-buster64
     box: debian/buster64
 provisioner:
   name: ansible
