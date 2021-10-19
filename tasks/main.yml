@@ -5,7 +5,6 @@
     "{{ item }}": "{{ (item + jitsi_meet_base_secret | string) | hash('sha1') }}"
   loop:
     - jitsi_meet_videobridge_secret
-    - jitsi_meet_videobridge_password
     - jitsi_meet_jicofo_password
     - jitsi_meet_turn_secret
   when: jitsi_meet_base_secret is defined
