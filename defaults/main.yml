@@ -24,6 +24,7 @@ jitsi_meet_config_last_n: "-1"
 jitsi_meet_config_p2p_enabled: "true"
 jitsi_meet_config_layer_suspension: "true"
 jitsi_meet_config_prejoin_page_enabled: "false"
+jitsi_meet_config_insecure_room_name_warning: "true"
 jitsi_meet_config_require_display_name: "false"
 jitsi_meet_config_resolution: 720
 jitsi_meet_config_constraints:
@@ -35,6 +36,7 @@ jitsi_meet_config_constraints:
 jitsi_meet_config_start_audio_only: "false"
 jitsi_meet_config_stun_servers:
   - meet-jit-si-turnrelay.jitsi.net:443
+jitsi_meet_config_analytics_disabled: "true"
 
 # Jitsi Meet global variables
 
@@ -73,6 +75,7 @@ jitsi_meet_loglevel: "WARNING"
 jitsi_meet_videobridge_loglevel: "{{ jitsi_meet_loglevel }}"
 jitsi_meet_jicofo_loglevel: "{{ jitsi_meet_loglevel }}"
 jitsi_meet_jicofo_logging_properties: |
+
   handlers= java.util.logging.ConsoleHandler
 
   # Handlers with XMPP debug enabled:

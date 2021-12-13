@@ -23,8 +23,8 @@ ssl = {
 }
 
 unlimited_jids = {
-    "focus@auth.meet-next.systemli.org",
-    "jvb@auth.meet-next.systemli.org"
+    "focus@auth.{{ jitsi_meet_server_name }}",
+    "jvb@auth.{{ jitsi_meet_server_name }}"
 }
 
 VirtualHost "{{ jitsi_meet_server_name }}"
@@ -42,7 +42,7 @@ VirtualHost "{{ jitsi_meet_server_name }}"
         key = "/etc/prosody/certs/{{ jitsi_meet_server_name }}.key";
         certificate = "/etc/prosody/certs/{{ jitsi_meet_server_name }}.crt";
     }
-    av_moderation_component = "avmoderation.meet-next.systemli.org"
+    av_moderation_component = "avmoderation.{{ jitsi_meet_server_name }}"
     speakerstats_component = "speakerstats.{{ jitsi_meet_server_name }}"
     conference_duration_component = "conferenceduration.{{ jitsi_meet_server_name }}"
     -- we need bosh
@@ -54,10 +54,12 @@ VirtualHost "{{ jitsi_meet_server_name }}"
         "external_services";
         "conference_duration";
         "muc_lobby_rooms";
+        "muc_breakout_rooms";
         "av_moderation";
     }
     c2s_require_encryption = false
     lobby_muc = "lobby.{{ jitsi_meet_server_name }}"
+    breakout_rooms_muc = "breakout.{{ jitsi_meet_server_name }}"
     main_muc = "conference.{{ jitsi_meet_server_name }}"
     -- muc_lobby_whitelist = { "recorder.{{ jitsi_meet_server_name }}" } -- Here we can whitelist jibri to enter lobby enabled rooms
 
@@ -69,6 +71,20 @@ Component "conference.{{ jitsi_meet_server_name }}" "muc"
         "muc_domain_mapper";
         "polls";
         --"token_verification";
+        "muc_rate_limit";
+    }
+    admins = { "focus@auth.{{ jitsi_meet_server_name }}" }
+    muc_room_locking = false
+    muc_room_default_public_jids = true
+
+Component "breakout.{{ jitsi_meet_server_name }}" "muc"
+    restrict_room_creation = true
+    storage = "memory"
+    modules_enabled = {
+        "muc_meeting_id";
+        "muc_domain_mapper";
+        --"token_verification";
+        "muc_rate_limit";
     }
     admins = { "focus@auth.{{ jitsi_meet_server_name }}" }
     muc_room_locking = false
@@ -112,3 +128,6 @@ Component "lobby.{{ jitsi_meet_server_name }}" "muc"
     restrict_room_creation = true
     muc_room_locking = false
     muc_room_default_public_jids = true
+    modules_enabled = {
+        "muc_rate_limit";
+    }

@@ -1,40 +1,52 @@
 #jinja2: lstrip_blocks: "True"
+server_names_hash_bucket_size 64;
+
+types {
+# nginx's default mime.types doesn't include a mapping for wasm
+    application/wasm     wasm;
+}
 server {
     listen 80;
     listen [::]:80;
     server_name {{ jitsi_meet_server_name }};
 
     location ^~ /.well-known/acme-challenge/ {
-       default_type "text/plain";
-       root         /usr/share/jitsi-meet;
+        default_type "text/plain";
+        root         /usr/share/jitsi-meet;
     }
     location = /.well-known/acme-challenge/ {
-       return 404;
+        return 404;
     }
 {% if jitsi_meet_nginx_listen_https_enabled %}
     location / {
-       return 301 https://$host$request_uri;
+        return 301 https://$host$request_uri;
     }
 }
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
+    server_name {{ jitsi_meet_server_name }};
 
+    # Mozilla Guideline v5.4, nginx 1.17.7, OpenSSL 1.1.1d, intermediate configuration
     ssl_protocols {{ jitsi_meet_nginx_ssl_protocols }};
-    ssl_prefer_server_ciphers {{ jitsi_meet_nginx_ssl_prefer_server_ciphers }};
     {% if not jitsi_meet_nginx_ssl_ciphers == "" %}
-    ssl_ciphers "{{ jitsi_meet_nginx_ssl_ciphers }}";
+    ssl_ciphers {{ jitsi_meet_nginx_ssl_ciphers }};
     {% endif %}
+    ssl_prefer_server_ciphers {{ jitsi_meet_nginx_ssl_prefer_server_ciphers }};
 
     {% if not jitsi_meet_nginx_ssl_preset == "modern" %}
     ssl_dhparam {{ jitsi_meet_nginx_ssl_dhparam }};
     {% endif %}
 
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:10m;  # about 40000 sessions
+    ssl_session_tickets off;
+
+    add_header Strict-Transport-Security "max-age=63072000" always;
+    set $prefix "";
+
     ssl_certificate {{ jitsi_meet_ssl_cert_path }};
     ssl_certificate_key {{ jitsi_meet_ssl_key_path }};
-    ssl_session_timeout 1d;
-    ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
-    ssl_session_tickets off;
 
     ssl_stapling on;
     ssl_stapling_verify on;
@@ -42,13 +54,10 @@ server {
     add_header Expect-CT "enforce, max-age=21600";
     add_header Content-Security-Policy "img-src 'self' 'unsafe-inline' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';";
     add_header Referrer-Policy "strict-origin";
-    add_header Strict-Transport-Security "max-age=31536000";
     add_header Permissions-Policy "geolocation=();midi=();notifications=();push=();sync-xhr=();magnetometer=();gyroscope=();speaker=(self);vibrate=();fullscreen=(self);payment=();";
     add_header X-Content-Type-Options nosniff;
     add_header X-XSS-Protection "1; mode=block";
 {% endif %}
-
-    server_name {{ jitsi_meet_server_name }};
 
     root /usr/share/jitsi-meet;
 
@@ -60,8 +69,10 @@ server {
     error_page 404 /static/404.html;
 
     gzip on;
-    gzip_types text/plain text/css application/javascript application/json;
+    gzip_types text/plain text/css application/javascript application/json image/x-icon application/octet-stream application/wasm;
     gzip_vary on;
+    gzip_proxied no-cache no-store private expired auth;
+    gzip_min_length 512;
 
     location = /config.js {
         alias /etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js;
@@ -75,16 +86,21 @@ server {
         alias /usr/share/jitsi-meet/libs/external_api.min.js;
     }
 
-    #ensure all static content can always be found first
+    # ensure all static content can always be found first
     location ~ ^/(libs|css|static|images|fonts|lang|sounds|connection_optimization|.well-known)/(.*)$
     {
         add_header 'Access-Control-Allow-Origin' '*';
         alias /usr/share/jitsi-meet/$1/$2;
+
+        # cache all versioned files
+        if ($arg_v) {
+            expires 1y;
+        }
     }
 
     # BOSH
     location = /http-bind {
-        proxy_pass      http://localhost:5280/http-bind;
+        proxy_pass http://127.0.0.1:5280/http-bind?prefix=$prefix&$args;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Host $http_host;
     }
@@ -101,12 +117,21 @@ server {
 
     # colibri (JVB) websockets for jvb1
     location ~ ^/colibri-ws/default-id/(.*) {
-       proxy_pass http://127.0.0.1:9090/colibri-ws/default-id/$1$is_args$args;
-       proxy_http_version 1.1;
-       proxy_set_header Upgrade $http_upgrade;
-       proxy_set_header Connection "upgrade";
-       tcp_nodelay on;
+        proxy_pass http://127.0.0.1:9090/colibri-ws/default-id/$1$is_args$args;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        tcp_nodelay on;
     }
+
+    # load test minimal client, uncomment when used
+    #location ~ ^/_load-test/([^/?&:'"]+)$ {
+    #    rewrite ^/_load-test/(.*)$ /load-test/index.html break;
+    #}
+    #location ~ ^/_load-test/libs/(.*)$ {
+    #    add_header 'Access-Control-Allow-Origin' '*';
+    #    alias /usr/share/jitsi-meet/load-test/libs/$1;
+    #}
 
     location ~ ^/([^/?&:'"]+)$ {
         try_files $uri @root_path;
@@ -118,17 +143,10 @@ server {
 
     location ~ ^/([^/?&:'"]+)/config.js$
     {
-       set $subdomain "$1.";
-       set $subdir "$1/";
-
-       alias /etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js;
-    }
-
-    #Anything that didn't match above, and isn't a real file, assume it's a room name and redirect to /
-    location ~ ^/([^/?&:'"]+)/(.*)$ {
         set $subdomain "$1.";
         set $subdir "$1/";
-        rewrite ^/([^/?&:'"]+)/(.*)$ /$2;
+
+        alias /etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js;
     }
 
     # BOSH for subdomains
@@ -147,5 +165,12 @@ server {
         set $prefix "$1";
 
         rewrite ^/(.*)$ /xmpp-websocket;
+    }
+
+    # Anything that didn't match above, and isn't a real file, assume it's a room name and redirect to /
+    location ~ ^/([^/?&:'"]+)/(.*)$ {
+        set $subdomain "$1.";
+        set $subdir "$1/";
+        rewrite ^/([^/?&:'"]+)/(.*)$ /$2;
     }
 }
