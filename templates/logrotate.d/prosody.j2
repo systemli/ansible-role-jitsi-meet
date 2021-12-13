@@ -5,7 +5,7 @@
 	delaycompress
 	create 640 prosody adm
 	postrotate
-	        [ ! -e /run/prosody/prosody.pid ] || /usr/bin/prosodyctl reload > /dev/null
+	        [ ! -e /run/prosody/prosody.pid ] || service prosody reload > /dev/null
 	endscript
 	sharedscripts
 	missingok
