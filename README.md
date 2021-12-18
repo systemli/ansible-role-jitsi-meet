@@ -63,7 +63,19 @@ pip install molecule-vagrant ansible-lint yamllint
 molecule test
 ```
 
-This requires [Vagrant](https://www.vagrantup.com/downloads.html) to be installed.
+This  requires [Vagrant](https://www.vagrantup.com/downloads.html) to be installed.
+
+Debugging
+---------
+
+For local debugging you can run the following commands:
+
+```
+molecule create
+molecule converge
+```
+
+This will spin up an instance which is reachable via `https://localhost:8443/`.
 
 License
 -------
