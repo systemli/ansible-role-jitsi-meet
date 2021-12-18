@@ -87,6 +87,11 @@
   command: prosodyctl register focus auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_jicofo_password }}  # noqa: 301
   changed_when: false
 
+# See https://github.com/jitsi/jitsi-meet/blob/master/debian/jitsi-meet-prosody.postinst#L170
+- name: Ensure focus user is subscribed to proxy component after re-registering it
+  command: prosodyctl mod_roster_command subscribe focus.{{ jitsi_meet_server_name }} focus@auth.{{ jitsi_meet_server_name }} # noqa: 301
+  changed_when: false
+
 - name: Delete focus prosody account
   command: prosodyctl deluser jvb@auth.{{ jitsi_meet_server_name }}
   failed_when: false
