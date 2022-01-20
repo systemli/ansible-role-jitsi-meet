@@ -2,11 +2,7 @@
 
 - name: Derive individual secrets from base secret
   set_fact:
-    "{{ item }}": "{{ (item + jitsi_meet_base_secret | string) | hash('sha1') }}"
-  loop:
-    - jitsi_meet_videobridge_secret
-    - jitsi_meet_jicofo_password
-    - jitsi_meet_turn_secret
+    jitsi_meet_turn_secret: "{{ ('jitsi_meet_turn_secret' + jitsi_meet_base_secret | string) | hash('sha1') }}"
   when: jitsi_meet_base_secret is defined
 
 - name: Derive videobridge nickname
