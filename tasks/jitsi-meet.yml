@@ -117,4 +117,5 @@
     name: jicofo
     enabled: yes
 
-- meta: flush_handlers
+- name: Flush handlers
+  meta: flush_handlers

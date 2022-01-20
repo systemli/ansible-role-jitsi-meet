@@ -75,8 +75,8 @@
     state: link
   notify:
     - update ca-certificates
-
-- meta: flush_handlers
+- name: Flush handlers
+  meta: flush_handlers
 
 - name: Enable prosody
   service:
