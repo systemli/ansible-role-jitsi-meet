@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - ".*"
+      - ".github/**"
+      - "README.md"
   schedule:
     # * is a special character in YAML so you have to quote this string
     # first of each month
@@ -16,7 +20,5 @@ jobs:
     uses: systemli/github-ansible-workflow/.github/workflows/ansible-integration-workflow.yaml@main
     with:
       distros: '[ "debian11", "debian10" ]'
-      role-dependencies: |
-        - src: systemli.apt_repositories
     secrets:
       galaxy-token: ${{ secrets.galaxy_api_key }}
