@@ -22,5 +22,3 @@ jobs:
       distros: '[ "debian11", "debian10" ]'
       role-dependencies: |
         - src: systemli.apt_repositories
-    secrets:
-      galaxy-token: ${{ secrets.galaxy_api_key }}
