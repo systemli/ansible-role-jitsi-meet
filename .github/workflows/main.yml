@@ -19,6 +19,6 @@ jobs:
     name: Integration
     uses: systemli/github-ansible-workflow/.github/workflows/ansible-integration-workflow.yaml@main
     with:
-      distros: '[ "debian11", "debian10" ]'
+      distros: '[ "debian11", ]'
       role-dependencies: |
         - src: systemli.apt_repositories
