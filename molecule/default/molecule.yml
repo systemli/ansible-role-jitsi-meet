@@ -8,8 +8,6 @@ platforms:
     box: debian/bullseye64
     instance_raw_config_args:
       - "vm.network 'forwarded_port', guest: 443, host: 8443"
-  - name: jitsi-meet-buster64
-    box: debian/buster64
 provisioner:
   name: ansible
   become: True

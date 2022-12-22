@@ -10,6 +10,10 @@
     jitsi_meet_videobridge_muc_nickname: "{{ (jitsi_meet_base_secret | string + 'jvb_muc_nick') | to_uuid }}"
   when: jitsi_meet_base_secret is defined
 
+- name: Install dependencies
+  apt:
+    pkg: "{{ jitsi_meet_dependencies }}"
+
 - name: Import main tasks
   import_tasks: jitsi-meet.yml
 - name: Import prosody tasks

@@ -1,11 +1,11 @@
 ---
 
+jitsi_meet_dependencies:
+  - lua5.2
+  - apt-utils
+
 jitsi_meet_packages:
   - jitsi-meet
-  - jitsi-meet-prosody
-  - jitsi-meet-web
-  - jitsi-meet-web-config
-  - jitsi-videobridge2
 
 jitsi_meet_server_name: "meet.example.com"
 jitsi_meet_videobridge_port: 5347

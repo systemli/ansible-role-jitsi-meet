@@ -37,16 +37,12 @@
 
 - name: Get jitsi_meet_videobridge_secret from config file
   command: sed -ne 's/^JICOFO_AUTH_PASSWORD=\(\S\+\)\s*$/\1/p' /etc/jitsi/jicofo/config
-  args:
-    warn: False
   check_mode: no
   changed_when: False
   register: jitsi_meet_jicofo_password_from_file
 
 - name: Get jitsi_meet_jicofo_password from config file
   command: sed -ne 's/^JVB_SECRET=\(\S\+\)\s*$/\1/p' /etc/jitsi/videobridge/config
-  args:
-    warn: False
   check_mode: no
   changed_when: False
   register: jitsi_meet_videobridge_password_from_file
