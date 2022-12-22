@@ -21,6 +21,7 @@ dependencies:
   - role: systemli.apt_repositories
     vars:
       apt_repositories:
+        - preset: prosody
         - preset: jitsi
           name: download_jitsi_org
           packages: "{{ jitsi_meet_packages }}"
