@@ -14,14 +14,14 @@
     owner: root
     group: root
     mode: "0644"
-  notify: reload nginx
+  notify: Reload nginx
 
 - name: Add mimetype for wasm files.
   lineinfile:
     path: /etc/nginx/mime.types
     line: "    application/wasm                      wasm;"
     insertbefore: '^\}$'
-  notify: reload nginx
+  notify: Reload nginx
 
 - name: Copy Nginx config for Jitsi Meet domain.
   template:
@@ -30,26 +30,26 @@
     owner: root
     group: root
     mode: "0644"
-  notify: reload nginx
+  notify: Reload nginx
 
 - name: Ensure Nginx multiplexer config is absent
   file:
     path: "/etc/nginx/modules-enabled/60-jitsi-meet.conf"
     state: absent
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Deactivate default Nginx site.
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-  notify: reload nginx
+  notify: Reload nginx
 
 - name: Generate dhparam
   shell: "openssl dhparam 1024 > {{ jitsi_meet_nginx_ssl_dhparam }}"
   args:
     creates: "{{ jitsi_meet_nginx_ssl_dhparam }}"
   when: jitsi_meet_nginx_ssl_preset == 'old'
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Copy dhparam
   copy:
@@ -59,14 +59,14 @@
     group: root
     mode: "0640"
   when: jitsi_meet_nginx_ssl_preset == 'intermediate'
-  notify: restart nginx
+  notify: Restart nginx
 
 - name: Activate custom Jitsi Meet Nginx site.
   file:
     path: "/etc/nginx/sites-enabled/{{ jitsi_meet_server_name }}.conf"
     src: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
     state: link
-  notify: reload nginx
+  notify: Reload nginx
 
 - name: Enable nginx
   service:

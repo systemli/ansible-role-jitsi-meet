@@ -63,7 +63,7 @@
     owner: jvb
     group: jitsi
     mode: 0640
-  notify: restart jitsi-videobridge2
+  notify: Restart jitsi-videobridge2
 
 - name: Copy jicofo config
   template:
@@ -72,7 +72,7 @@
     owner: jicofo
     group: jitsi
     mode: 0640
-  notify: restart jicofo
+  notify: Restart jicofo
 
 - name: Copy Jicofo log.properties
   copy:
@@ -81,7 +81,7 @@
     owner: jicofo
     group: jitsi
     mode: 0640
-  notify: restart jicofo
+  notify: Restart jicofo
 
 - name: Copy jitsi-videobridge2 config
   template:
@@ -90,7 +90,7 @@
     owner: jvb
     group: jitsi
     mode: 0640
-  notify: restart jitsi-videobridge2
+  notify: Restart jitsi-videobridge2
 
 - name: Copy jitsi-videobridge2 log.properties
   template:
@@ -99,7 +99,7 @@
     owner: jvb
     group: jitsi
     mode: 0640
-  notify: restart jitsi-videobridge2
+  notify: Restart jitsi-videobridge2
 
 - name: Copy jitsi meet config
   template:

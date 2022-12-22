@@ -1,29 +1,29 @@
 ---
 
-- name: restart prosody
+- name: Restart prosody
   service:
     name: prosody
     state: restarted
 
-- name: reload nginx
+- name: Reload nginx
   service:
     name: nginx
     state: reloaded
 
-- name: restart nginx
+- name: Restart nginx
   service:
     name: nginx
     state: restarted
 
-- name: restart jitsi-videobridge2
+- name: Restart jitsi-videobridge2
   service:
     name: jitsi-videobridge2
     state: restarted
 
-- name: restart jicofo
+- name: Restart jicofo
   service:
     name: jicofo
     state: restarted
 
-- name: update ca-certificates
+- name: Update ca-certificates
   command: update-ca-certificates -f
