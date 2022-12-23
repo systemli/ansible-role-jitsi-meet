@@ -1,8 +1,9 @@
 ---
 
 jitsi_meet_dependencies:
-  - lua5.2
   - apt-utils
+  - lua5.2
+  - lua-unbound
 
 jitsi_meet_packages:
   - jitsi-meet
