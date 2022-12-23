@@ -16,6 +16,16 @@ cross_domain_bosh = false;
 consider_bosh_secure = true;
 https_ports = { }; -- Fix bind error
 
+-- by default prosody 0.12 sends cors headers, if you want to disable it uncomment the following (the config is available on 0.12.1)
+--http_cors_override = {
+--    bosh = {
+--        enabled = false;
+--    };
+--    websocket = {
+--        enabled = false;
+--    };
+--}
+
 -- https://ssl-config.mozilla.org/#server=haproxy&version=2.1&config=intermediate&openssl=1.1.0g&guideline=5.4
 ssl = {
     protocol = "tlsv1_2+";
@@ -28,8 +38,7 @@ unlimited_jids = {
 }
 
 VirtualHost "{{ jitsi_meet_server_name }}"
-    -- enabled = false -- Remove this line to enable this host
-    authentication = "anonymous"
+    authentication = "jitsi-anonymous" -- do not delete me
     -- Properties below are modified by jitsi-meet-tokens package config
     -- and authentication above is switched to "token"
     --app_id="example_app_id"
@@ -45,6 +54,7 @@ VirtualHost "{{ jitsi_meet_server_name }}"
     av_moderation_component = "avmoderation.{{ jitsi_meet_server_name }}"
     speakerstats_component = "speakerstats.{{ jitsi_meet_server_name }}"
     conference_duration_component = "conferenceduration.{{ jitsi_meet_server_name }}"
+    end_conference_component = "endconference.{{ jitsi_meet_server_name }}"
     -- we need bosh
     modules_enabled = {
         "bosh";
@@ -53,13 +63,16 @@ VirtualHost "{{ jitsi_meet_server_name }}"
         "speakerstats";
         "external_services";
         "conference_duration";
+        "end_conference";
         "muc_lobby_rooms";
         "muc_breakout_rooms";
         "av_moderation";
+        "room_metadata";
     }
     c2s_require_encryption = false
     lobby_muc = "lobby.{{ jitsi_meet_server_name }}"
     breakout_rooms_muc = "breakout.{{ jitsi_meet_server_name }}"
+    room_metadata_component = "metadata.{{ jitsi_meet_server_name }}"
     main_muc = "conference.{{ jitsi_meet_server_name }}"
     -- muc_lobby_whitelist = { "recorder.{{ jitsi_meet_server_name }}" } -- Here we can whitelist jibri to enter lobby enabled rooms
 
@@ -120,6 +133,9 @@ Component "speakerstats.{{ jitsi_meet_server_name }}" "speakerstats_component"
 Component "conferenceduration.{{ jitsi_meet_server_name }}" "conference_duration_component"
     muc_component = "conference.{{ jitsi_meet_server_name }}"
 
+Component "endconference.{{ jitsi_meet_server_name }}" "end_conference"
+    muc_component = "conference.{{ jitsi_meet_server_name }}"
+
 Component "avmoderation.{{ jitsi_meet_server_name }}" "av_moderation_component"
     muc_component = "conference.{{ jitsi_meet_server_name }}"
 
@@ -130,4 +146,9 @@ Component "lobby.{{ jitsi_meet_server_name }}" "muc"
     muc_room_default_public_jids = true
     modules_enabled = {
         "muc_rate_limit";
+        "polls";
     }
+
+Component "metadata.{{ jitsi_meet_server_name }}" "room_metadata_component"
+    muc_component = "conference.{{ jitsi_meet_server_name }}"
+    breakout_rooms_component = "breakout.{{ jitsi_meet_server_name }}"
