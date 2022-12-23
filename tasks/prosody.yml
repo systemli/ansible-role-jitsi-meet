@@ -79,6 +79,15 @@
 - name: Flush handlers
   meta: flush_handlers
 
+- name: Delete prosody videobridge account
+  command: prosodyctl deluser jvb@auth.{{ jitsi_meet_server_name }}
+  failed_when: false
+  changed_when: false
+
+- name: Register jvb agent with Prosody service.
+  command: prosodyctl register jvb auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_videobridge_secret }}  # noqa: 301
+  changed_when: false
+
 - name: Enable prosody
   service:
     name: prosody

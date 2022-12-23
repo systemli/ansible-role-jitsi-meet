@@ -41,15 +41,8 @@
   changed_when: False
   register: jitsi_meet_jicofo_password_from_file
 
-- name: Get jitsi_meet_jicofo_password from config file
-  command: sed -ne 's/^JVB_SECRET=\(\S\+\)\s*$/\1/p' /etc/jitsi/videobridge/config
-  check_mode: no
-  changed_when: False
-  register: jitsi_meet_videobridge_password_from_file
-
 - name: Set fact for jitsi_meet_videobridge_secret
   set_fact:
-    jitsi_meet_videobridge_secret: "{{ jitsi_meet_videobridge_password_from_file.stdout }}"
     jitsi_meet_jicofo_password: "{{ jitsi_meet_jicofo_password_from_file.stdout }}"
 
 - name: Copy sip-communicator.properties
