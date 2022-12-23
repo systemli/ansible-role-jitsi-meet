@@ -77,6 +77,15 @@ molecule converge
 
 This will spin up an instance which is reachable via `https://localhost:8443/`.
 
+Remove Jitsi
+-----------
+
+```
+sudo apt purge jigasi jitsi-meet jitsi-meet-web-config jitsi-meet-prosody jitsi-meet-turnserver jitsi-meet-web jicofo jitsi-videobridge2 nginx* jitsi* prosody lua5.2
+sudo apt autoremove --purge
+sudo rm -r /etc/jitsi/ /usr/share/jitsi-meet/ /usr/share/jitsi-videobridge/ /etc/prosody/ /var/lib/prosody/ /etc/apt/sources.list.d/download_jitsi_org.sources /etc/apt/sources.list.d/packages.prosody.im.sources /etc/apt/preferences.d/download_jitsi_org.pref /etc/apt/preferences.d/packages.prosody.im.pref 
+```
+
 License
 -------
 
