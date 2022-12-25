@@ -5,7 +5,7 @@ galaxy_info:
   description: Install and maintain jitsi-meet. Contains tests for Molecule.
   company: systemli.org
   license: GPLv3
-  min_ansible_version: 2.2
+  min_ansible_version: "2.2"
   galaxy_tags:
     - networking
     - jitsi
@@ -14,8 +14,6 @@ galaxy_info:
     - name: Debian
       versions:
         - bullseye
-  notifications:
-    webhooks: https://galaxy.ansible.com/api/v1/notifications/
 dependencies:
   - role: systemli.apt_repositories
     vars:

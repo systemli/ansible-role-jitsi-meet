@@ -143,4 +143,4 @@ jitsi_meet_nginx_listen_https_enabled: true
 
 # You need to set both jitsi_meet_nat_local_ip and jitsi_meet_nat_public_ip if you enable NAT
 jitsi_meet_behind_nat_enabled: false
-jitsi_meet_nat_local_ip: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+jitsi_meet_nat_local_ip: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
