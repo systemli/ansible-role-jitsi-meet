@@ -35,16 +35,6 @@
     state: present
     cache_valid_time: 3600
 
-- name: Get jitsi_meet_videobridge_secret from config file
-  command: sed -ne 's/^JICOFO_AUTH_PASSWORD=\(\S\+\)\s*$/\1/p' /etc/jitsi/jicofo/config
-  check_mode: no
-  changed_when: False
-  register: jitsi_meet_jicofo_password_from_file
-
-- name: Set fact for jitsi_meet_videobridge_secret
-  set_fact:
-    jitsi_meet_jicofo_password: "{{ jitsi_meet_jicofo_password_from_file.stdout }}"
-
 - name: Copy videobridge configs
   template:
     src: "videobridge/{{ item }}.j2"
@@ -57,15 +47,6 @@
     - logging.properties
     - sip-communicator.properties
   notify: Restart jitsi-videobridge2
-
-- name: Copy jicofo config
-  template:
-    src: jicofo/config.j2
-    dest: /etc/jitsi/jicofo/config
-    owner: jicofo
-    group: jitsi
-    mode: 0640
-  notify: Restart jicofo
 
 - name: Copy Jicofo log.properties
   copy:
