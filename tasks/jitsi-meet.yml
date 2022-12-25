@@ -45,7 +45,7 @@
   set_fact:
     jitsi_meet_jicofo_password: "{{ jitsi_meet_jicofo_password_from_file.stdout }}"
 
-- name: Copy videopridge configs
+- name: Copy videobridge configs
   template:
     src: "videobridge/{{ item }}.j2"
     dest: "/etc/jitsi/videobridge/{{ item }}"
@@ -53,7 +53,6 @@
     group: jitsi
     mode: 0640
   loop:
-    - config
     - jvb.conf
     - logging.properties
     - sip-communicator.properties
