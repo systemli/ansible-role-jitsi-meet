@@ -4,7 +4,7 @@
   become: True
   vars:
     jitsi_meet_base_secret: my_very_own_secret
-    jitsi_meet_server_name: jisti-meet.example.org
+    jitsi_meet_server_name: jitsi-meet.example.org
     jitsi_meet_nat_local_ip: 127.0.0.1
   roles:
     - role: ansible-role-jitsi-meet
