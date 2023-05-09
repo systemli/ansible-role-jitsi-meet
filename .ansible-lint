@@ -3,5 +3,4 @@ exclude_paths:
   - molecule/
   - .github/
 skip_list:
-  - fqcn-builtins
-  - 'command-instead-of-module'  # Sed used in place of template, replace or lineinfile module
+  - "command-instead-of-module" # Sed used in place of template, replace or lineinfile module

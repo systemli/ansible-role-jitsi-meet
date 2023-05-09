@@ -1,7 +1,6 @@
 ---
-
 - name: Copy prosody config
-  template:
+  ansible.builtin.template:
     src: prosody/prosody.cfg.lua.j2
     dest: "/etc/prosody/prosody.cfg.lua"
     mode: 0640
@@ -11,7 +10,7 @@
   notify: Restart prosody
 
 - name: Copy additional prosody config
-  template:
+  ansible.builtin.template:
     src: prosody/conf.avail/virtualhost.cfg.lua.j2
     dest: "/etc/prosody/conf.avail/{{ jitsi_meet_server_name }}.cfg.lua"
     mode: 0644
@@ -21,7 +20,7 @@
   notify: Restart prosody
 
 - name: Link additional prosody config
-  file:
+  ansible.builtin.file:
     src: "/etc/prosody/conf.avail/{{ jitsi_meet_server_name }}.cfg.lua"
     dest: "/etc/prosody/conf.d/{{ jitsi_meet_server_name }}.cfg.lua"
     owner: root
@@ -30,7 +29,7 @@
   notify: Restart prosody
 
 - name: Generate SSL keypair for Prosody service
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     yes '' | prosodyctl cert generate {{ item }}
   args:
@@ -47,7 +46,7 @@
     - Update ca-certificates
 
 - name: Link main SSL certificate to /etc/prosody/certs/
-  file:
+  ansible.builtin.file:
     src: "/var/lib/prosody/{{ jitsi_meet_server_name }}.{{ item }}"
     dest: "/etc/prosody/certs/{{ jitsi_meet_server_name }}.{{ item }}"
     state: link
@@ -58,7 +57,7 @@
     - Restart prosody
 
 - name: Link auth SSL certificate to /etc/prosody/certs/
-  file:
+  ansible.builtin.file:
     src: "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.{{ item }}"
     dest: "/etc/prosody/certs/auth.{{ jitsi_meet_server_name }}.{{ item }}"
     state: link
@@ -69,7 +68,7 @@
     - Restart prosody
 
 - name: Link auth certificate to trusted store
-  file:
+  ansible.builtin.file:
     src: "/var/lib/prosody/auth.{{ jitsi_meet_server_name }}.crt"
     dest: "/usr/local/share/ca-certificates/auth.{{ jitsi_meet_server_name }}.crt"
     state: link
@@ -77,18 +76,18 @@
     - Update ca-certificates
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Delete prosody videobridge account
-  command: prosodyctl deluser jvb@auth.{{ jitsi_meet_server_name }}
+  ansible.builtin.command: prosodyctl deluser jvb@auth.{{ jitsi_meet_server_name }}
   failed_when: false
   changed_when: false
 
 - name: Register jvb agent with Prosody service.
-  command: prosodyctl register jvb auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_videobridge_secret }}  # no-changed-when
+  ansible.builtin.command: prosodyctl register jvb auth.{{ jitsi_meet_server_name }} {{ jitsi_meet_videobridge_secret }} # no-changed-when
   changed_when: false
 
 - name: Enable prosody
-  service:
+  ansible.builtin.service:
     name: prosody
     enabled: yes

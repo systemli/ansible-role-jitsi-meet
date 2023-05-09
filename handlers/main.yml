@@ -1,29 +1,30 @@
 ---
-
 - name: Restart prosody
-  service:
+  ansible.builtin.service:
     name: prosody
     state: restarted
 
 - name: Reload nginx
-  service:
+  ansible.builtin.service:
     name: nginx
     state: reloaded
 
 - name: Restart nginx
-  service:
+  ansible.builtin.service:
     name: nginx
     state: restarted
 
 - name: Restart jitsi-videobridge2
-  service:
+  ansible.builtin.service:
     name: jitsi-videobridge2
     state: restarted
 
 - name: Restart jicofo
-  service:
+  ansible.builtin.service:
     name: jicofo
     state: restarted
 
 - name: Update ca-certificates
-  command: update-ca-certificates -f
+  ansible.builtin.command: update-ca-certificates -f
+  register: update_ca_certificates
+  changed_when: update_ca_certificates.rc != 0

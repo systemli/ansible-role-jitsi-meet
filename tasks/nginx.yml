@@ -1,14 +1,13 @@
 ---
-
 - name: Ensure that nginx is installed.
-  apt:
+  ansible.builtin.apt:
     name:
       - nginx
       - python3-certbot-nginx
     state: present
 
 - name: Adjust global nginx config.
-  template:
+  ansible.builtin.template:
     src: nginx/nginx.conf.j2
     dest: /etc/nginx/nginx.conf
     owner: root
@@ -17,14 +16,14 @@
   notify: Reload nginx
 
 - name: Add mimetype for wasm files.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/nginx/mime.types
     line: "    application/wasm                      wasm;"
     insertbefore: '^\}$'
   notify: Reload nginx
 
 - name: Copy Nginx config for Jitsi Meet domain.
-  template:
+  ansible.builtin.template:
     dest: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
     src: nginx/sites-available/vhost.conf.j2
     owner: root
@@ -33,26 +32,26 @@
   notify: Reload nginx
 
 - name: Ensure Nginx multiplexer config is absent
-  file:
+  ansible.builtin.file:
     path: "/etc/nginx/modules-enabled/60-jitsi-meet.conf"
     state: absent
   notify: Restart nginx
 
 - name: Deactivate default Nginx site.
-  file:
+  ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
   notify: Reload nginx
 
 - name: Generate dhparam
-  shell: "openssl dhparam 1024 > {{ jitsi_meet_nginx_ssl_dhparam }}"
+  ansible.builtin.shell: "openssl dhparam 1024 > {{ jitsi_meet_nginx_ssl_dhparam }}"
   args:
     creates: "{{ jitsi_meet_nginx_ssl_dhparam }}"
   when: jitsi_meet_nginx_ssl_preset == 'old'
   notify: Restart nginx
 
 - name: Copy dhparam
-  copy:
+  ansible.builtin.copy:
     src: "dhparam"
     dest: "{{ jitsi_meet_nginx_ssl_dhparam }}"
     owner: root
@@ -62,13 +61,13 @@
   notify: Restart nginx
 
 - name: Activate custom Jitsi Meet Nginx site.
-  file:
+  ansible.builtin.file:
     path: "/etc/nginx/sites-enabled/{{ jitsi_meet_server_name }}.conf"
     src: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
     state: link
   notify: Reload nginx
 
 - name: Enable nginx
-  service:
+  ansible.builtin.service:
     name: nginx
     enabled: yes

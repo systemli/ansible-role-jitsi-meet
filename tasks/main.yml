@@ -1,34 +1,33 @@
 ---
-
 - name: Derive individual secrets from base secret
-  set_fact:
-      "{{ item }}": "{{ (item + jitsi_meet_base_secret | string) | hash('sha1') }}"
+  ansible.builtin.set_fact:
+    "{{ item }}": "{{ (item + jitsi_meet_base_secret | string) | hash('sha1') }}"
   loop:
     - jitsi_meet_videobridge_secret
-#    - jitsi_meet_jicofo_password
+    #    - jitsi_meet_jicofo_password
     - jitsi_meet_turn_secret
   when: jitsi_meet_base_secret is defined
 
 - name: Derive videobridge nickname
-  set_fact:
+  ansible.builtin.set_fact:
     jitsi_meet_videobridge_muc_nickname: "{{ (jitsi_meet_base_secret | string + 'jvb_muc_nick') | to_uuid }}"
   when: jitsi_meet_base_secret is defined
 
 - name: Install dependencies
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ jitsi_meet_dependencies }}"
 
 - name: Import main tasks
-  import_tasks: jitsi-meet.yml
+  ansible.builtin.import_tasks: jitsi-meet.yml
 - name: Import prosody tasks
-  import_tasks: prosody.yml
+  ansible.builtin.import_tasks: prosody.yml
 - name: Import UI tasks
-  import_tasks: ui_customization.yml
+  ansible.builtin.import_tasks: ui_customization.yml
 - name: Import NGinX tasks
-  import_tasks: nginx.yml
+  ansible.builtin.import_tasks: nginx.yml
 
 - name: Generate logrotate configs
-  template:
+  ansible.builtin.template:
     src: logrotate.d/{{ item }}.j2
     dest: /etc/logrotate.d/{{ item }}
     owner: root
