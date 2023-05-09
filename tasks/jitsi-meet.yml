@@ -1,7 +1,6 @@
 ---
-
 - name: Set debconf options for jitsi-meet
-  debconf:
+  ansible.builtin.debconf:
     name: "{{ item.name }}"
     question: "{{ item.question }}"
     value: "{{ item.value }}"
@@ -29,14 +28,14 @@
       vtype: string
 
 - name: Install jitsi-meet
-  apt:
+  ansible.builtin.apt:
     pkg: "{{ jitsi_meet_packages }}"
     install_recommends: no
     state: present
     cache_valid_time: 3600
 
 - name: Copy videobridge configs
-  template:
+  ansible.builtin.template:
     src: "videobridge/{{ item }}.j2"
     dest: "/etc/jitsi/videobridge/{{ item }}"
     owner: jvb
@@ -49,7 +48,7 @@
   notify: Restart jitsi-videobridge2
 
 - name: Copy Jicofo log.properties
-  copy:
+  ansible.builtin.copy:
     content: "{{ jitsi_meet_jicofo_logging_properties }}"
     dest: /etc/jitsi/jicofo/logging.properties
     owner: jicofo
@@ -58,20 +57,20 @@
   notify: Restart jicofo
 
 - name: Copy jitsi meet config
-  template:
+  ansible.builtin.template:
     mode: 0644
     src: meet-config.js.j2
     dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
 
 - name: Enable jitsi-videobridge2
-  service:
+  ansible.builtin.service:
     name: jitsi-videobridge2
     enabled: yes
 
 - name: Enable jicofo
-  service:
+  ansible.builtin.service:
     name: jicofo
     enabled: yes
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
