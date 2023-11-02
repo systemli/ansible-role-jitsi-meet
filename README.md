@@ -56,14 +56,16 @@ deployed instance is going to break the configuration.
 Tests
 -----
 
-For developing and testing the role we use Travis CI, Molecule and Vagrant. On the local environment you can easily test the role with
+We do integration tests with GitHub Actions and Molecule.
+
+Locally, you can easily test the role with
 
 ```
 pip install molecule-vagrant ansible-lint yamllint
 molecule test
 ```
 
-This  requires [Vagrant](https://www.vagrantup.com/downloads.html) to be installed.
+This requires [Vagrant](https://www.vagrantup.com/downloads.html) to be installed.
 
 Debugging
 ---------
