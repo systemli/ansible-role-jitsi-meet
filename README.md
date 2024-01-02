@@ -8,32 +8,28 @@ This role installs and configure [Jitsi Meet](https://jitsi.org/jitsi-meet/) wit
 It is maintained with Debian Buster in mind, but should also work with its
 derivatives like Ubuntu 20.04.
 
-
-Role Variables
---------------
+## Role Variables
 
 You need to set the `jitsi_meet_base_secret` variable from which passwords for
 the various internally used accounts are created.
 
 See [`defaults/main.yml`](defaults/main.yml) for further available variables.
 
-Dependencies
-------------
+## Dependencies
 
- - [systemli.apt_repositories](https://galaxy.ansible.com/systemli/apt_repositories)
+- [systemli.apt_repositories](https://galaxy.ansible.com/systemli/apt_repositories)
 
-
-Download
---------
+## Download
 
 Download latest release with `ansible-galaxy`
 
-	ansible-galaxy install systemli.jitsi_meet
-
-Example Playbook
-----------------
-
+```shell
+ansible-galaxy install systemli.jitsi_meet
 ```
+
+## Example Playbook
+
+```yaml
 - hosts: jitsimeetservers
   roles:
      - { role: systemli.letsencrypt }
@@ -47,53 +43,47 @@ Example Playbook
       challenge: dns
 ```
 
-Caveats
--------
+## Caveats
 
 A change of the `jitsi_meet_server_name` variable applied on an already
 deployed instance is going to break the configuration.
 
-Tests
------
+## Tests
 
 We do integration tests with GitHub Actions and Molecule.
 
 Locally, you can easily test the role with
 
-```
+```shell
 pip install molecule-vagrant ansible-lint yamllint
 molecule test
 ```
 
 This requires [Vagrant](https://www.vagrantup.com/downloads.html) to be installed.
 
-Debugging
----------
+## Debugging
 
 For local debugging you can run the following commands:
 
-```
+```shell
 molecule create
 molecule converge
 ```
 
 This will spin up an instance which is reachable via `https://localhost:8443/`.
 
-Remove Jitsi
------------
+## Remove Jitsi
 
-```
+```shell
 sudo apt purge jigasi jitsi-meet jitsi-meet-web-config jitsi-meet-prosody jitsi-meet-turnserver jitsi-meet-web jicofo jitsi-videobridge2 nginx* jitsi* prosody lua5.2
 sudo apt autoremove --purge
-sudo rm -r /etc/jitsi/ /usr/share/jitsi-meet/ /usr/share/jitsi-videobridge/ /etc/prosody/ /var/lib/prosody/ /etc/apt/sources.list.d/download_jitsi_org.sources /etc/apt/sources.list.d/packages.prosody.im.sources /etc/apt/preferences.d/download_jitsi_org.pref /etc/apt/preferences.d/packages.prosody.im.pref 
+sudo rm -r /etc/jitsi/ /usr/share/jitsi-meet/ /usr/share/jitsi-videobridge/ /etc/prosody/ /var/lib/prosody/ /etc/apt/sources.list.d/download_jitsi_org.sources /etc/apt/sources.list.d/packages.prosody.im.sources /etc/apt/preferences.d/download_jitsi_org.pref /etc/apt/preferences.d/packages.prosody.im.pref
 ```
 
-License
--------
+## License
 
 GPLv3
 
-Author Information
-------------------
+## Author Information
 
-https://www.systemli.org
+<https://www.systemli.org>
