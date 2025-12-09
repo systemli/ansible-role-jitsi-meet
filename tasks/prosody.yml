@@ -36,7 +36,7 @@
     creates: /var/lib/prosody/{{ item }}.crt
     executable: /bin/bash
   register: prosody_cert_gen
-  changed_when: prosody_cert_gen.rc and prosody_cert_gen.rc == 141
+  changed_when: prosody_cert_gen.rc is defined and prosody_cert_gen.rc == 141
   failed_when: prosody_cert_gen.rc != 141 and prosody_cert_gen.rc != 0
   loop:
     - "{{ jitsi_meet_server_name }}"
