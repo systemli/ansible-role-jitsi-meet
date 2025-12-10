@@ -32,7 +32,8 @@
     owner: root
     group: root
     mode: "0644"
-  when: jitsi_meet_logo_file | length > 0
+  when: jitsi_meet_logo_file is defined
+    and jitsi_meet_logo_file | length > 0
 
 - name: Replace favicon for a customized one
   ansible.builtin.copy:
@@ -42,7 +43,7 @@
     group: root
     mode: "0644"
   when: jitsi_meet_favicon_file is defined
-    and jitsi_meet_favicon_file
+    and jitsi_meet_favicon_file | length > 0
 
 - name: Check if jitsi meet override CSS file exists
   ansible.builtin.stat:
