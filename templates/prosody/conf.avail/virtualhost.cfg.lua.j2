@@ -57,7 +57,6 @@ VirtualHost "{{ jitsi_meet_server_name }}"
     -- we need bosh
     modules_enabled = {
         "bosh";
-        "pubsub";
         "ping"; -- Enable mod_ping
         "speakerstats";
         "external_services";
