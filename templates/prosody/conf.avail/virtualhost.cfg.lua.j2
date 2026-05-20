@@ -12,7 +12,6 @@ external_services = {
      { type = "turns", host = "{{ jitsi_meet_stun_server_host }}", port = 5349, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
 };
 
-cross_domain_bosh = false;
 consider_bosh_secure = true;
 https_ports = { }; -- Fix bind error
 

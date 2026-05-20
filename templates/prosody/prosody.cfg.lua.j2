@@ -74,7 +74,6 @@ modules_enabled = {
 		--"http_files"; -- Serve static files from a directory over HTTP
 
 	-- Other specific functionality
-		"posix"; -- POSIX functionality, sends server to background, enables syslog, etc.
 		--"groups"; -- Shared roster support
 		--"server_contact_info"; -- Publish contact information for this service
 		--"announce"; -- Send announcement to all online users
@@ -96,11 +95,6 @@ modules_disabled = {
 -- Disable account creation by default, for security
 -- For more information see https://prosody.im/doc/creating_accounts
 allow_registration = false
-
--- Debian:
---   Do not send the server to background, either systemd or start-stop-daemon take care of that.
---
-daemonize = false;
 
 -- Debian:
 --   Please, don't change this option since /run/prosody/
