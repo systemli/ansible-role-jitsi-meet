@@ -81,7 +81,6 @@ Component "conference.{{ jitsi_meet_server_name }}" "muc"
     modules_enabled = {
         "muc_meeting_id";
         "muc_domain_mapper";
-        "polls";
         --"token_verification";
         "muc_rate_limit";
     }
@@ -145,7 +144,6 @@ Component "lobby.{{ jitsi_meet_server_name }}" "muc"
     muc_room_default_public_jids = true
     modules_enabled = {
         "muc_rate_limit";
-        "polls";
     }
 
 Component "metadata.{{ jitsi_meet_server_name }}" "room_metadata_component"
