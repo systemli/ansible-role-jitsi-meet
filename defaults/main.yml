@@ -4,6 +4,7 @@ jitsi_meet_dependencies:
   - apt-utils
   - lua5.2
   - lua-unbound
+  - netcat-openbsd
 
 jitsi_meet_packages:
   - jitsi-meet
