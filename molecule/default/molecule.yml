@@ -1,17 +1,22 @@
 ---
 driver:
-  name: vagrant
-  provider:
-    name: virtualbox
+  name: docker
+
 platforms:
-  - name: jitsi-meet-bullseye64
-    box: debian/bullseye64
-    instance_raw_config_args:
-      - "vm.network 'forwarded_port', guest: 443, host: 8443"
+  - name: debian13
+    image: "geerlingguy/docker-debian13-ansible:latest"
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - /var/lib/containerd
+    cgroupns_mode: host
+    privileged: true
+    pre_build_image: true
+
 provisioner:
   name: ansible
   become: True
-lint: |
-  set -e
-  yamllint .
-  ansible-lint
+  ansible_args:
+    - --diff
+
+lint: yamllint .
