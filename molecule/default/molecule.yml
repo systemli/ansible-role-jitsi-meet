@@ -15,8 +15,10 @@ platforms:
 
 provisioner:
   name: ansible
-  become: True
   ansible_args:
     - --diff
 
-lint: yamllint .
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
