@@ -50,27 +50,19 @@ VirtualHost "{{ jitsi_meet_server_name }}"
         key = "/etc/prosody/certs/{{ jitsi_meet_server_name }}.key";
         certificate = "/etc/prosody/certs/{{ jitsi_meet_server_name }}.crt";
     }
-    av_moderation_component = "avmoderation.{{ jitsi_meet_server_name }}"
-    speakerstats_component = "speakerstats.{{ jitsi_meet_server_name }}"
-    conference_duration_component = "conferenceduration.{{ jitsi_meet_server_name }}"
     end_conference_component = "endconference.{{ jitsi_meet_server_name }}"
     -- we need bosh
     modules_enabled = {
         "bosh";
         "ping"; -- Enable mod_ping
-        "speakerstats";
         "external_services";
-        "conference_duration";
         "end_conference";
         "muc_lobby_rooms";
         "muc_breakout_rooms";
-        "av_moderation";
-        "room_metadata";
     }
     c2s_require_encryption = false
     lobby_muc = "lobby.{{ jitsi_meet_server_name }}"
     breakout_rooms_muc = "breakout.{{ jitsi_meet_server_name }}"
-    room_metadata_component = "metadata.{{ jitsi_meet_server_name }}"
     main_muc = "conference.{{ jitsi_meet_server_name }}"
     -- muc_lobby_whitelist = { "recorder.{{ jitsi_meet_server_name }}" } -- Here we can whitelist jibri to enter lobby enabled rooms
 
@@ -124,16 +116,7 @@ VirtualHost "auth.{{ jitsi_meet_server_name }}"
 Component "focus.{{ jitsi_meet_server_name }}" "client_proxy"
     target_address = "focus@auth.{{ jitsi_meet_server_name }}"
 
-Component "speakerstats.{{ jitsi_meet_server_name }}" "speakerstats_component"
-    muc_component = "conference.{{ jitsi_meet_server_name }}"
-
-Component "conferenceduration.{{ jitsi_meet_server_name }}" "conference_duration_component"
-    muc_component = "conference.{{ jitsi_meet_server_name }}"
-
 Component "endconference.{{ jitsi_meet_server_name }}" "end_conference"
-    muc_component = "conference.{{ jitsi_meet_server_name }}"
-
-Component "avmoderation.{{ jitsi_meet_server_name }}" "av_moderation_component"
     muc_component = "conference.{{ jitsi_meet_server_name }}"
 
 Component "lobby.{{ jitsi_meet_server_name }}" "muc"
@@ -144,7 +127,3 @@ Component "lobby.{{ jitsi_meet_server_name }}" "muc"
     modules_enabled = {
         "muc_rate_limit";
     }
-
-Component "metadata.{{ jitsi_meet_server_name }}" "room_metadata_component"
-    muc_component = "conference.{{ jitsi_meet_server_name }}"
-    breakout_rooms_component = "breakout.{{ jitsi_meet_server_name }}"
