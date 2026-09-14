@@ -14,4 +14,5 @@ videobridge {
         domain = "{{ jitsi_meet_server_name }}:443"
         tls = true
     }
+    {{ jitsi_meet_jvb_conf | indent(4) }}
 }
