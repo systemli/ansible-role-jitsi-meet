@@ -1,5 +1,7 @@
+{% if jitsi_meet_config_stun_servers %}
 {% set jitsi_meet_stun_server_host = jitsi_meet_config_stun_servers[0].split(':')[0] %}
 {% set jitsi_meet_stun_server_port = jitsi_meet_config_stun_servers[0].split(':')[1] %}
+{% endif %}
 plugin_paths = { "/usr/share/jitsi-meet/prosody-plugins/" }
 
 -- domain mapper options, must at least have domain base set to use the mapper
@@ -7,9 +9,11 @@ muc_mapper_domain_base = "{{ jitsi_meet_server_name }}";
 
 external_service_secret = "{{ jitsi_meet_turn_secret }}";
 external_services = {
+{% if jitsi_meet_config_stun_servers %}
      { type = "stun", host = "{{ jitsi_meet_stun_server_host }}", port = {{ jitsi_meet_stun_server_port }} },
      { type = "turn", host = "{{ jitsi_meet_stun_server_host }}", port = {{ jitsi_meet_stun_server_port }}, transport = "udp", secret = true, ttl = 86400, algorithm = "turn" },
      { type = "turns", host = "{{ jitsi_meet_stun_server_host }}", port = 5349, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
+{% endif %}
 };
 
 consider_bosh_secure = true;
