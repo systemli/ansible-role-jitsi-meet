@@ -11,7 +11,7 @@ User=jvb
 Group=jitsi
 RuntimeDirectory=jitsi-videobridge
 RuntimeDirectoryMode=0750
-EnvironmentFile=/etc/jitsi/videobridge/config
+Environment=JAVA_SYS_PROPS="-Dconfig.file=/etc/jitsi/videobridge/jvb.conf -Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/etc/jitsi -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=videobridge"
 PIDFile=/run/jitsi-videobridge/jitsi-videobridge.pid
 # more threads for this process
 TasksMax=65000

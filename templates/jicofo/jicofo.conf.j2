@@ -25,13 +25,13 @@ jicofo {
     enabled = true
 
     # The interval between health checks. If set to 0, periodic health checks will not be performed.
-    interval = 10 seconds
+    interval = 1 seconds
 
     # The timeout for a health check
-    timeout = 30 seconds
+    timeout = 7 seconds
 
     # If performing a health check takes longer than this, it is considered unsuccessful.
-    max-check-duration = 20 seconds
+    max-check-duration = 5 seconds
 
     # The prefix to use when creating MUC rooms for the purpose of health checks.
     room-name-prefix = "__jicofo-health-check"
