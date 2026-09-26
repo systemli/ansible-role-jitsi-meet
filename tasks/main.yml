@@ -23,15 +23,3 @@
 - name: Import NGinX tasks
   ansible.builtin.import_tasks: nginx.yml
 
-- name: Generate logrotate configs
-  ansible.builtin.template:
-    src: logrotate.d/{{ item }}.j2
-    dest: /etc/logrotate.d/{{ item }}
-    owner: root
-    group: root
-    mode: 0644
-  loop:
-    - jicofo
-    # - jitsi-videobridge https://github.com/systemli/ansible-role-jitsi-meet/issues/33
-    - nginx
-    - prosody

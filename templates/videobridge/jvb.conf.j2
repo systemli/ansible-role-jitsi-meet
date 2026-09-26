@@ -1,4 +1,14 @@
 videobridge {
+   apis.xmpp-client.configs {
+        shard {
+            HOSTNAME=localhost
+            DOMAIN="auth.{{ jitsi_meet_server_name }}"
+            USERNAME=jvb
+            PASSWORD="{{ secrets_jitsi_meet_videobridge_secret }}"
+            MUC_JIDS="jvbbrewery@internal.auth.{{ jitsi_meet_server_name }}"
+            MUC_NICKNAME={{ jitsi_meet_videobridge_muc_nickname }}
+        }
+    } 
     apis {
         rest {
             enabled = true

@@ -1,0 +1,28 @@
+[Unit]
+Description=Jitsi Videobridge
+After=prosody.service
+Requires=prosody.service
+
+[Service]
+Type=simple
+SuccessExitStatus=143
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+User=jvb
+Group=jitsi
+RuntimeDirectory=jitsi-videobridge
+RuntimeDirectoryMode=0750
+EnvironmentFile=/etc/jitsi/videobridge/config
+PIDFile=/run/jitsi-videobridge/jitsi-videobridge.pid
+# more threads for this process
+TasksMax=65000
+# allow more open files for this process
+LimitNPROC=65000
+LimitNOFILE=65000
+ExecStartPre=/usr/bin/bash -c 'until /usr/bin/nc -w 1 -z 127.0.0.1 5222; do sleep 5; done'
+ExecStart=/usr/share/jitsi-videobridge/jvb.sh ${JAVA_SYS_PROPS}
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

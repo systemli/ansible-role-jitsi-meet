@@ -176,11 +176,8 @@ archive_expires_after = "1w" -- Remove archived messages after 1 week
 --  Logs info and higher to /var/log
 --  Logs errors to syslog also
 log = {
-	-- Log files (change 'info' to 'debug' for debug logs):
-	info = "/var/log/prosody/prosody.log";
-	error = "/var/log/prosody/prosody.err";
 	-- Syslog:
-	{ levels = { "error" }; to = "syslog";  };
+	{ levels = { "info" }; to = "syslog";  };
 }
 
 -- Uncomment to enable statistics
