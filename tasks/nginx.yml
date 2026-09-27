@@ -53,3 +53,12 @@
   ansible.builtin.service:
     name: nginx
     enabled: yes
+
+- name: Debug
+  ansible.builtin.command: "nginx -t"
+  changed_when: true
+  register: _nginx
+
+- name: Debug
+  ansible.builtin.debug:
+    var: _nginx
