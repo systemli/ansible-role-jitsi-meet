@@ -50,16 +50,6 @@
   when: jitsi_meet_nginx_ssl_preset == 'old'
   notify: Restart nginx
 
-- name: Copy dhparam
-  ansible.builtin.copy:
-    src: "dhparam"
-    dest: "{{ jitsi_meet_nginx_ssl_dhparam }}"
-    owner: root
-    group: root
-    mode: "0640"
-  when: jitsi_meet_nginx_ssl_preset == 'intermediate'
-  notify: Restart nginx
-
 - name: Activate custom Jitsi Meet Nginx site.
   ansible.builtin.file:
     path: "/etc/nginx/sites-enabled/{{ jitsi_meet_server_name }}.conf"
