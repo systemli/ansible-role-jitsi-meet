@@ -9,7 +9,7 @@ jicofo {
       xmpp-domain: "{{ jitsi_meet_server_name }}"
       domain: "auth.{{ jitsi_meet_server_name }}"
       username: "{{ jitsi_jicofo_auth_user }}"
-      password: "{{ secrets_jitsi_meet_jicofo_password }}"
+      password: "{{ jitsi_meet_jicofo_password }}"
     }
     trusted-domains: [ "recorder.{{ jitsi_meet_server_name }}" ]
   }
