@@ -15,13 +15,6 @@
     mode: "0644"
   notify: Reload nginx
 
-- name: Add mimetype for wasm files.
-  ansible.builtin.lineinfile:
-    path: /etc/nginx/mime.types
-    line: "    application/wasm                      wasm;"
-    insertbefore: '^\}$'
-  notify: Reload nginx
-
 - name: Copy Nginx config for Jitsi Meet domain.
   ansible.builtin.template:
     dest: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
