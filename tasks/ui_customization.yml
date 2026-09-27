@@ -7,10 +7,52 @@
     group: root
     mode: "0644"
 
+- name: Create customization directory
+  ansible.builtin.file:
+    path: "{{ jitsi_meet_interface_customization_path }}"
+    state: directory
+
+- name: Copy index.html to customization location
+  ansible.builtin.copy:
+    src: /usr/share/jitsi-meet/index.html
+    dest: "{{ jitsi_meet_interface_customization_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+    remote_src: true
+
+- name: Check if jitsi meet override CSS file exists
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  delegate_to: 127.0.0.1
+  loop: "{{ q('first_found', {
+    'files': 'jitsi-meet-override.css',
+    'paths': [playbook_dir + '/files/'],
+    'skip': 'yes'
+  }) }}"
+  register: jitsi_meet_override_css_file
+
+- name: Copy jitsi meet override CSS file
+  ansible.builtin.copy:
+    src: "{{ jitsi_meet_override_css_file.results[0].item }}"
+    dest: "{{ jitsi_meet_interface_override_css }}"
+    mode: "0644"
+  when:
+    - jitsi_meet_override_css_file.results | length > 0
+    - jitsi_meet_override_css_file.results[0].stat.exists
+
+- name: Set override CSS status
+  ansible.builtin.set_fact:
+    jitsi_meet_override_css_enabled: >-
+      {{
+        jitsi_meet_override_css_file.results | length > 0 and
+        jitsi_meet_override_css_file.results[0].stat.exists
+      }}
+
 - name: Title configuration file
   ansible.builtin.template:
     src: title.html.j2
-    dest: "/usr/share/jitsi-meet/title.html"
+    dest: "{{ jitsi_meet_interface_custom_title_html  }}"
     owner: root
     group: root
     mode: "0644"
@@ -44,30 +86,6 @@
     mode: "0644"
   when: jitsi_meet_favicon_file is defined
     and jitsi_meet_favicon_file | length > 0
-
-- name: Check if jitsi meet override CSS file exists
-  ansible.builtin.stat:
-    path: "{{ item }}"
-  delegate_to: 127.0.0.1
-  loop: "{{ q('first_found', {'files': 'jitsi-meet-override.css', 'paths': [playbook_dir + '/files/'], 'skip': 'yes'}) }}"
-  register: jitsi_meet_override_css_file
-
-- name: Inject jitsi meet override CSS
-  when:
-    - jitsi_meet_override_css_file.results|length > 0
-    - jitsi_meet_override_css_file.results[0].stat.exists
-  block:
-    - name: Copy jitsi meet override CSS file
-      ansible.builtin.copy:
-        src: "{{ jitsi_meet_override_css_file.results[0].item }}"
-        dest: "/usr/share/jitsi-meet/css/override.css"
-        mode: "0644"
-    - name: Inject jitsi meet override CSS import statement into HTML file
-      ansible.builtin.lineinfile:
-        path: /usr/share/jitsi-meet/index.html
-        regexp: "override.css"
-        line: '    <link rel="stylesheet" href="css/override.css">'
-        insertbefore: "</head>"
 
 - name: Configure debsums to ignore customized assets
   when: jitsi_meet_debsums_ignore_custom_assets

@@ -57,7 +57,18 @@ server {
     ssi on;
     ssi_types application/x-javascript application/javascript;
 
-    index custom_index.html index.htm;
+    index {{ jitsi_meet_interface_custom_index_html | default('index.html')  }};
+    
+    {% if jitsi_meet_interface_override_css is defined and
+          jitsi_meet_interface_override_css | length > 0 %}
+    location = /index.html {
+	    alias {{ jitsi_meet_interface_custom_index_html }};
+    }
+    location = /css/override.css {
+	    alias {{ jitsi_meet_interface_override_css }};
+    }
+    {% endif %}
+
     error_page 404 /static/404.html;
 
     gzip on;

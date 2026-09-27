@@ -7,3 +7,7 @@
 <meta itemprop="description" content="{{ jitsi_meet_description }}"/>
 <meta itemprop="image" content="{{ jitsi_meet_title_image }}"/>
 <link rel="icon" type="image/png" href="{{ jitsi_meet_title_favicon }}"/>
+
+{% if jitsi_meet_override_css_enabled | default(false) %}
+<link rel="stylesheet" href="css/override.css">
+{% endif %}
