@@ -44,10 +44,9 @@
   notify: Reload nginx
 
 - name: Generate dhparam
-  ansible.builtin.shell: "openssl dhparam 1024 > {{ jitsi_meet_nginx_ssl_dhparam }}"
+  ansible.builtin.shell: "openssl genpkey -genparam -algorithm DH -pkeyopt dh_paramgen_prime_len:2048 -out {{ jitsi_meet_nginx_ssl_dhparam }}"
   args:
     creates: "{{ jitsi_meet_nginx_ssl_dhparam }}"
-  when: jitsi_meet_nginx_ssl_preset == 'old'
   notify: Restart nginx
 
 - name: Activate custom Jitsi Meet Nginx site.
