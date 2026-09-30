@@ -14,6 +14,7 @@
     owner: root
     group: root
     mode: "0644"
+  when: jitsi_meet_interface_customization_path is defined  
 
 - name: Copy index.html to customization location
   ansible.builtin.copy:
@@ -23,6 +24,7 @@
     group: root
     mode: "0644"
     remote_src: true
+  when: jitsi_meet_interface_customization_path is defined  
 
 - name: Check if jitsi meet override CSS file exists
   ansible.builtin.stat:
@@ -59,7 +61,8 @@
     owner: root
     group: root
     mode: "0644"
-
+  when: jitsi_meet_interface_customization_path is defined  
+  
 - name: Replace watermark for a customized one
   ansible.builtin.copy:
     src: "{{ jitsi_meet_watermark_file }}"

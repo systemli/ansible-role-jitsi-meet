@@ -29,8 +29,12 @@ server {
     server_name {{ jitsi_meet_server_name }};
 
     ssl_protocols {{ jitsi_meet_nginx_ssl_protocols }};
-    ssl_ciphers {{ jitsi_meet_nginx_ssl_ciphers }};
     ssl_prefer_server_ciphers {{ jitsi_meet_nginx_ssl_prefer_server_ciphers }};
+
+    {% if jitsi_meet_nginx_ssl_ciphers | default('', true) %}
+    ssl_ciphers {{ jitsi_meet_nginx_ssl_ciphers }};
+    {% endif %}
+    
     ssl_dhparam {{ jitsi_meet_nginx_ssl_dhparam }};
 
     ssl_session_timeout 1d;
@@ -59,7 +63,7 @@ server {
 
     index {{ jitsi_meet_interface_custom_index_html | default('index.html')  }};
     
-    {% if jitsi_meet_interface_override_css is defined and
+    {% if jitsi_meet_interface_override_css is not none and
           jitsi_meet_interface_override_css | length > 0 %}
     location = /index.html {
 	    alias {{ jitsi_meet_interface_custom_index_html }};

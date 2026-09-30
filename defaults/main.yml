@@ -64,7 +64,7 @@ jitsi_meet_interface_mobile_download_link_ios: https://itunes.apple.com/us/app/j
 jitsi_meet_interface_native_app_name: Jitsi Meet
 
 # Define your custom index.html . If left empty, index.html will be used.
-jitsi_meet_interface_custom_index_html: 
+jitsi_meet_interface_custom_index_html: "index.html" 
 jitsi_meet_interface_custom_title_html:
 jitsi_meet_interface_override_css:
 
