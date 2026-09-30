@@ -63,13 +63,17 @@ server {
 
     index {{ jitsi_meet_interface_custom_index_html | default('index.html')  }};
     
-    {% if jitsi_meet_interface_override_css is not none and
-          jitsi_meet_interface_override_css | length > 0 %}
+    {% if jitsi_meet_interface_customization_path is not none and
+          jitsi_meet_interface_customization_path | length > 0 %}
     location = /index.html {
-	    alias {{ jitsi_meet_interface_custom_index_html }};
+	    alias {{ jitsi_meet_interface_customization_path }}/index.html;
     }
     location = /css/override.css {
-	    alias {{ jitsi_meet_interface_override_css }};
+	    alias {{ jitsi_meet_interface_customization_path }}/override.css;
+    }
+
+    location = /images/favicon.ico {
+	    alias {{ jitsi_meet_interface_customization_path }}/favicon.ico;
     }
     {% endif %}
 

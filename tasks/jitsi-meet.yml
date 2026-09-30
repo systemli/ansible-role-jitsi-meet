@@ -48,8 +48,11 @@
 - name: Copy jitsi meet config
   ansible.builtin.template:
     mode: "0644"
-    src: meet-config.js.j2
-    dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
+    src: "{{ item }}"
+    dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-{{ item }}"
+  loop:
+    - config.js.j2
+    - interface_config.js.j2
 
 - name: Deploy systemd units
   ansible.builtin.copy:
