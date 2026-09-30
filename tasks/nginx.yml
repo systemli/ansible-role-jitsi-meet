@@ -36,9 +36,12 @@
     state: absent
   notify: Reload nginx
 
-- name: Generate dhparam
-  ansible.builtin.shell: "openssl genpkey -genparam -algorithm DH -pkeyopt dh_paramgen_prime_len:2048 -out {{ jitsi_meet_nginx_ssl_dhparam }}"
-  args:
+- name: Generate DH parameters
+  ansible.builtin.command:
+    cmd: >-
+      openssl genpkey -genparam -algorithm DH
+      -pkeyopt dh_paramgen_prime_len:2048
+      -out {{ jitsi_meet_nginx_ssl_dhparam }}
     creates: "{{ jitsi_meet_nginx_ssl_dhparam }}"
   notify: Restart nginx
 

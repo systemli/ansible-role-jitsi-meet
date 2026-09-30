@@ -25,4 +25,3 @@
 
 - name: Import NGinX tasks
   ansible.builtin.import_tasks: nginx.yml
-

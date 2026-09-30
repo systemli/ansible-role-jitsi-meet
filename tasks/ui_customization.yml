@@ -11,6 +11,9 @@
   ansible.builtin.file:
     path: "{{ jitsi_meet_interface_customization_path }}"
     state: directory
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: Copy index.html to customization location
   ansible.builtin.copy:
@@ -52,7 +55,7 @@
 - name: Title configuration file
   ansible.builtin.template:
     src: title.html.j2
-    dest: "{{ jitsi_meet_interface_custom_title_html  }}"
+    dest: "{{ jitsi_meet_interface_custom_title_html }}"
     owner: root
     group: root
     mode: "0644"
