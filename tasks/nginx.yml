@@ -15,13 +15,6 @@
     mode: "0644"
   notify: Reload nginx
 
-- name: Add mimetype for wasm files.
-  ansible.builtin.lineinfile:
-    path: /etc/nginx/mime.types
-    line: "    application/wasm                      wasm;"
-    insertbefore: '^\}$'
-  notify: Reload nginx
-
 - name: Copy Nginx config for Jitsi Meet domain.
   ansible.builtin.template:
     dest: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
@@ -43,21 +36,13 @@
     state: absent
   notify: Reload nginx
 
-- name: Generate dhparam
-  ansible.builtin.shell: "openssl dhparam 1024 > {{ jitsi_meet_nginx_ssl_dhparam }}"
-  args:
+- name: Generate DH parameters
+  ansible.builtin.command:
+    cmd: >-
+      openssl genpkey -genparam -algorithm DH
+      -pkeyopt dh_paramgen_prime_len:2048
+      -out {{ jitsi_meet_nginx_ssl_dhparam }}
     creates: "{{ jitsi_meet_nginx_ssl_dhparam }}"
-  when: jitsi_meet_nginx_ssl_preset == 'old'
-  notify: Restart nginx
-
-- name: Copy dhparam
-  ansible.builtin.copy:
-    src: "dhparam"
-    dest: "{{ jitsi_meet_nginx_ssl_dhparam }}"
-    owner: root
-    group: root
-    mode: "0640"
-  when: jitsi_meet_nginx_ssl_preset == 'intermediate'
   notify: Restart nginx
 
 - name: Activate custom Jitsi Meet Nginx site.

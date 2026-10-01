@@ -1,0 +1,17 @@
+[Unit]
+Description=Jitsi Conference Focus
+After=prosody.service
+Requires=prosody.service
+
+[Service]
+Type=simple
+User=jicofo
+Group=jitsi
+WorkingDirectory=/usr/share/jicofo
+ExecStartPre=/usr/bin/bash -c 'until /usr/bin/nc -w 1 -z 127.0.0.1 5222; do sleep 5; done'
+ExecStart=/usr/share/jicofo/jicofo.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

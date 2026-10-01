@@ -2,8 +2,7 @@
 server_names_hash_bucket_size 64;
 
 types {
-# nginx's default mime.types doesn't include a mapping for wasm or wav.
-    application/wasm     wasm;
+# nginx's default mime.types doesn't include a mapping for wav.
     audio/wav            wav;
 }
 server {
@@ -24,20 +23,19 @@ server {
     }
 }
 server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
     server_name {{ jitsi_meet_server_name }};
 
-    # Mozilla Guideline v5.4, nginx 1.17.7, OpenSSL 1.1.1d, intermediate configuration
     ssl_protocols {{ jitsi_meet_nginx_ssl_protocols }};
-    {% if not jitsi_meet_nginx_ssl_ciphers == "" %}
-    ssl_ciphers {{ jitsi_meet_nginx_ssl_ciphers }};
-    {% endif %}
     ssl_prefer_server_ciphers {{ jitsi_meet_nginx_ssl_prefer_server_ciphers }};
 
-    {% if not jitsi_meet_nginx_ssl_preset == "modern" %}
-    ssl_dhparam {{ jitsi_meet_nginx_ssl_dhparam }};
+    {% if jitsi_meet_nginx_ssl_ciphers | default('', true) %}
+    ssl_ciphers {{ jitsi_meet_nginx_ssl_ciphers }};
     {% endif %}
+    
+    ssl_dhparam {{ jitsi_meet_nginx_ssl_dhparam }};
 
     ssl_session_timeout 1d;
     ssl_session_cache shared:SSL:10m;  # about 40000 sessions
@@ -48,9 +46,6 @@ server {
 
     ssl_certificate {{ jitsi_meet_ssl_cert_path }};
     ssl_certificate_key {{ jitsi_meet_ssl_key_path }};
-
-    ssl_stapling on;
-    ssl_stapling_verify on;
 
     add_header Expect-CT "enforce, max-age=21600";
     add_header Content-Security-Policy "img-src 'self' 'unsafe-inline' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';";
@@ -66,7 +61,22 @@ server {
     ssi on;
     ssi_types application/x-javascript application/javascript;
 
-    index index.html index.htm;
+    index {{ jitsi_meet_interface_custom_index_html | default('index.html')  }};
+    
+    {% if jitsi_meet_interface_customization_path is not none and
+          jitsi_meet_interface_customization_path | length > 0 %}
+    location = /index.html {
+	    alias {{ jitsi_meet_interface_customization_path }}/index.html;
+    }
+    location = /css/override.css {
+	    alias {{ jitsi_meet_interface_customization_path }}/override.css;
+    }
+
+    location = /images/favicon.ico {
+	    alias {{ jitsi_meet_interface_customization_path }}/favicon.ico;
+    }
+    {% endif %}
+
     error_page 404 /static/404.html;
 
     gzip on;

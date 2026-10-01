@@ -1,0 +1,46 @@
+# Jicofo HOCON configuration. See /usr/share/jicofo/jicofo.jar/reference.conf for
+#available options, syntax, and default values.
+jicofo {
+  xmpp: {
+    client: {
+      enabled: true
+      hostname: localhost
+      client-proxy: "focus.{{ jitsi_meet_server_name }}"
+      xmpp-domain: "{{ jitsi_meet_server_name }}"
+      domain: "auth.{{ jitsi_meet_server_name }}"
+      username: "{{ jitsi_jicofo_auth_user }}"
+      password: "{{ jitsi_meet_jicofo_password }}"
+    }
+    trusted-domains: [ "recorder.{{ jitsi_meet_server_name }}" ]
+  }
+  
+  bridge: {
+    brewery-jid: "jvbbrewery@internal.auth.{{ jitsi_meet_server_name }}"
+    max-bridge-participants = 50
+  }
+
+  # Configuration for the internal health checks performed by jicofo.
+  health {
+    # Whether to perform health checks.
+    enabled = true
+
+    # The interval between health checks. If set to 0, periodic health checks will not be performed.
+    interval = 1 seconds
+
+    # The timeout for a health check
+    timeout = 7 seconds
+
+    # If performing a health check takes longer than this, it is considered unsuccessful.
+    max-check-duration = 5 seconds
+
+    # The prefix to use when creating MUC rooms for the purpose of health checks.
+    room-name-prefix = "__jicofo-health-check"
+  }
+
+  rest {
+    prometheus {
+      enabled = true
+    }
+  }
+}
+

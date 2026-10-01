@@ -63,80 +63,21 @@ jitsi_meet_interface_mobile_download_link_f_droid: https://f-droid.org/en/packag
 jitsi_meet_interface_mobile_download_link_ios: https://itunes.apple.com/us/app/jitsi-meet/id1165103905
 jitsi_meet_interface_native_app_name: Jitsi Meet
 
-# Jitsi Meet variables for title.html
-
-jitsi_meet_title_image: images/jitsilogo.png?v=1
-jitsi_meet_title_favicon: images/favicon.ico?v=1
-
-jitsi_meet_debsums_ignore_custom_assets: false
-
+# Path to store custom UI files
+jitsi_meet_interface_customization_path:
 
 ## Logging
-jitsi_meet_logrotate_retained_days: 7
 jitsi_meet_loglevel: "WARNING"
 jitsi_meet_videobridge_loglevel: "{{ jitsi_meet_loglevel }}"
 jitsi_meet_jicofo_loglevel: "{{ jitsi_meet_loglevel }}"
-jitsi_meet_jicofo_logging_properties: |
-
-  handlers= java.util.logging.ConsoleHandler
-
-  # Handlers with XMPP debug enabled:
-  #handlers= java.util.logging.ConsoleHandler, org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler
-
-  # Handlers with syslog enabled:
-  #handlers= java.util.logging.ConsoleHandler, com.agafua.syslog.SyslogHandler
-  #handlers= java.util.logging.ConsoleHandler, io.sentry.jul.SentryHandler
-
-  java.util.logging.ConsoleHandler.level = {{ jitsi_meet_jicofo_loglevel }}
-  java.util.logging.ConsoleHandler.formatter = org.jitsi.utils.logging2.JitsiLogFormatter
-  java.util.logging.ConsoleHandler.filter = org.jitsi.impl.protocol.xmpp.log.ExcludeXmppPackets
-
-  org.jitsi.utils.logging2.JitsiLogFormatter.programname=Jicofo
-  .level=INFO
-
-  # To enable XMPP packets logging add XmppPacketsFileHandler to the handlers property
-  org.jitsi.impl.protocol.xmpp.log.PacketDebugger.level=ALL
-  org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler.pattern=/var/log/jitsi/jicofo-xmpp.log
-  org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler.append=true
-  org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler.limit=200000000
-  org.jitsi.impl.protocol.xmpp.log.XmppPacketsFileHandler.count=3
-
-  # Syslog (uncomment handler to use)
-  com.agafua.syslog.SyslogHandler.transport = udp
-  com.agafua.syslog.SyslogHandler.facility = local0
-  com.agafua.syslog.SyslogHandler.port = 514
-  com.agafua.syslog.SyslogHandler.hostname = localhost
-  com.agafua.syslog.SyslogHandler.formatter = org.jitsi.utils.logging2.JitsiLogFormatter
-  com.agafua.syslog.SyslogHandler.escapeNewlines = false
-  com.agafua.syslog.SyslogHandler.filter = org.jitsi.impl.protocol.xmpp.log.ExcludeXmppPackets
-
-  # Sentry (uncomment handler to use)
-  io.sentry.jul.SentryHandler.level=WARNING
-
-  # uncomment to see how Jicofo talks to the JVB
-  #org.jitsi.impl.protocol.xmpp.colibri.level=ALL
-
 
 # Disable nginx access log per default
 jitsi_meet_nginx_access_log: "off"
 jitsi_meet_nginx_error_log: /var/log/nginx/error.log
 jitsi_meet_nginx_ssl_preset: "intermediate"
-jitsi_meet_nginx_ssl_presets:
-  modern:
-    protocols: TLSv1.3
-    ciphers: ""
-    prefer_server_ciphers: "off"
-  intermediate:
-    protocols: TLSv1.2 TLSv1.3
-    ciphers: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
-    prefer_server_ciphers: "off"
-  old:
-    protocols: TLSv1 TLSv1.1 TLSv1.2 TLSv1.3
-    ciphers: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA
-    prefer_server_ciphers: "on"
-jitsi_meet_nginx_ssl_protocols: "{{ jitsi_meet_nginx_ssl_presets[jitsi_meet_nginx_ssl_preset]['protocols'] }}"
-jitsi_meet_nginx_ssl_prefer_server_ciphers: "{{ jitsi_meet_nginx_ssl_presets[jitsi_meet_nginx_ssl_preset]['prefer_server_ciphers'] }}"
-jitsi_meet_nginx_ssl_ciphers: "{{ jitsi_meet_nginx_ssl_presets[jitsi_meet_nginx_ssl_preset]['ciphers'] }}"
+jitsi_meet_nginx_ssl_protocols: "TLSv1.3"
+jitsi_meet_nginx_ssl_ciphers: ""
+jitsi_meet_nginx_ssl_prefer_server_ciphers: "off"
 jitsi_meet_nginx_ssl_dhparam: "/etc/nginx/dhparam"
 
 # If you are behind a proxy that does SSL termination set this to false

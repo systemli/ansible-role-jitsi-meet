@@ -43,24 +43,31 @@
     mode: 0640
   loop:
     - jvb.conf
-    - logging.properties
-    - sip-communicator.properties
   notify: Restart jitsi-videobridge2
-
-- name: Copy Jicofo log.properties
-  ansible.builtin.copy:
-    content: "{{ jitsi_meet_jicofo_logging_properties }}"
-    dest: /etc/jitsi/jicofo/logging.properties
-    owner: jicofo
-    group: jitsi
-    mode: 0640
-  notify: Restart jicofo
 
 - name: Copy jitsi meet config
   ansible.builtin.template:
-    mode: 0644
-    src: meet-config.js.j2
-    dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
+    mode: "0644"
+    src: "{{ item }}"
+    dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-{{ item }}"
+  loop:
+    - config.js.j2
+    - interface_config.js.j2
+
+- name: Deploy systemd units
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: "0444"
+    owner: root
+    group: root
+  loop:
+    - jicofo.service
+    - jitsi-videobridge2.service
+  notify:
+    - Reload systemd
+    - Restart jitsi-videobridge2
+    - Restart jicofo 
 
 - name: Enable jitsi-videobridge2
   ansible.builtin.service:
@@ -71,41 +78,6 @@
   ansible.builtin.service:
     name: jicofo
     enabled: yes
-
-- name: Create systemd override directories
-  ansible.builtin.file:
-    group: root
-    mode: "0755"
-    owner: root
-    path: "/etc/systemd/system/{{ item }}.service.d"
-    state: directory
-  loop:
-    - jicofo
-    - jitsi-videobridge2
-
-- name: Install systemd overrides
-  ansible.builtin.copy:
-    content: |
-      [Unit]
-      After=prosody.service
-      PartOf=prosody.service
-
-      [Service]
-      # Check if prosody is up and running, as both jicofo and jitsi-videobridge2 require it.
-      ExecStartPre=/bin/bash -c 'until /usr/bin/nc -w 2 -z 127.0.0.1 5222; do sleep 2; done'
-    dest: "/etc/systemd/system/{{ item }}.service.d/override.conf"
-    group: root
-    mode: "0644"
-    owner: root
-  loop:
-    - jicofo
-    - jitsi-videobridge2
-  notify:
-    - Reload systemd
-    - Restart jicofo
-    - Restart jitsi-videobridge2
-  # Don't install systemd overrides if tests are done via molecule
-  when: not (is_molecule_test | default(false) | bool)
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers

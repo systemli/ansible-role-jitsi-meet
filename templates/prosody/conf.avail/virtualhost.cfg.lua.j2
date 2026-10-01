@@ -1,5 +1,6 @@
 {% set jitsi_meet_stun_server_host = jitsi_meet_config_stun_servers[0].split(':')[0] %}
 {% set jitsi_meet_stun_server_port = jitsi_meet_config_stun_servers[0].split(':')[1] %}
+component_admins_as_room_owners = true
 plugin_paths = { "/usr/share/jitsi-meet/prosody-plugins/" }
 
 -- domain mapper options, must at least have domain base set to use the mapper
@@ -96,7 +97,8 @@ Component "breakout.{{ jitsi_meet_server_name }}" "muc"
 Component "internal.auth.{{ jitsi_meet_server_name }}" "muc"
     storage = "memory"
     modules_enabled = {
-        "ping";
+	"muc_hide_all";
+	"ping";
     }
     admins = { "focus@auth.{{ jitsi_meet_server_name }}", "jvb@auth.{{ jitsi_meet_server_name }}" }
     muc_room_locking = false
@@ -109,8 +111,14 @@ VirtualHost "auth.{{ jitsi_meet_server_name }}"
     }
     modules_enabled = {
         "limits_exception";
+	"smacks";
     }
     authentication = "internal_hashed"
+    smacks_hibernation_time = 15
+
+    c2s_timeout = 10
+    ping_interval = 15
+    ping_timeout = 5
 
 -- Proxy to jicofo's user JID, so that it doesn't have to register as a component.
 Component "focus.{{ jitsi_meet_server_name }}" "client_proxy"
@@ -127,3 +135,5 @@ Component "lobby.{{ jitsi_meet_server_name }}" "muc"
     modules_enabled = {
         "muc_rate_limit";
     }
+
+Component "polls.{{ jitsi_meet_server_name }}" "polls_component"

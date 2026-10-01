@@ -16,22 +16,9 @@
 
 - name: Import main tasks
   ansible.builtin.import_tasks: jitsi-meet.yml
+
 - name: Import prosody tasks
   ansible.builtin.import_tasks: prosody.yml
-- name: Import UI tasks
-  ansible.builtin.import_tasks: ui_customization.yml
+
 - name: Import NGinX tasks
   ansible.builtin.import_tasks: nginx.yml
-
-- name: Generate logrotate configs
-  ansible.builtin.template:
-    src: logrotate.d/{{ item }}.j2
-    dest: /etc/logrotate.d/{{ item }}
-    owner: root
-    group: root
-    mode: 0644
-  loop:
-    - jicofo
-    # - jitsi-videobridge https://github.com/systemli/ansible-role-jitsi-meet/issues/33
-    - nginx
-    - prosody
