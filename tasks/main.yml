@@ -20,8 +20,5 @@
 - name: Import prosody tasks
   ansible.builtin.import_tasks: prosody.yml
 
-- name: Import UI tasks
-  ansible.builtin.import_tasks: ui_customization.yml
-
 - name: Import NGinX tasks
   ansible.builtin.import_tasks: nginx.yml
