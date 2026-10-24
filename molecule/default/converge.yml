@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  become: yes
+  become: true
   roles:
     - role: systemli.jitsi_meet
   vars:
