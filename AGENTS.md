@@ -13,8 +13,8 @@ Ansible role that installs and configures Jitsi Meet with nginx and Prosody (XMP
 
 ## Checks
 
-- `ansible-lint .` must pass (config in `.ansible-lint`; `molecule/` and `.github/` are excluded)
-- `yamllint .` uses `.yamllint`
+- `ansible-lint .` must pass (default configuration, no repo-specific config)
+- yamllint rules come from the ansible-lint defaults (no `.yamllint`)
 - `molecule test` runs the role in a container; CI runs it on Debian 12 and 13
 - `ansible-lint` creates `.ansible/`; it is git ignored, never commit it
 
