@@ -10,8 +10,9 @@ distributions tested in CI.
 
 ## Role Variables
 
-You need to set the `jitsi_meet_base_secret` variable from which passwords for
-the various internally used accounts are created.
+Set the `jitsi_meet_base_secret` variable from which passwords for the various
+internally used accounts are created. Alternatively, set `jitsi_meet_videobridge_secret`,
+`jitsi_meet_turn_secret` and `jitsi_meet_videobridge_muc_nickname` directly.
 
 See [`defaults/main.yml`](defaults/main.yml) for further available variables.
 
