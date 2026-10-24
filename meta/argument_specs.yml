@@ -1,0 +1,176 @@
+---
+argument_specs:
+  main:
+    short_description: Install and configure Jitsi Meet with nginx and prosody
+    description:
+      - Installs Jitsi Meet (including Jicofo and Videobridge) with nginx as web server and prosody as XMPP server on Debian.
+    options:
+      jitsi_meet_dependencies:
+        type: list
+        elements: str
+      jitsi_meet_packages:
+        type: list
+        elements: str
+      jitsi_meet_server_name:
+        type: str
+      jitsi_meet_videobridge_port:
+        type: int
+      jitsi_meet_jicofo_user:
+        type: str
+      jitsi_meet_turn_tls_listening_port:
+        type: int
+      jitsi_meet_ssl_cert_path:
+        type: str
+      jitsi_meet_ssl_key_path:
+        type: str
+      jitsi_meet_cert_choice:
+        type: str
+      jitsi_meet_config_default_language:
+        type: str
+      jitsi_meet_config_disable_third_party_requests:
+        type: str
+      jitsi_meet_config_last_n:
+        type: str
+      jitsi_meet_config_p2p_enabled:
+        type: str
+      jitsi_meet_config_layer_suspension:
+        type: str
+      jitsi_meet_config_prejoin_page_enabled:
+        type: str
+      jitsi_meet_config_insecure_room_name_warning:
+        type: str
+      jitsi_meet_config_require_display_name:
+        type: str
+      jitsi_meet_config_resolution:
+        type: int
+      jitsi_meet_config_constraints:
+        type: dict
+        description:
+          - Video constraints for meet-config.js. Defaults to the resolution given in C(jitsi_meet_config_resolution).
+      jitsi_meet_config_start_audio_only:
+        type: str
+      jitsi_meet_config_stun_servers:
+        type: list
+        elements: str
+        description:
+          - STUN servers as C(host:port). The first entry is also used for the TURN settings in prosody.
+      jitsi_meet_config_analytics_disabled:
+        type: str
+      jitsi_meet_title:
+        type: str
+      jitsi_meet_description:
+        type: str
+      jitsi_meet_interface_app_name:
+        type: str
+      jitsi_meet_interface_brand_watermark_link:
+        type: str
+      jitsi_meet_interface_default_background:
+        type: str
+      jitsi_meet_interface_default_local_display_name:
+        type: str
+      jitsi_meet_interface_default_logo_url:
+        type: str
+      jitsi_meet_interface_default_remote_display_name:
+        type: str
+      jitsi_meet_interface_default_welcome_page_logo_url:
+        type: str
+      jitsi_meet_interface_provider_name:
+        type: str
+      jitsi_meet_interface_display_welcome_footer:
+        type: str
+      jitsi_meet_interface_jitsi_watermark_link:
+        type: str
+      jitsi_meet_interface_mobile_app_promo:
+        type: str
+      jitsi_meet_interface_mobile_download_link_android:
+        type: str
+      jitsi_meet_interface_mobile_download_link_f_droid:
+        type: str
+      jitsi_meet_interface_mobile_download_link_ios:
+        type: str
+      jitsi_meet_interface_native_app_name:
+        type: str
+      jitsi_meet_title_image:
+        type: str
+      jitsi_meet_title_favicon:
+        type: str
+      jitsi_meet_debsums_ignore_custom_assets:
+        type: bool
+      jitsi_meet_logrotate_retained_days:
+        type: int
+      jitsi_meet_loglevel:
+        type: str
+      jitsi_meet_videobridge_loglevel:
+        type: str
+      jitsi_meet_jicofo_loglevel:
+        type: str
+      jitsi_meet_jicofo_logging_properties:
+        type: str
+      jitsi_meet_nginx_access_log:
+        type: str
+        description:
+          - Disable nginx access log per default
+      jitsi_meet_nginx_error_log:
+        type: str
+      jitsi_meet_nginx_ssl_preset:
+        type: str
+        choices:
+          - modern
+          - intermediate
+          - old
+      jitsi_meet_nginx_ssl_presets:
+        type: dict
+        description:
+          - Mapping of preset name to a dict with C(protocols), C(ciphers) and C(prefer_server_ciphers).
+      jitsi_meet_nginx_ssl_protocols:
+        type: str
+        description:
+          - Defaults to the protocols of the selected preset.
+      jitsi_meet_nginx_ssl_prefer_server_ciphers:
+        type: str
+        description:
+          - Defaults to the value of the selected preset.
+      jitsi_meet_nginx_ssl_ciphers:
+        type: str
+        description:
+          - Defaults to the ciphers of the selected preset.
+      jitsi_meet_nginx_ssl_dhparam:
+        type: str
+      jitsi_meet_nginx_listen_https_enabled:
+        type: bool
+        description:
+          - If you are behind a proxy that does SSL termination set this to false
+      jitsi_meet_behind_nat_enabled:
+        type: bool
+        description:
+          - Set both C(jitsi_meet_nat_local_ip) and C(jitsi_meet_nat_public_ip) if you enable NAT.
+      jitsi_meet_nat_local_ip:
+        type: str
+        description:
+          - Local IP of the host, only relevant if C(jitsi_meet_behind_nat_enabled) is true.
+      jitsi_meet_base_secret:
+        type: str
+        required: true
+        description:
+          - Secret from which passwords for the internally used accounts (Videobridge, TURN, MUC nickname) are derived.
+      jitsi_meet_nat_public_ip:
+        type: str
+        description:
+          - Public IP of the host, only relevant if C(jitsi_meet_behind_nat_enabled) is true.
+      jitsi_meet_config_deployment_urls:
+        type: list
+        elements: dict
+        description:
+          - Entries for C(deploymentInfo) deployment URLs in meet-config.js. Optional.
+      jitsi_meet_watermark_file:
+        type: path
+        description:
+          - Local file used as watermark logo. Optional.
+      jitsi_meet_logo_file:
+        type: path
+        description:
+          - Local file used as logo. Optional.
+      jitsi_meet_favicon_file:
+        type: path
+        description:
+          - Local file used as favicon. Optional.
