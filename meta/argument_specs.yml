@@ -150,9 +150,21 @@ argument_specs:
           - Local IP of the host, only relevant if C(jitsi_meet_behind_nat_enabled) is true.
       jitsi_meet_base_secret:
         type: str
-        required: true
         description:
           - Secret from which passwords for the internally used accounts (Videobridge, TURN, MUC nickname) are derived.
+          - Optional. If unset, set C(jitsi_meet_videobridge_secret), C(jitsi_meet_turn_secret) and C(jitsi_meet_videobridge_muc_nickname) directly.
+      jitsi_meet_videobridge_secret:
+        type: str
+        description:
+          - Videobridge secret. Only needed if C(jitsi_meet_base_secret) is not set.
+      jitsi_meet_turn_secret:
+        type: str
+        description:
+          - TURN secret. Only needed if C(jitsi_meet_base_secret) is not set.
+      jitsi_meet_videobridge_muc_nickname:
+        type: str
+        description:
+          - Videobridge MUC nickname. Only needed if C(jitsi_meet_base_secret) is not set.
       jitsi_meet_nat_public_ip:
         type: str
         description:
