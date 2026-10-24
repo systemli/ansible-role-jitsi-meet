@@ -5,8 +5,8 @@
 
 This role installs and configure [Jitsi Meet](https://jitsi.org/jitsi-meet/) with nginx Webserver and prosody as XMPP Server.
 
-It is maintained with Debian Buster in mind, but should also work with its
-derivatives like Ubuntu 20.04.
+It supports Debian 12 (bookworm) and Debian 13 (trixie), which are also the
+distributions tested in CI.
 
 ## Role Variables
 
@@ -52,25 +52,25 @@ deployed instance is going to break the configuration.
 
 We do integration tests with GitHub Actions and Molecule.
 
-Locally, you can easily test the role with
+Locally, you can test the role with the Docker driver of Molecule:
 
 ```shell
-pip install molecule-vagrant ansible-lint yamllint
+pip install molecule "molecule-plugins[docker]" ansible-lint yamllint
 molecule test
 ```
 
-This requires [Vagrant](https://www.vagrantup.com/downloads.html) to be installed.
+This requires a running Docker (or compatible) container runtime.
 
 ## Debugging
 
 For local debugging you can run the following commands:
 
 ```shell
-molecule create
 molecule converge
+molecule login
 ```
 
-This will spin up an instance which is reachable via `https://localhost:8443/`.
+This spins up a Debian 13 container, applies the role and opens a shell in it.
 
 ## Remove Jitsi
 
