@@ -45,6 +45,16 @@ jitsi_meet_config_analytics_disabled: "true"
 jitsi_meet_title: Jitsi Meet
 jitsi_meet_description: Join a WebRTC video conference powered by the Jitsi Videobridge
 
+# Jitsi Video Bridge configuration settings
+
+# Add additional configuration blocks to jvb.conf
+jitsi_meet_jvb_conf: ""
+# jitsi_meet_jvb_conf: |
+#   health {
+#       require-valid-address = false                                                                                                        }
+#   }
+
+
 # Jitsi Meet variables for interface_config.js
 
 jitsi_meet_interface_app_name: "{{ jitsi_meet_title }}"
