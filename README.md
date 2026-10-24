@@ -77,7 +77,7 @@ This spins up a Debian 13 container, applies the role and opens a shell in it.
 ```shell
 sudo apt purge jigasi jitsi-meet jitsi-meet-web-config jitsi-meet-prosody jitsi-meet-turnserver jitsi-meet-web jicofo jitsi-videobridge2 nginx* jitsi* prosody lua5.2
 sudo apt autoremove --purge
-sudo rm -r /etc/jitsi/ /usr/share/jitsi-meet/ /usr/share/jitsi-videobridge/ /etc/prosody/ /var/lib/prosody/ /etc/apt/sources.list.d/download_jitsi_org.sources /etc/apt/sources.list.d/packages.prosody.im.sources /etc/apt/preferences.d/download_jitsi_org.pref /etc/apt/preferences.d/packages.prosody.im.pref
+sudo rm -r /etc/jitsi/ /usr/share/jitsi-meet/ /usr/share/jitsi-videobridge/ /etc/prosody/ /var/lib/prosody/ /etc/apt/sources.list.d/download.jitsi.org.sources /etc/apt/sources.list.d/packages.prosody.im.sources /etc/apt/preferences.d/download.jitsi.org.pref /etc/apt/preferences.d/packages.prosody.im.pref
 ```
 
 ## License
