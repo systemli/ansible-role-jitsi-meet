@@ -29,7 +29,7 @@
     dest: /etc/logrotate.d/{{ item }}
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   loop:
     - jicofo
     # - jitsi-videobridge https://github.com/systemli/ansible-role-jitsi-meet/issues/33
