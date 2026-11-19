@@ -44,7 +44,12 @@
   loop:
     - jvb.conf
     - logging.properties
-    - sip-communicator.properties
+  notify: Restart jitsi-videobridge2
+
+- name: Remove legacy videobridge sip-communicator.properties
+  ansible.builtin.file:
+    path: /etc/jitsi/videobridge/sip-communicator.properties
+    state: absent
   notify: Restart jitsi-videobridge2
 
 - name: Copy Jicofo log.properties
