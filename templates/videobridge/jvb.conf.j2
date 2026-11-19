@@ -3,6 +3,16 @@ videobridge {
         rest {
             enabled = true
         }
+        xmpp-client.configs {
+            shard {
+                HOSTNAME = localhost
+                DOMAIN = "auth.{{ jitsi_meet_server_name }}"
+                USERNAME = jvb
+                PASSWORD = "{{ jitsi_meet_videobridge_secret }}"
+                MUC_JIDS = "jvbbrewery@internal.auth.{{ jitsi_meet_server_name }}"
+                MUC_NICKNAME = "{{ jitsi_meet_videobridge_muc_nickname }}"
+            }
+        }
     }
     http-servers {
         public {
@@ -13,5 +23,27 @@ videobridge {
         enabled = true
         domain = "{{ jitsi_meet_server_name }}:443"
         tls = true
+    }
+}
+
+ice4j {
+    harvest {
+        mapping {
+            aws {
+                enabled = false
+            }
+            stun {
+                addresses = [ "{{ jitsi_meet_config_stun_servers[0] }}" ]
+            }
+{% if jitsi_meet_behind_nat_enabled %}
+            static-mappings = [
+                {
+                    local-address = "{{ jitsi_meet_nat_local_ip }}"
+                    public-address = "{{ jitsi_meet_nat_public_ip }}"
+                    name = "ip-1"
+                }
+            ]
+{% endif %}
+        }
     }
 }
